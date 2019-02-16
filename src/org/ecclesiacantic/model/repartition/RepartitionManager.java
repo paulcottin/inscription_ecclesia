@@ -1,6 +1,9 @@
 package org.ecclesiacantic.model.repartition;
 
 import org.ecclesiacantic.config.EnumConfigProperty;
+import org.ecclesiacantic.model.data.beans.Evenement;
+import org.ecclesiacantic.model.data.beans.MasterClass;
+import org.ecclesiacantic.model.data.beans.participant.Participant;
 import org.ecclesiacantic.model.data_manager.BadgeManager;
 import org.ecclesiacantic.model.data_manager.EvenementManager;
 import org.ecclesiacantic.model.data_manager.GroupeConcertManager;
@@ -58,17 +61,18 @@ public class RepartitionManager {
             locIndex++;
             locRepartition.run();
             _repartitions.put(locIndex, locRepartition);
+            final Set<Participant> locNotOccupiedParticipants = ((OccupationCreneauStatistic) StatisticManager.getInstance().getStatistics().get(EnumStatistics.OCCUPATION_CRENEAUX)).getErrorPartSet();
             _repartitionResult.append(String.format("Répartition numéro %d : fullFactor = %s et lessUsedNb = %d\n",
                     locIndex, locRepartition.getFullFactor(), locRepartition.getLessUsedMcNumber())
             ).append(String.format("\tSomme des écarts types : %s, nb de personnes ne faisant rien à un créneau : %d\n",
                     EvenementManager.getInstance().getSommeEcartType(),
-                    ((OccupationCreneauStatistic) StatisticManager.getInstance().getStatistics().get(EnumStatistics.OCCUPATION_CRENEAUX)).getErrorPartSet().size())
+                    locNotOccupiedParticipants.size())
             );
             exportBadgesData();
             locRepartition.setResult(new RepartitionResult(
                     EvenementManager.getInstance().exportSallePopulation(false),
-                    BadgeManager.getInstance().exportDataToCSV(false)
-            ));
+                    BadgeManager.getInstance().exportDataToCSV(false),
+                    locNotOccupiedParticipants));
         }
     }
 
@@ -86,6 +90,24 @@ public class RepartitionManager {
 
         FileUtils.writeCsv(EnumConfigProperty.OUTPUT_F_NB_PART_BY_CRENEAU.fileV(), locSelectedResult.getParticipants());
         FileUtils.writeCsv(EnumConfigProperty.OUTPUT_F_BADGE.fileV(), locSelectedResult.getBadges());
+
+        System.out.println("Affichage des participants non occupés à au moins un créneau : ");
+        for (final Participant locParticipant : locSelectedResult.getParticipantNotOccupiedOneCreneauSet()) {
+            System.out.println(computeNotOccupiedPartOutput(locParticipant));
+        }
+    }
+
+    private final String computeNotOccupiedPartOutput(final Participant parParticipant) {
+        final StringBuilder locBuilder = new StringBuilder(String.format("\t- %s", parParticipant))
+                .append("\n\t\tVoeux : \n");
+        for (final MasterClass locVoeu : parParticipant.getVoeux()) {
+            locBuilder.append("\t\t\t- ").append(locVoeu.getName()).append("\n");
+        }
+        locBuilder.append("\n\t\tEvénements : \n");
+        for (final Evenement locEvt : parParticipant.getEvenements()) {
+            locBuilder.append("\t\t\t- ").append(locEvt).append("\n");
+        }
+        return locBuilder.toString();
     }
 
     public final void exportBadgesData() {
