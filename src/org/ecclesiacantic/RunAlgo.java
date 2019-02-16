@@ -23,7 +23,7 @@ public class RunAlgo {
         TarifManager.getInstance().parseDataFile();
         ChoraleManager.getInstance().parseDataFile();
         PaysManager.getInstance().parseDataFile();
-        SoloGeographiqueManager.getInstance().parseDataFile();
+//        SoloGeographiqueManager.getInstance().parseDataFile();
 
         ParticipantManager.getInstance().parseDataFile();
         //Fin du chargement des données depuis les fichiers.

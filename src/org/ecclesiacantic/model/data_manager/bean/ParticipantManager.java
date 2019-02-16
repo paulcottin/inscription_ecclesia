@@ -145,7 +145,8 @@ public class ParticipantManager extends ADataManager<Participant> {
 
         final EnumPupitre locPupitre = (EnumPupitre) EnumUtils.getEnumFromString(EnumPupitre.class, parStringMapHeaderValue.get(EnumDataColumImport.P_PUPITRE));
         final Chorale locChorale = ChoraleManager.getInstance().get(parStringMapHeaderValue.get(EnumDataColumImport.P_CHORALE));
-        final Map<EnumConnaitPar, Boolean> locConnaitPar = EnumConnaitPar.initFromData(parStringMapHeaderValue);
+//        final Map<EnumConnaitPar, Boolean> locConnaitPar = EnumConnaitPar.initFromData(parStringMapHeaderValue);
+        final Map<EnumConnaitPar, Boolean> locConnaitPar = Collections.emptyMap();
 
         //Propriete calculées
         Date locNaissanceDate = null, locCommandeDate = null;
@@ -157,10 +158,12 @@ public class ParticipantManager extends ADataManager<Participant> {
             locNaissanceDate = locDateNaissanceFormat.parse(
                     parStringMapHeaderValue.get(EnumDataColumImport.P_DATE_NAISSANCE)
             );
-            locCommandeDate = locDateCommandeFormat.parse(String.format("%s %s",
-                    parStringMapHeaderValue.get(EnumDataColumImport.P_DATECOMMANDE),
-                    parStringMapHeaderValue.get(EnumDataColumImport.P_HEURECOMMANDE)
-            ));
+            if (parStringMapHeaderValue.get(EnumDataColumImport.P_DATECOMMANDE) == null) {
+                locCommandeDate = new Date(0);
+            } else {
+                locCommandeDate = locDateCommandeFormat.parse(parStringMapHeaderValue.get(EnumDataColumImport.P_DATECOMMANDE));
+            }
+
         } catch (final ParseException parE) {
             System.err.println("Erreur lors de la création des dates : %s");
             parE.printStackTrace();
@@ -179,22 +182,28 @@ public class ParticipantManager extends ADataManager<Participant> {
                 parStringMapHeaderValue.get(EnumDataColumImport.P_CODE_POSTAL),
                 locCommandeDate,
                 locNaissanceDate,
-                NumberUtils.convertFieldToInt(parStringMapHeaderValue.get(EnumDataColumImport.P_AGE)),
+//                NumberUtils.convertFieldToInt(parStringMapHeaderValue.get(EnumDataColumImport.P_AGE)),
+                18,
                 parStringMapHeaderValue.get(EnumDataColumImport.P_AUTRES_INFOS),
                 parStringMapHeaderValue.get(EnumDataColumImport.P_MESSAGE),
                 parStringMapHeaderValue.get(EnumDataColumImport.DIOCESE),
-                parStringMapHeaderValue.get(EnumDataColumImport.P_BESOIN_HEBERGEMENT).equals(locBooleanMarker),
-                parStringMapHeaderValue.get(EnumDataColumImport.P_PEUT_HERBERGER).equals(locBooleanMarker),
+false,
+//                parStringMapHeaderValue.get(EnumDataColumImport.P_BESOIN_HEBERGEMENT).equals(locBooleanMarker),
+//                parStringMapHeaderValue.get(EnumDataColumImport.P_PEUT_HERBERGER).equals(locBooleanMarker),
+                true,
                 parStringMapHeaderValue.get(EnumDataColumImport.P_NE_SOUHAITE_PAS_CHANTER).trim().isEmpty(),
-                parStringMapHeaderValue.get(EnumDataColumImport.IS_PARTICIPANT_2016).equals(locBooleanMarker),
-                parStringMapHeaderValue.get(EnumDataColumImport.AIDE_OFFICES).equals(locBooleanMarker),
+//                parStringMapHeaderValue.get(EnumDataColumImport.IS_PARTICIPANT_2016).equals(locBooleanMarker),
+                true,
+//                parStringMapHeaderValue.get(EnumDataColumImport.AIDE_OFFICES).equals(locBooleanMarker),
+                true,
                 locHebergement,
                 locVoeux,
                 locPupitre,
                 locChorale,
                 locConnaitPar,
-                parStringMapHeaderValue.get(EnumDataColumImport.P_GROUPE_EVANGELISATION),
-                parStringMapHeaderValue.get(EnumDataColumImport.P_GROUPE_CONCERT)
+                "1", "1"
+//                parStringMapHeaderValue.get(EnumDataColumImport.P_GROUPE_EVANGELISATION),
+//                parStringMapHeaderValue.get(EnumDataColumImport.P_GROUPE_CONCERT)
         );
     }
 

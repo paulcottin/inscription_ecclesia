@@ -8,15 +8,16 @@ import java.util.regex.Pattern;
 public class Hebergement {
 
     static public final int getCapaciteFromStringData(final String parStringData) {
-        final Pattern locCapacitePattern = Pattern.compile(".*([0-9]+).*");
-        final Matcher locMatcher = locCapacitePattern.matcher(parStringData);
-        int locCapacite = -1;
-        String locCapaciteString = null;
-        if (locMatcher.matches()) {
-            locCapaciteString = locMatcher.group(1);
-            locCapacite = NumberUtils.convertFieldToInt(locCapaciteString);
-        }
-        return locCapacite;
+        return 5;
+//        final Pattern locCapacitePattern = Pattern.compile(".*([0-9]+).*");
+//        final Matcher locMatcher = locCapacitePattern.matcher(parStringData);
+//        int locCapacite = -1;
+//        String locCapaciteString = null;
+//        if (locMatcher.matches()) {
+//            locCapaciteString = locMatcher.group(1);
+//            locCapacite = NumberUtils.convertFieldToInt(locCapaciteString);
+//        }
+//        return locCapacite;
     }
 
 
