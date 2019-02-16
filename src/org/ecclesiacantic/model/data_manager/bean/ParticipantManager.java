@@ -121,7 +121,7 @@ public class ParticipantManager extends ADataManager<Participant> {
     protected Participant convertStringMapToObject(Map<EnumDataColumImport, String> parStringMapHeaderValue) {
         final String locBooleanMarker = EnumConfigProperty.BOOLEAN_MARK.stringV();
         //Propriétés objets
-        final EnumCivilite locCivilite = (EnumCivilite) EnumUtils.getEnumFromString(EnumCivilite.class, parStringMapHeaderValue.get(EnumDataColumImport.P_CIVILITE));
+        final EnumCivilite locCivilite = EnumCivilite.computeFromName(parStringMapHeaderValue.get(EnumDataColumImport.P_CIVILITE));
         final Tarif locTarif = TarifManager.getInstance().get(parStringMapHeaderValue.get(EnumDataType.TARIF.getHeaderId()));
         final Hebergement locHebergement = new Hebergement(
                 parStringMapHeaderValue.get(EnumDataColumImport.P_STATION_METRO),
