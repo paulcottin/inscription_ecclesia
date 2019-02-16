@@ -27,7 +27,9 @@ public class RepartitionManager {
     private final int _minLessUsedPartNb, _maxLessUsedPartNb;
     private final List<Repartition> _repartitionList;
     private final StringBuilder _repartitionResult;
-    private final Map<Integer, List<List<String>>> _repartitionResultMap, _bagesDataMap;
+    private final Map<Integer, Repartition> _repartitions;
+
+    private int _selectedIdx;
 
     private RepartitionManager() {
         _repartitionList = new ArrayList<>();
@@ -36,8 +38,8 @@ public class RepartitionManager {
         _maxFullFactor = EnumConfigProperty.MAX_FULL_FACTOR.doubleV();
         _minLessUsedPartNb = EnumConfigProperty.LESS_USED_PART.intV();
         _maxLessUsedPartNb = EnumConfigProperty.MAX_USED_PART.intV();
-        _repartitionResultMap = new HashMap<>();
-        _bagesDataMap = new HashMap<>();
+        _repartitions = new HashMap<>();
+        _selectedIdx = -1;
     }
 
     private final void computeRepartition() {
@@ -55,16 +57,18 @@ public class RepartitionManager {
         for (final Repartition locRepartition : _repartitionList) {
             locIndex++;
             locRepartition.run();
+            _repartitions.put(locIndex, locRepartition);
             _repartitionResult.append(String.format("Répartition numéro %d : fullFactor = %s et lessUsedNb = %d\n",
                     locIndex, locRepartition.getFullFactor(), locRepartition.getLessUsedMcNumber())
             ).append(String.format("\tSomme des écarts types : %s, nb de personnes ne faisant rien à un créneau : %d\n",
                     EvenementManager.getInstance().getSommeEcartType(),
                     ((OccupationCreneauStatistic) StatisticManager.getInstance().getStatistics().get(EnumStatistics.OCCUPATION_CRENEAUX)).getErrorPartSet().size())
             );
-            _repartitionResultMap.put(locIndex, EvenementManager.getInstance().exportSallePopulation(false));
             exportBadgesData();
-            BadgeManager.getInstance().generateBadges();
-            _bagesDataMap.put(locIndex, BadgeManager.getInstance().exportDataToCSV(false));
+            locRepartition.setResult(new RepartitionResult(
+                    EvenementManager.getInstance().exportSallePopulation(false),
+                    BadgeManager.getInstance().exportDataToCSV(false)
+            ));
         }
     }
 
@@ -74,11 +78,14 @@ public class RepartitionManager {
 
         final Scanner locScanner = new Scanner(System.in);
         final String locIdData = locScanner.next();
+        _selectedIdx = Integer.valueOf(locIdData);
 
-        System.out.println(String.format("Enregistrement des données d'id %s", locIdData));
+        System.out.println(String.format("Enregistrement des données d'id %s", _selectedIdx));
 
-        FileUtils.writeCsv(EnumConfigProperty.OUTPUT_F_NB_PART_BY_CRENEAU.fileV(), _repartitionResultMap.get(Integer.parseInt(locIdData)));
-        FileUtils.writeCsv(EnumConfigProperty.OUTPUT_F_BADGE.fileV(), _bagesDataMap.get(Integer.parseInt(locIdData)));
+        final RepartitionResult locSelectedResult = _repartitions.get(_selectedIdx).getResult();
+
+        FileUtils.writeCsv(EnumConfigProperty.OUTPUT_F_NB_PART_BY_CRENEAU.fileV(), locSelectedResult.getParticipants());
+        FileUtils.writeCsv(EnumConfigProperty.OUTPUT_F_BADGE.fileV(), locSelectedResult.getBadges());
     }
 
     public final void exportBadgesData() {

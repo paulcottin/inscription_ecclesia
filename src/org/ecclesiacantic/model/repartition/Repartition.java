@@ -26,6 +26,7 @@ public class Repartition {
     private double _fullFactor;
     private int _lessUsedMcNumber;
     private OccupationCreneauStatistic _occupationCreneauStat = (OccupationCreneauStatistic) StatisticManager.getInstance().getStatistics().get(EnumStatistics.OCCUPATION_CRENEAUX);
+    private RepartitionResult _result;
 
     public Repartition() {
         this(-1.0, -1);
@@ -193,5 +194,13 @@ public class Repartition {
 
     public final int getLessUsedMcNumber() {
         return _lessUsedMcNumber;
+    }
+
+    public final RepartitionResult getResult() {
+        return _result;
+    }
+
+    public final void setResult(final RepartitionResult _result) {
+        this._result = _result;
     }
 }
