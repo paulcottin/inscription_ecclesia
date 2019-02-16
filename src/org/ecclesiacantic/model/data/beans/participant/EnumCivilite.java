@@ -4,21 +4,21 @@ import org.ecclesiacantic.model.data.archi.itf.ISimpleValueEnum;
 
 public enum EnumCivilite implements ISimpleValueEnum {
 
-    MONSIEUR("Monsieur") {
+    MONSIEUR("M.") {
         @Override
         public boolean isFille() {
             return false;
         }
     },
 
-    MADAME("Madame") {
+    MADAME("Mme") {
         @Override
         public boolean isFille() {
             return true;
         }
     },
 
-    MADEMOISELLE("Mademoiselle") {
+    MADEMOISELLE("Melle") {
         @Override
         public boolean isFille() {
             return true;
