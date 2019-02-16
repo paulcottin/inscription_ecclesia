@@ -41,7 +41,7 @@ public class BadgeManager implements IExportableManager {
 
     @Override
     public final void exportDataToCSV() {
-        exportDataToCSV(false);
+        exportDataToCSV(true);
     }
 
     public final List<List<String>> exportDataToCSV(final boolean parWriteFile) {
@@ -51,7 +51,9 @@ public class BadgeManager implements IExportableManager {
             locExportBadges.add(locBadge.exportToCSV());
         }
 
-        FileUtils.writeCsv(EnumConfigProperty.OUTPUT_F_BADGE.fileV(), locExportBadges);
+        if (parWriteFile) {
+            FileUtils.writeCsv(EnumConfigProperty.OUTPUT_F_BADGE.fileV(), locExportBadges);
+        }
 
         return locExportBadges;
     }

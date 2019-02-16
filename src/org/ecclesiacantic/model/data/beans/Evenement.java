@@ -258,26 +258,12 @@ public class Evenement implements Comparable<Evenement>{
     }
 
     public final List<String> exportDataToCSV() {
-        return exportDataToCSV(null);
-    }
-
-    public final List<String> exportDataToCSV(final EnumDataColumnExportList parExportList) {
         final List<String> locExportList = new ArrayList<>();
-        if (parExportList == null || parExportList.asList().contains(EnumDataColumnExport.CRENEAU)) {
-            locExportList.add(String.format("%s", _creneau));
-        }
-        if (parExportList == null || parExportList.asList().contains(EnumDataColumnExport.SALLE)) {
-            locExportList.add(String.format("%s", _salleList));
-        }
-        if (parExportList == null || parExportList.asList().contains(EnumDataColumnExport.S_CAPACITE)) {
-            locExportList.add(String.valueOf(getTotalCapacite()));
-        }
-        if (parExportList == null || parExportList.asList().contains(EnumDataColumnExport.MASTERCLASSE)) {
-            locExportList.add(String.format("%s", _masterclass));
-        }
-        if (parExportList == null || parExportList.asList().contains(EnumDataColumnExport.NB_PARTICIPANTS)) {
-            locExportList.add(String.valueOf(_participants != null ? _participants.size() : -1));
-        }
+        locExportList.add(String.format("%s", _creneau));
+        locExportList.add(String.format("%s", _salleList));
+        locExportList.add(String.valueOf(getTotalCapacite()));
+        locExportList.add(String.format("%s", _masterclass));
+        locExportList.add(String.valueOf(_participants != null ? _participants.size() : -1));
         return locExportList;
     }
 

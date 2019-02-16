@@ -43,7 +43,7 @@ public class NotFoundParticipantStatistic extends AStatistic {
                     locParticipant.getCodePostal()));
         }
         if (locStringBuilder.length() == 0 ) {
-            System.out.println("\tTous mes participants voulant chanter sont dans des groupes d'évangélisation");
+            System.out.println("\tTous les participants voulant chanter sont dans des groupes d'évangélisation");
         } else {
             System.out.println(locStringBuilder.toString());
         }
