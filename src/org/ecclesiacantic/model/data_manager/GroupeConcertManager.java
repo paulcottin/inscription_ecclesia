@@ -71,6 +71,11 @@ public class GroupeConcertManager extends ADataManager<GroupeConcert> {
         }
     }
 
+    /**
+     * Cela dépend de la propriété org.ecclesiacantic.config.EnumConfigProperty#IS_COMPUTE_GE_REPART
+     * @param parStringMapHeaderValue
+     * @return
+     */
     private final GroupeConcert convertStringMapToObjectInReadingMode(final Map<EnumDataColumImport, String> parStringMapHeaderValue) {
         final GroupeConcert locGroupe;
         if (parStringMapHeaderValue.get(EnumDataColumImport.P_GROUPE_CONCERT).isEmpty()) {
@@ -85,12 +90,19 @@ public class GroupeConcertManager extends ADataManager<GroupeConcert> {
                     continue;
                 }
 
-                locGroupe.addGroupeEvangelisation(GroupeEvangelisationManager.getInstance().get(locPart.getGroupeEvangelisationId()));
+                if (locPart.getGroupeConcertId() == locGroupe.getId()) {
+                    locGroupe.addGroupeEvangelisation(GroupeEvangelisationManager.getInstance().get(locPart.getGroupeEvangelisationId()));
+                }
             }
         }
         return locGroupe;
     }
 
+    /**
+     * Cela dépend de la propriété org.ecclesiacantic.config.EnumConfigProperty#IS_COMPUTE_GE_REPART
+     * @param parStringMapHeaderValue
+     * @return
+     */
     private final GroupeConcert convertStringMapToObjectInComputingMode(final Map<EnumDataColumImport, String> parStringMapHeaderValue) {
         final String locGroupeConcertId = parStringMapHeaderValue.get(
                 EnumDataColumImport.GC_GROUPE_CONCERT_ID
