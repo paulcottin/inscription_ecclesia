@@ -1,5 +1,7 @@
 package org.ecclesiacantic.gui.properties;
 
+import org.ecclesiacantic.config.ConfigManager;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -30,5 +32,6 @@ public class GuiPropertyManager {
         for (final IPropertyField locPropertyField : _properties) {
             locPropertyField.store();
         }
+        ConfigManager.getInstance().writeStandardProperties();
     }
 }

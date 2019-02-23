@@ -1,6 +1,7 @@
 package org.ecclesiacantic.config;
 
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
@@ -26,6 +27,15 @@ public class ConfigManager {
         //input file path
         try (final FileReader locConfigReader = new FileReader("config.properties")){
             _properties.load(locConfigReader);
+        } catch (final IOException parE) {
+            parE.printStackTrace();
+        }
+    }
+
+    public final void writeStandardProperties() {
+        //input file path
+        try (final FileWriter locConfigWriter = new FileWriter("config.properties")){
+            _properties.store(locConfigWriter, "");
         } catch (final IOException parE) {
             parE.printStackTrace();
         }

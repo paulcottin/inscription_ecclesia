@@ -9,6 +9,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.ecclesiacantic.RunAlgo;
+import org.ecclesiacantic.config.ConfigManager;
+import org.ecclesiacantic.gui.properties.GuiPropertyManager;
 import org.ecclesiacantic.gui.types.Console;
 
 import java.io.PrintStream;
@@ -50,7 +52,9 @@ public class MainGui extends Scene {
     private final Pane initLaunchAlgo() {
         final Button locLaunchBtn = new Button("Lancer l'algorithme");
         locLaunchBtn.setOnAction(event -> {
+            GuiPropertyManager.getInstance().storeAllProperties();
             final RunAlgo locRunAlgo = new RunAlgo();
+            ConfigManager.getInstance().writeStandardProperties();
             new Thread(locRunAlgo::run).start();
         });
 
