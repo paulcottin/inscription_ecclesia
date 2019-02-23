@@ -65,9 +65,9 @@ public enum EnumConfigProperty {
     static private final String GOOGLE_DATA_RANGE = "data_range";
     static private final String GOOGLE_RF_NAME = "result_file_name";
 
-    private final String _key;
+    private String _key;
     private String _googleKey;
-    private final boolean _googleProperty;
+    private boolean _googleProperty;
 
     EnumConfigProperty(final String parKey) {
         this(parKey, false);
@@ -110,9 +110,8 @@ public enum EnumConfigProperty {
         }
         return new GoogleSpreadsheetConfig(
                 parIdProperty.getKey(),
-                parIdProperty.stringV(),
-                property(String.format("%s.%s.%s", GOOGLE_INPUT_PREFIX, parIdProperty.getGoogleKey(), GOOGLE_DATA_RANGE)).stringV(),
-                property(String.format("%s.%s.%s", GOOGLE_INPUT_PREFIX, parIdProperty.getGoogleKey(), GOOGLE_RF_NAME)).stringV()
+                String.format("%s.%s.%s", GOOGLE_INPUT_PREFIX, parIdProperty.getGoogleKey(), GOOGLE_DATA_RANGE),
+                String.format("%s.%s.%s", GOOGLE_INPUT_PREFIX, parIdProperty.getGoogleKey(), GOOGLE_RF_NAME)
         );
     }
 
@@ -150,5 +149,17 @@ public enum EnumConfigProperty {
     @Override
     public String toString() {
         return getKey();
+    }
+
+    public void setKey(final String parKey) {
+        _key = parKey;
+    }
+
+    public void setGoogleKey(final String parGoogleKey) {
+        _googleKey = parGoogleKey;
+    }
+
+    public void setGoogleProperty(final boolean parGoogleProperty) {
+        _googleProperty = parGoogleProperty;
     }
 }

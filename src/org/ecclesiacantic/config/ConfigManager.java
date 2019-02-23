@@ -44,4 +44,16 @@ public class ConfigManager {
             return null;
         }
     }
+
+    public final void setProperty(final String parPropertyName, final String parPropertyValue) {
+        if (parPropertyName != null) {
+            if (_properties.containsKey(parPropertyName)) {
+                _properties.setProperty(parPropertyName, parPropertyValue);
+            } else {
+                System.err.println(String.format("Impossible de trouver la propriété %s", parPropertyName));
+            }
+        } else {
+            System.err.println("La clef de la propriété demandée est null");
+        }
+    }
 }
