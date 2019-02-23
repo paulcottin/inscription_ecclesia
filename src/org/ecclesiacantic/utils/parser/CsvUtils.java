@@ -27,7 +27,9 @@ public class CsvUtils {
             for (final CSVRecord locRecord : locRecords) {
                 final Map<EnumDataColumImport, String> locTempMap = new HashMap<>(parDataHeaders.size());
                 for (final EnumDataColumImport locHeader : parDataHeaders) {
-                    locTempMap.put(locHeader, locRecord.get(locHeader));
+                    if (locHeader.isActive()) {
+                        locTempMap.put(locHeader, locRecord.get(locHeader.getHeaderName()));
+                    }
                 }
                 locReturnList.add(locTempMap);
             }

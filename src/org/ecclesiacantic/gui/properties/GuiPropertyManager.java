@@ -1,6 +1,7 @@
 package org.ecclesiacantic.gui.properties;
 
 import org.ecclesiacantic.config.ConfigManager;
+import org.ecclesiacantic.config.OverrideColumnNameManager;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -33,5 +34,6 @@ public class GuiPropertyManager {
             locPropertyField.store();
         }
         ConfigManager.getInstance().writeStandardProperties();
+        OverrideColumnNameManager.getInstance().saveMapping();
     }
 }

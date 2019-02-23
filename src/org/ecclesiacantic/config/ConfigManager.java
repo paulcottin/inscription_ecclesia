@@ -7,6 +7,10 @@ import java.util.*;
 
 public class ConfigManager {
 
+    static public final String MAPPING_FILE = "mapping_column.json";
+
+    static private final String PROPERTIES_FILE = "config.properties";
+
     static private ConfigManager _instance;
 
     static public final ConfigManager getInstance() {
@@ -21,11 +25,12 @@ public class ConfigManager {
     private ConfigManager() {
         _properties = new Properties();
         initStandardProperties();
+        OverrideColumnNameManager.getInstance().loadMapping();
     }
 
     private final void initStandardProperties() {
         //input file path
-        try (final FileReader locConfigReader = new FileReader("config.properties")){
+        try (final FileReader locConfigReader = new FileReader(PROPERTIES_FILE)){
             _properties.load(locConfigReader);
         } catch (final IOException parE) {
             parE.printStackTrace();
@@ -34,7 +39,7 @@ public class ConfigManager {
 
     public final void writeStandardProperties() {
         //input file path
-        try (final FileWriter locConfigWriter = new FileWriter("config.properties")){
+        try (final FileWriter locConfigWriter = new FileWriter(PROPERTIES_FILE)){
             _properties.store(locConfigWriter, "");
         } catch (final IOException parE) {
             parE.printStackTrace();

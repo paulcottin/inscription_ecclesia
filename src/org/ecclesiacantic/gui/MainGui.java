@@ -1,10 +1,10 @@
 package org.ecclesiacantic.gui;
 
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -30,15 +30,15 @@ public class MainGui extends Scene {
 
         final BorderPane locRoot = (BorderPane) getRoot();
         locRoot.setCenter(new VBox(20,
-                new BorderPane(initConfigButton()),
+                new BorderPane(new HBox(15, initConfigButton(), initMappingButton())),
                 new ConfigAlgoPane(),
                 new BorderPane(initLaunchAlgo())
         ));
     }
 
     private final Button initConfigButton() {
-        final Button loConfigBtn = new Button("Configuration");
-        loConfigBtn.setOnAction(event -> {
+        final Button locConfigBtn = new Button("Configuration");
+        locConfigBtn.setOnAction(event -> {
             final ConfigPane locConfigPane = new ConfigPane();
             final Stage locConfigStage = new Stage();
             locConfigStage.setTitle("Configuration");
@@ -46,7 +46,20 @@ public class MainGui extends Scene {
             locConfigStage.show();
         });
 
-        return loConfigBtn;
+        return locConfigBtn;
+    }
+
+    private final Button initMappingButton() {
+        final Button locMappingBtn = new Button("Mapping");
+        locMappingBtn.setOnAction(event -> {
+            final MappingPane locMappingPane = new MappingPane();
+            final Stage locConfigStage = new Stage();
+            locConfigStage.setTitle("Mapping");
+            locConfigStage.setScene(locMappingPane);
+            locConfigStage.show();
+        });
+
+        return locMappingBtn;
     }
 
     private final Pane initLaunchAlgo() {

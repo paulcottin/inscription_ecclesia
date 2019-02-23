@@ -17,8 +17,8 @@ public enum EnumDataColumImport {
     S_CRENEAU_2("Créneau 2\n(26/11 9h-10h15)"),
     S_CRENEAU_3("Créneau 3\n(26/11 10h30-11h45)"),
     S_REPERE("Escalier/repère lieux badge"),
-//    S_INFOS_SUPP("Infos complémentaires"),
-//    S_COMMENTAIRES("Commentaires"),
+    S_INFOS_SUPP("Infos complémentaires"),
+    S_COMMENTAIRES("Commentaires"),
 
     //Participant
     P_PRENOM("Prénom"),
@@ -66,6 +66,7 @@ public enum EnumDataColumImport {
     P_GROUPE_EVANGELISATION("Groupe chant missionnaire"),
     P_GROUPE_CONCERT("Groupe concert"),
 
+    // Chorale
     C_NOM("Nom chorale"),
     C_IS_REFERENCE("Chorale référente"),
     C_ID_GROUPE_EVAN("Groupe missionnaire"),
@@ -83,11 +84,36 @@ public enum EnumDataColumImport {
     GC_GROUPE_CONCERT_ID("groupe de concert")
     ;
 
-    final private String _headerName;
+    private String _headerName;
+    private boolean _active, _changed;
+
     EnumDataColumImport(final String parDataHeader) {
         _headerName = parDataHeader;
+        _active = true;
+        _changed = false;
     }
 
+    public String getHeaderName() {
+        return _headerName;
+    }
+
+    public void setHeaderName(final String parHeaderName) {
+        _headerName = parHeaderName;
+        _changed = true;
+    }
+
+    public boolean isActive() {
+        return _active;
+    }
+
+    public void setActive(final boolean parActive) {
+        _active = parActive;
+        _changed = true;
+    }
+
+    public boolean isChanged() {
+        return _changed;
+    }
 
     @Override
     public String toString() {
