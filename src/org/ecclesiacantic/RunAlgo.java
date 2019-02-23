@@ -14,6 +14,14 @@ import org.ecclesiacantic.model.statistic.StatisticManager;
 public class RunAlgo {
 
     public static void main(final String[] parArgs) {
+        new RunAlgo().run();
+    }
+
+    public RunAlgo() {
+    }
+
+    public final void run() {
+
         //initialisation des propriétés
         ConfigManager.getInstance();
 

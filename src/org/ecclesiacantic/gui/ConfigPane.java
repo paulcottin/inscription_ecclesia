@@ -6,9 +6,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.ecclesiacantic.gui.properties.GuiPropertyManager;
+import org.ecclesiacantic.gui.types.ec.EcPropertiesPane;
 import org.ecclesiacantic.gui.types.google.GooglePropertiesPane;
 import org.ecclesiacantic.gui.types.local.LocalFilePropertiesPane;
 
@@ -22,19 +24,23 @@ public class ConfigPane extends Scene {
     private final void initComponents() {
         final BorderPane locRoot = ((BorderPane) getRoot());
 
-        final VBox locVBox = new VBox(15, new GooglePropertiesPane(), new LocalFilePropertiesPane(), initSaveButton());
+        final VBox locVBox = new VBox(15,
+                new GooglePropertiesPane(),
+                new LocalFilePropertiesPane(),
+                new EcPropertiesPane(),
+                initSaveButton());
 
 
         locRoot.setCenter(locVBox);
     }
 
-    private final Button initSaveButton() {
+    private final Pane initSaveButton() {
 
         final Button locButton = new Button("Enregistrer");
         locButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (EventHandler<Event>) parEvent -> {
             GuiPropertyManager.getInstance().storeAllProperties();
             ((Stage) (((Button) parEvent.getSource()).getScene().getWindow())).close();
         });
-        return locButton;
+        return new BorderPane(locButton);
     }
 }
