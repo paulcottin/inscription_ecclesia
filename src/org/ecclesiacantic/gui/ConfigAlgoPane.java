@@ -38,7 +38,8 @@ public class ConfigAlgoPane extends BorderPane{
         locTitledPane.setContent(new VBox(10,
                 new IntFieldProperty("Nb min de participants à une MC pour considérer qu'elle est remplie", EnumConfigProperty.MIN_PART_NB_MC).toHbox(),
                 new BooleanFieldProperty("Prendre en compte les participants qui ont des voeux mal remplis ?", EnumConfigProperty.IS_SKIP_MALFORMED_VOEUX, "Oui", "Non").toHbox(),
-                new BooleanFieldProperty("Calculer la répartition des groupes d'évangélisations ?", EnumConfigProperty.IS_COMPUTE_GE_REPART, "Oui", "Non").toHbox()
+                new BooleanFieldProperty("Calculer la répartition des groupes d'évangélisations ?", EnumConfigProperty.IS_COMPUTE_GE_REPART, "Oui", "Non").toHbox(),
+                new BooleanFieldProperty("Les données proviennes de ", EnumConfigProperty.RECUP_MODE_GOOGLE, "Google", "Local").toHbox()
         ));
         return locTitledPane;
     }

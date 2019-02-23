@@ -1,11 +1,17 @@
 package org.ecclesiacantic.gui;
 
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.ecclesiacantic.RunAlgo;
+import org.ecclesiacantic.gui.types.Console;
+
+import java.io.PrintStream;
 
 public class MainGui extends Scene {
 
@@ -19,11 +25,13 @@ public class MainGui extends Scene {
 
     private final void initComponents() {
         _stage.setTitle("Inscription Ecclesia Cantic");
-        final BorderPane locRoot = (BorderPane) getRoot();
-        locRoot.setTop(new BorderPane(initConfigButton()));
-        locRoot.setCenter(new ConfigAlgoPane());
-        locRoot.setBottom(new BorderPane(initLaunchAlgoButton()));
 
+        final BorderPane locRoot = (BorderPane) getRoot();
+        locRoot.setCenter(new VBox(20,
+                new BorderPane(initConfigButton()),
+                new ConfigAlgoPane(),
+                new BorderPane(initLaunchAlgo())
+        ));
     }
 
     private final Button initConfigButton() {
@@ -39,14 +47,26 @@ public class MainGui extends Scene {
         return loConfigBtn;
     }
 
-    private final Button initLaunchAlgoButton() {
-        final Button loConfigBtn = new Button("Lancer l'algorithme");
-        loConfigBtn.setOnAction(event -> {
+    private final Pane initLaunchAlgo() {
+        final Button locLaunchBtn = new Button("Lancer l'algorithme");
+        locLaunchBtn.setOnAction(event -> {
             final RunAlgo locRunAlgo = new RunAlgo();
-            locRunAlgo.run();
+            new Thread(locRunAlgo::run).start();
         });
 
-        return loConfigBtn;
+
+        final TextArea locTextArea = new TextArea();
+        locTextArea.setMinHeight(200.0);
+        redirectOutputsToTextArea(locTextArea);
+
+        return new VBox(15, new BorderPane(locLaunchBtn), locTextArea);
+    }
+
+    private final void redirectOutputsToTextArea(final TextArea parTextArea) {
+        final Console console = new Console(parTextArea);
+        final PrintStream ps = new PrintStream(console, true);
+        System.setOut(ps);
+        System.setErr(ps);
     }
 
     public final void show() {

@@ -29,7 +29,7 @@ public abstract class ADataManager<T extends INamedObject > {
 
     public ADataManager(final EnumConfigProperty parPropertyDataFile, final EnumDataType parEnumDataType,
                         final boolean parIsStandaloneDataFile) {
-        this._isDownloadingFiles = EnumConfigProperty.RECUP_MODE.stringV().equals("google");
+        this._isDownloadingFiles = EnumConfigProperty.RECUP_MODE_GOOGLE.boolV();
         this._propertyDataFile = parPropertyDataFile.fileV();
         this._type = parEnumDataType;
         this._typeName = parEnumDataType.getTypeName();
@@ -52,7 +52,7 @@ public abstract class ADataManager<T extends INamedObject > {
                     _typeName));
             parE.printStackTrace();
             System.err.println("Vous pouvez désactiver le téléchargement des fichier depuis Google");
-            System.err.println(String.format("en modifiant le fichier de configuration (propriété %s)", EnumConfigProperty.RECUP_MODE));
+            System.err.println(String.format("en modifiant le fichier de configuration (propriété %s)", EnumConfigProperty.RECUP_MODE_GOOGLE));
         }
     }
 

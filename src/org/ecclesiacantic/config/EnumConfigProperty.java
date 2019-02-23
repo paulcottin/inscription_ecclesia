@@ -39,7 +39,7 @@ public enum EnumConfigProperty {
     IS_USE_SORTED_PARTICIPANTS("input.value.use_sorted_participant_list"),
     NB_VOEUX_CONSIDERED("input.value.nb_voeux_considered"),
     API_EMAIL("input.google.api_email"),
-    RECUP_MODE("input.mode"),
+    RECUP_MODE_GOOGLE("input.mode.download_google"),
     G_PART_ID("participant", EnumConfigProperty.GOOGLE_ID),
     G_PART_DATA_RANGE("participant", EnumConfigProperty.GOOGLE_DATA_RANGE),
     G_PART_DATA_RESULT_F("participant", EnumConfigProperty.GOOGLE_RF_NAME),
