@@ -22,6 +22,7 @@ public abstract class ADataManager<T extends INamedObject > {
     protected final Map<String, T> _dataMap;
     protected final String _typeName;
     protected final boolean _isStandaloneDataFile;
+    private boolean _dataLoaded;
 
     public ADataManager(final EnumConfigProperty parPropertyDataFile, final EnumDataType parEnumDataType) {
         this(parPropertyDataFile, parEnumDataType, true);
@@ -35,6 +36,8 @@ public abstract class ADataManager<T extends INamedObject > {
         this._typeName = parEnumDataType.getTypeName();
         _dataMap = new HashMap<>();
         _isStandaloneDataFile = parIsStandaloneDataFile;
+        _dataLoaded = false;
+        AllDataManager.getInstance().register(this);
     }
 
     public abstract void reset();
@@ -60,15 +63,34 @@ public abstract class ADataManager<T extends INamedObject > {
 
     }
 
-    public void parseDataFile() {
+    public final boolean testDataFile() {
+        boolean locTestResult = false;
+        try {
+            locTestResult = parseDataFile();
+        } catch (final IllegalArgumentException parE) {
+            parE.printStackTrace();
+            _dataMap.clear();
+            _dataLoaded = false;
+        }
+        return locTestResult;
+    }
+
+    public boolean parseDataFile() {
+        _dataLoaded = true;
         if (_isDownloadingFiles) {
             downloadDataFile();
         }
         preProcessingDataFile();
-        for (final Map<EnumDataColumImport, String> locDataMap : CsvUtils.parseDataFile(_propertyDataFile, _type.getDataFileHeader())) {
-            add(convertStringMapToObject(locDataMap));
+        try {
+            for (final Map<EnumDataColumImport, String> locDataMap : CsvUtils.parseDataFile(_propertyDataFile, _type.getDataFileHeader())) {
+                add(convertStringMapToObject(locDataMap));
+            }
+        } catch (final IOException parE) {
+            parE.printStackTrace();
+            return false;
         }
         postDataIntegration();
+        return true;
     }
 
     /**
@@ -80,6 +102,7 @@ public abstract class ADataManager<T extends INamedObject > {
     }
 
     public void add(final T parObject) {
+        parseFileIfN();
         if (parObject != null && !_dataMap.keySet().contains(parObject.getName())) {
             _dataMap.put(parObject.getName(), parObject);
         } else {
@@ -96,7 +119,14 @@ public abstract class ADataManager<T extends INamedObject > {
         }
     }
 
+    private final void parseFileIfN() {
+        if (!_dataLoaded) {
+            parseDataFile();
+        }
+    }
+
     public final boolean exists(final String parObjectName) {
+        parseFileIfN();
         if (parObjectName != null) {
             return _dataMap.keySet().contains(parObjectName);
         } else {
@@ -106,6 +136,7 @@ public abstract class ADataManager<T extends INamedObject > {
     }
 
     public final T get(final String parObjectName) {
+        parseFileIfN();
         if (parObjectName != null) {
             if (_dataMap.keySet().contains(parObjectName)) {
                 return _dataMap.get(parObjectName);
@@ -135,6 +166,7 @@ public abstract class ADataManager<T extends INamedObject > {
     }
 
     public final Collection<T> getAllData() {
+        parseFileIfN();
         return _dataMap.values();
     }
 

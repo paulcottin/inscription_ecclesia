@@ -4,21 +4,17 @@ import org.ecclesiacantic.config.EnumConfigProperty;
 import org.ecclesiacantic.google.GoogleSpreadsheetConfig;
 import org.ecclesiacantic.google.GoogleSpreadsheetConfigManager;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public enum EnumDataType {
 
     MASTERCLASS {
-        public final List<EnumDataColumImport> getDataFileHeader() {
-            return Arrays.asList(
-                    EnumDataColumImport.MC_NAME,
-                    EnumDataColumImport.MC_CRENEAU_1,
-                    EnumDataColumImport.MC_CRENEAU_2,
-                    EnumDataColumImport.MC_CRENEAU_3,
-                    EnumDataColumImport.MC_DIVISER_EN,
-                    EnumDataColumImport.MC_SALLE_IMPOSE
-            );
+        @Override
+        public EnumDataColumnImportList getColumnImportList() {
+            return EnumDataColumnImportList.MASTERCLASS;
         }
 
         @Override
@@ -39,18 +35,8 @@ public enum EnumDataType {
 
     SALLE {
         @Override
-        public final List<EnumDataColumImport> getDataFileHeader() {
-            return Arrays.asList(
-                    EnumDataColumImport.S_LOCALISATION,
-                    EnumDataColumImport.S_NAME,
-                    EnumDataColumImport.S_REPERE,
-                    EnumDataColumImport.S_CAPACITY,
-                    EnumDataColumImport.S_CRENEAU_1,
-                    EnumDataColumImport.S_CRENEAU_2,
-                    EnumDataColumImport.S_CRENEAU_3
-//                    EnumDataColumImport.S_INFOS_SUPP,
-//                    EnumDataColumImport.S_COMMENTAIRES
-            );
+        public EnumDataColumnImportList getColumnImportList() {
+            return EnumDataColumnImportList.SALLE;
         }
 
         @Override
@@ -71,52 +57,8 @@ public enum EnumDataType {
 
     PARTICIPANT {
         @Override
-        public final List<EnumDataColumImport> getDataFileHeader() {
-            return Arrays.asList(
-                    EnumDataColumImport.P_PRENOM,
-                    EnumDataColumImport.P_NOM,
-                    EnumDataColumImport.P_CIVILITE,
-                    EnumDataColumImport.P_TARIF,
-                    EnumDataColumImport.P_PRIXPAYE,
-                    EnumDataColumImport.P_CODEBARRE,
-//                    EnumDataColumImport.P_DATECOMMANDE,
-//                    EnumDataColumImport.P_HEURECOMMANDE,
-                    EnumDataColumImport.P_NUMERO_BILLET,
-                    EnumDataColumImport.P_EMAIL,
-                    EnumDataColumImport.P_DATE_NAISSANCE,
-//                    EnumDataColumImport.P_AGE,
-                    EnumDataColumImport.P_TELEPHONE,
-                    EnumDataColumImport.P_CODE_POSTAL,
-                    EnumDataColumImport.P_PAYS,
-                    EnumDataColumImport.P_AUTRES_INFOS,
-//                    EnumDataColumImport.P_BESOIN_HEBERGEMENT,
-//                    EnumDataColumImport.P_HEBERGE_AVEC,
-//                    EnumDataColumImport.P_PEUT_HERBERGER,
-//                    EnumDataColumImport.P_STATION_METRO,
-                    EnumDataColumImport.P_PEUT_ACCUEILLIR,
-                    EnumDataColumImport.P_VOEU1,
-                    EnumDataColumImport.P_VOEU2,
-                    EnumDataColumImport.P_VOEU3,
-                    EnumDataColumImport.P_VOEU4,
-                    EnumDataColumImport.P_VOEU5,
-                    EnumDataColumImport.P_PUPITRE,
-                    EnumDataColumImport.P_CHORALE,
-//                    EnumDataColumImport.P_CHORALE_NN_REF,
-                    EnumDataColumImport.P_NE_SOUHAITE_PAS_CHANTER,
-                    EnumDataColumImport.P_MESSAGE
-//                    EnumDataColumImport.IS_PARTICIPANT_2016,
-//                    EnumDataColumImport.PAR_PARTICIPANT_2016,
-//                    EnumDataColumImport.TYPE_SERVICE,
-//                    EnumDataColumImport.DIOCESE,
-//                    EnumDataColumImport.CHORALE_1,
-//                    EnumDataColumImport.MEDIA,
-//                    EnumDataColumImport.RESEAUX_SOCIAUX,
-//                    EnumDataColumImport.BOUCHE_OREILLE,
-//                    EnumDataColumImport.AIDE_OFFICES,
-//                    EnumDataColumImport.DIOCESE_SNPLS,
-//                    EnumDataColumImport.P_GROUPE_EVANGELISATION,
-//                    EnumDataColumImport.P_GROUPE_CONCERT
-            );
+        public EnumDataColumnImportList getColumnImportList() {
+            return EnumDataColumnImportList.PARTICIPANT;
         }
 
         @Override
@@ -137,11 +79,16 @@ public enum EnumDataType {
 
     TARIF {
         @Override
-        public final List<EnumDataColumImport> getDataFileHeader() {
+        public final List<EnumDataColumImport> getFilteredColumns() {
             return Arrays.asList(
                     EnumDataColumImport.P_TARIF,
                     EnumDataColumImport.P_PRIXPAYE
             );
+        }
+
+        @Override
+        public EnumDataColumnImportList getColumnImportList() {
+            return null;
         }
 
         @Override
@@ -156,18 +103,15 @@ public enum EnumDataType {
 
         @Override
         public GoogleSpreadsheetConfig getGoogleConfig() {
-            return GoogleSpreadsheetConfigManager.getInstance().get("participant");
+            return PARTICIPANT.getGoogleConfig();
         }
     },
 
     CHORALE {
+
         @Override
-        public final List<EnumDataColumImport> getDataFileHeader() {
-            return Arrays.asList(
-                    EnumDataColumImport.C_NOM,
-                    EnumDataColumImport.C_IS_REFERENCE,
-                    EnumDataColumImport.C_ID_GROUPE_EVAN
-            );
+        public EnumDataColumnImportList getColumnImportList() {
+            return EnumDataColumnImportList.CHORALE;
         }
 
         @Override
@@ -188,8 +132,13 @@ public enum EnumDataType {
 
     PAYS {
         @Override
-        public List<EnumDataColumImport> getDataFileHeader() {
-            return Arrays.asList(EnumDataColumImport.P_PAYS);
+        public List<EnumDataColumImport> getFilteredColumns() {
+            return Collections.singletonList(EnumDataColumImport.P_PAYS);
+        }
+
+        @Override
+        public EnumDataColumnImportList getColumnImportList() {
+            return null;
         }
 
         @Override
@@ -204,19 +153,24 @@ public enum EnumDataType {
 
         @Override
         public GoogleSpreadsheetConfig getGoogleConfig() {
-            return GoogleSpreadsheetConfigManager.getInstance().get("participant");
+            return PARTICIPANT.getGoogleConfig();
         }
     },
 
     VOEU {
         @Override
-        public final List<EnumDataColumImport> getDataFileHeader() {
+        public final List<EnumDataColumImport> getFilteredColumns() {
             return Arrays.asList(
                     EnumDataColumImport.P_VOEU1,
                     EnumDataColumImport.P_VOEU2,
                     EnumDataColumImport.P_VOEU3,
                     EnumDataColumImport.P_VOEU4
             );
+        }
+
+        @Override
+        public EnumDataColumnImportList getColumnImportList() {
+            return null;
         }
 
         @Override
@@ -231,19 +185,24 @@ public enum EnumDataType {
 
         @Override
         public GoogleSpreadsheetConfig getGoogleConfig() {
-            return GoogleSpreadsheetConfigManager.getInstance().get("participant");
+            return PARTICIPANT.getGoogleConfig();
         }
     },
 
     SOLO_GEOGRAPHIQUE {
         @Override
-        public final List<EnumDataColumImport> getDataFileHeader() {
+        public final List<EnumDataColumImport> getFilteredColumns() {
             return Arrays.asList(
                     EnumDataColumImport.GE_ID,
                     EnumDataColumImport.GE_DEPARTEMENT_OR_ARRONDISSEMENT,
                     EnumDataColumImport.GE_LIMITE,
                     EnumDataColumImport.GE_PAYS
             );
+        }
+
+        @Override
+        public EnumDataColumnImportList getColumnImportList() {
+            return null;
         }
 
         @Override
@@ -264,17 +223,19 @@ public enum EnumDataType {
 
     GROUPE_CONCERT {
         @Override
-        public final List<EnumDataColumImport> getDataFileHeader() {
-            if (EnumConfigProperty.IS_COMPUTE_GE_REPART.boolV()) {
-                return Arrays.asList(
-                        EnumDataColumImport.GC_GROUPE_CONCERT_ID,
-                        EnumDataColumImport.GC_GROUPE_EVANGELISATION_ID
-                );
-            } else {
-                return Arrays.asList(
-                        EnumDataColumImport.P_GROUPE_CONCERT
-                );
+        public final List<EnumDataColumImport> getFilteredColumns() {
+            if (!EnumConfigProperty.IS_COMPUTE_GE_REPART.boolV()) {
+                return Collections.singletonList(EnumDataColumImport.P_GROUPE_CONCERT);
             }
+            return super.getFilteredColumns();
+        }
+
+        @Override
+        public EnumDataColumnImportList getColumnImportList() {
+            if (EnumConfigProperty.IS_COMPUTE_GE_REPART.boolV()) {
+                return EnumDataColumnImportList.GROUPE_CONCERT;
+            }
+            return null;
         }
 
         @Override
@@ -304,8 +265,22 @@ public enum EnumDataType {
     EnumDataType() {
     }
 
-    public abstract List<EnumDataColumImport> getDataFileHeader();
+    public abstract EnumDataColumnImportList getColumnImportList();
     public abstract EnumDataColumImport getHeaderId();
     public abstract String getTypeName();
     public abstract GoogleSpreadsheetConfig getGoogleConfig();
+
+    public List<EnumDataColumImport> getFilteredColumns() {
+        return Collections.emptyList();
+    }
+
+    public final List<EnumDataColumImport> getDataFileHeader() {
+        final List<EnumDataColumImport> locList = new ArrayList<>();
+        final EnumDataColumnImportList locColumnsList = getColumnImportList();
+        if (locColumnsList != null) {
+            locList.addAll(locColumnsList.getColumns());
+        }
+        locList.addAll(getFilteredColumns());
+        return locList;
+    }
 }

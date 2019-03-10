@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class CsvUtils {
 
-    static public final List<Map<EnumDataColumImport, String>> parseDataFile(final File parDataFile, final List<EnumDataColumImport> parDataHeaders) {
+    static public final List<Map<EnumDataColumImport, String>> parseDataFile(final File parDataFile, final List<EnumDataColumImport> parDataHeaders) throws IOException {
         final List<Map<EnumDataColumImport, String>> locReturnList = new ArrayList<>();
         try (final Reader locReader = new InputStreamReader(new FileInputStream(parDataFile), StandardCharsets.UTF_8)) {
             final CSVFormat locCsvFormat = CSVFormat.DEFAULT.withFirstRecordAsHeader()
@@ -36,9 +36,6 @@ public class CsvUtils {
             }
         } catch (final FileNotFoundException parE) {
             System.err.println(String.format("Impossible de trouver le fichier %s", parDataFile.getAbsolutePath()));
-            parE.printStackTrace();
-        } catch (final IOException parE) {
-            System.err.println(String.format("Erreur lors de la lecture du fichier %s", parDataFile.getAbsolutePath()));
             parE.printStackTrace();
         }
         return locReturnList;

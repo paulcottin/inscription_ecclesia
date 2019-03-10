@@ -1,6 +1,7 @@
 package org.ecclesiacantic.model.repartition;
 
 import org.ecclesiacantic.config.EnumConfigProperty;
+import org.ecclesiacantic.gui.ResultsPane;
 import org.ecclesiacantic.model.data.beans.Evenement;
 import org.ecclesiacantic.model.data.beans.MasterClass;
 import org.ecclesiacantic.model.data.beans.participant.Participant;
@@ -14,6 +15,7 @@ import org.ecclesiacantic.model.statistic.statistics.OccupationCreneauStatistic;
 import org.ecclesiacantic.utils.parser.FileUtils;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class RepartitionManager {
 
@@ -77,22 +79,23 @@ public class RepartitionManager {
     }
 
     public final void printResult() {
-        _repartitionResult.append("\n\nQuel résultat voulez-vous sauvegarder ?\n");
-        System.out.println(_repartitionResult.toString());
+//        _repartitionResult.append("\n\nQuel résultat voulez-vous sauvegarder ?\n");
+//        System.out.println(_repartitionResult.toString());
+//
+//        final Scanner locScanner = new Scanner(System.in);
+//        final String locIdData = locScanner.next();
+//        _selectedIdx = Integer.valueOf(locIdData);
+//
+//        System.out.println(String.format("Enregistrement des données d'id %s", _selectedIdx));
+        new ResultsPane(_repartitions.values().stream().map(Repartition::getResult).collect(Collectors.toList())).show();
+    }
 
-        final Scanner locScanner = new Scanner(System.in);
-        final String locIdData = locScanner.next();
-        _selectedIdx = Integer.valueOf(locIdData);
-
-        System.out.println(String.format("Enregistrement des données d'id %s", _selectedIdx));
-
-        final RepartitionResult locSelectedResult = _repartitions.get(_selectedIdx).getResult();
-
-        FileUtils.writeCsv(EnumConfigProperty.OUTPUT_F_NB_PART_BY_CRENEAU.fileV(), locSelectedResult.getParticipants());
-        FileUtils.writeCsv(EnumConfigProperty.OUTPUT_F_BADGE.fileV(), locSelectedResult.getBadges());
+    public final void saveResults(final RepartitionResult parRepartitionResult) {
+        FileUtils.writeCsv(EnumConfigProperty.OUTPUT_F_NB_PART_BY_CRENEAU.fileV(), parRepartitionResult.getParticipants());
+        FileUtils.writeCsv(EnumConfigProperty.OUTPUT_F_BADGE.fileV(), parRepartitionResult.getBadges());
 
         System.out.println("Affichage des participants non occupés à au moins un créneau : ");
-        for (final Participant locParticipant : locSelectedResult.getParticipantNotOccupiedOneCreneauSet()) {
+        for (final Participant locParticipant : parRepartitionResult.getParticipantNotOccupiedOneCreneauSet()) {
             System.out.println(computeNotOccupiedPartOutput(locParticipant));
         }
     }

@@ -7,7 +7,7 @@ import static org.ecclesiacantic.model.data.archi.EnumDataColumImport.*;
 
 public enum EnumDataColumnImportList {
     
-    MASTERCLASS("Master classe") {
+    MASTERCLASS {
         @Override
         public Collection<EnumDataColumImport> getColumns() {
             return Arrays.asList(
@@ -21,7 +21,7 @@ public enum EnumDataColumnImportList {
         }
     }, 
     
-    SALLE("Salle") {
+    SALLE {
         @Override
         public Collection<EnumDataColumImport> getColumns() {
             return Arrays.asList(
@@ -38,7 +38,7 @@ public enum EnumDataColumnImportList {
         }
     }, 
     
-    PARTICIPANT("Participant") {
+    PARTICIPANT {
         @Override
         public Collection<EnumDataColumImport> getColumns() {
             return Arrays.asList(
@@ -90,7 +90,7 @@ public enum EnumDataColumnImportList {
         }
     }, 
     
-    CHORALE("Chorale") {
+    CHORALE {
         @Override
         public Collection<EnumDataColumImport> getColumns() {
             return Arrays.asList(
@@ -101,7 +101,7 @@ public enum EnumDataColumnImportList {
         }
     }, 
     
-    GROUPE_EVANGELISATION("Groupe d'évangélisation") {
+    GROUPE_EVANGELISATION {
         @Override
         public Collection<EnumDataColumImport> getColumns() {
             return Arrays.asList(
@@ -115,7 +115,7 @@ public enum EnumDataColumnImportList {
         }
     }, 
     
-    GROUPE_CONCERT("Groupe de concert") {
+    GROUPE_CONCERT {
         @Override
         public Collection<EnumDataColumImport> getColumns() {
             return Arrays.asList(
@@ -126,15 +126,5 @@ public enum EnumDataColumnImportList {
     }
     ;
 
-    private final String _name;
-
-    EnumDataColumnImportList(final String parName) {
-        _name = parName;
-    }
-
     public abstract Collection<EnumDataColumImport> getColumns();
-
-    public String getName() {
-        return _name;
-    }
 }
