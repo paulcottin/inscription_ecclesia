@@ -25,6 +25,17 @@ public class RunAlgo {
         //initialisation des propriétés
         ConfigManager.getInstance();
 
+        //Lecture des différentes données avant celles des utilisateurs.
+        SalleManager.getInstance().parseDataFile();
+        MasterClassManager.getInstance().parseDataFile();
+        TarifManager.getInstance().parseDataFile();
+        ChoraleManager.getInstance().parseDataFile();
+        PaysManager.getInstance().parseDataFile();
+        SoloGeographiqueManager.getInstance().parseDataFile();
+
+        ParticipantManager.getInstance().parseDataFile();
+        //Fin du chargement des données depuis les fichiers.
+
         StatisticManager.getInstance().callStandaloneStatistic(EnumStatistics.SAME_VOEUX_FOR_PARTICIPANT);
 
         // Lancement de l'algo de répartition :
