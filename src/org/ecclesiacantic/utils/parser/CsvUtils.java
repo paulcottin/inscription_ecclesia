@@ -7,6 +7,7 @@ import org.apache.commons.csv.QuoteMode;
 import org.ecclesiacantic.model.data.archi.EnumDataColumImport;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,7 +17,7 @@ public class CsvUtils {
 
     static public final List<Map<EnumDataColumImport, String>> parseDataFile(final File parDataFile, final List<EnumDataColumImport> parDataHeaders) {
         final List<Map<EnumDataColumImport, String>> locReturnList = new ArrayList<>();
-        try (final Reader locReader = new FileReader(parDataFile)) {
+        try (final Reader locReader = new InputStreamReader(new FileInputStream(parDataFile), StandardCharsets.UTF_8)) {
             final CSVFormat locCsvFormat = CSVFormat.DEFAULT.withFirstRecordAsHeader()
                     .withAllowMissingColumnNames()
                     .withQuote('"')
@@ -50,7 +51,7 @@ public class CsvUtils {
      * @throws IOException
      */
     static public final void export(final File parFile, final List<List<String>> parLines) throws IOException {
-        final BufferedWriter locBfWriter = new BufferedWriter(new FileWriter(parFile));
+        final BufferedWriter locBfWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(parFile), StandardCharsets.UTF_8));
         final CSVFormat locCsvFormat = CSVFormat.EXCEL.withFirstRecordAsHeader()
                 .withAllowMissingColumnNames()
                 .withIgnoreEmptyLines()

@@ -1,12 +1,13 @@
 package org.ecclesiacantic.utils.parser;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class FileUtils {
 
     static public final String extractString(final File parFile) {
-        try (final BufferedReader locBf = new BufferedReader(new FileReader(parFile))) {
+        try (final BufferedReader locBf = new BufferedReader(new BufferedReader(new InputStreamReader(new FileInputStream(parFile), StandardCharsets.UTF_8)))) {
             final StringBuilder locTextBuilder = new StringBuilder();
             String locLine = null;
             while ((locLine = locBf.readLine()) != null) {
@@ -22,7 +23,7 @@ public class FileUtils {
     }
 
     static public final void write(final File parFile, final String parStringToWrite) {
-        try (final BufferedWriter locBf = new BufferedWriter(new FileWriter(parFile))) {
+        try (final BufferedWriter locBf = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(parFile), StandardCharsets.UTF_8))) {
             locBf.write(parStringToWrite);
             locBf.flush();
         } catch(final IOException parE) {

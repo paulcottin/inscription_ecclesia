@@ -14,6 +14,7 @@ import org.ecclesiacantic.gui.properties.GuiPropertyManager;
 import org.ecclesiacantic.gui.types.Console;
 
 import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 
 public class MainGui extends Scene {
 
@@ -81,9 +82,13 @@ public class MainGui extends Scene {
 
     private final void redirectOutputsToTextArea(final TextArea parTextArea) {
         final Console console = new Console(parTextArea);
-        final PrintStream ps = new PrintStream(console, true);
-        System.setOut(ps);
-        System.setErr(ps);
+        try {
+            final PrintStream ps = new PrintStream(console, true, "UTF-8");
+            System.setOut(ps);
+            System.setErr(ps);
+        } catch (UnsupportedEncodingException parE) {
+            parE.printStackTrace();
+        }
     }
 
     public final void show() {
