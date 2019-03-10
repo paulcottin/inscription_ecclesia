@@ -69,9 +69,9 @@ public abstract class ADataManager<T extends INamedObject > {
             locTestResult = parseDataFile();
         } catch (final IllegalArgumentException parE) {
             parE.printStackTrace();
-            _dataMap.clear();
-            _dataLoaded = false;
         }
+        _dataMap.clear();
+        _dataLoaded = false;
         return locTestResult;
     }
 

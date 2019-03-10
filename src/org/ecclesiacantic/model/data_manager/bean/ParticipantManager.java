@@ -145,8 +145,7 @@ public class ParticipantManager extends ADataManager<Participant> {
 
         final EnumPupitre locPupitre = (EnumPupitre) EnumUtils.getEnumFromString(EnumPupitre.class, parStringMapHeaderValue.get(EnumDataColumImport.P_PUPITRE));
         final Chorale locChorale = ChoraleManager.getInstance().get(parStringMapHeaderValue.get(EnumDataColumImport.P_CHORALE));
-//        final Map<EnumConnaitPar, Boolean> locConnaitPar = EnumConnaitPar.initFromData(parStringMapHeaderValue);
-        final Map<EnumConnaitPar, Boolean> locConnaitPar = Collections.emptyMap();
+        final Map<EnumConnaitPar, Boolean> locConnaitPar = EnumConnaitPar.initFromData(parStringMapHeaderValue);
 
         //Propriete calculées
         Date locNaissanceDate = null, locCommandeDate = null;
@@ -161,7 +160,10 @@ public class ParticipantManager extends ADataManager<Participant> {
             if (parStringMapHeaderValue.get(EnumDataColumImport.P_DATECOMMANDE) == null) {
                 locCommandeDate = new Date(0);
             } else {
-                locCommandeDate = locDateCommandeFormat.parse(parStringMapHeaderValue.get(EnumDataColumImport.P_DATECOMMANDE));
+                locCommandeDate = locDateCommandeFormat.parse(String.format("%s %s",
+                        parStringMapHeaderValue.get(EnumDataColumImport.P_DATECOMMANDE),
+                        parStringMapHeaderValue.get(EnumDataColumImport.P_HEURECOMMANDE)
+                ));
             }
 
         } catch (final ParseException parE) {
@@ -182,28 +184,22 @@ public class ParticipantManager extends ADataManager<Participant> {
                 parStringMapHeaderValue.get(EnumDataColumImport.P_CODE_POSTAL),
                 locCommandeDate,
                 locNaissanceDate,
-//                NumberUtils.convertFieldToInt(parStringMapHeaderValue.get(EnumDataColumImport.P_AGE)),
-                18,
+                NumberUtils.convertFieldToInt(parStringMapHeaderValue.get(EnumDataColumImport.P_AGE)),
                 parStringMapHeaderValue.get(EnumDataColumImport.P_AUTRES_INFOS),
                 parStringMapHeaderValue.get(EnumDataColumImport.P_MESSAGE),
                 parStringMapHeaderValue.get(EnumDataColumImport.DIOCESE),
-false,
-//                parStringMapHeaderValue.get(EnumDataColumImport.P_BESOIN_HEBERGEMENT).equals(locBooleanMarker),
-//                parStringMapHeaderValue.get(EnumDataColumImport.P_PEUT_HERBERGER).equals(locBooleanMarker),
-                true,
+                parStringMapHeaderValue.get(EnumDataColumImport.P_BESOIN_HEBERGEMENT).equals(locBooleanMarker),
+                parStringMapHeaderValue.get(EnumDataColumImport.P_PEUT_HERBERGER).equals(locBooleanMarker),
                 parStringMapHeaderValue.get(EnumDataColumImport.P_NE_SOUHAITE_PAS_CHANTER).trim().isEmpty(),
-//                parStringMapHeaderValue.get(EnumDataColumImport.IS_PARTICIPANT_2016).equals(locBooleanMarker),
-                true,
-//                parStringMapHeaderValue.get(EnumDataColumImport.AIDE_OFFICES).equals(locBooleanMarker),
-                true,
+                parStringMapHeaderValue.get(EnumDataColumImport.IS_PARTICIPANT_2016).equals(locBooleanMarker),
+                parStringMapHeaderValue.get(EnumDataColumImport.AIDE_OFFICES).equals(locBooleanMarker),
                 locHebergement,
                 locVoeux,
                 locPupitre,
                 locChorale,
                 locConnaitPar,
-                "1", "1"
-//                parStringMapHeaderValue.get(EnumDataColumImport.P_GROUPE_EVANGELISATION),
-//                parStringMapHeaderValue.get(EnumDataColumImport.P_GROUPE_CONCERT)
+                parStringMapHeaderValue.get(EnumDataColumImport.P_GROUPE_EVANGELISATION),
+                parStringMapHeaderValue.get(EnumDataColumImport.P_GROUPE_CONCERT)
         );
     }
 

@@ -6,21 +6,21 @@ import java.util.regex.Pattern;
 
 public enum EnumCivilite implements ISimpleValueEnum {
 
-    MONSIEUR("M.|Mr.") {
+    MONSIEUR("Monsieur|M.|Mr.") {
         @Override
         public boolean isFille() {
             return false;
         }
     },
 
-    MADAME("Mme|Mrs") {
+    MADAME("Madame|Mme|Mrs") {
         @Override
         public boolean isFille() {
             return true;
         }
     },
 
-    MADEMOISELLE("Melle|Ms") {
+    MADEMOISELLE("Mademoiselle|Melle|Ms") {
         @Override
         public boolean isFille() {
             return true;

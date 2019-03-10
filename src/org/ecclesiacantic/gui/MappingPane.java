@@ -63,6 +63,7 @@ public class MappingPane extends Scene {
 
         final Button locCheckButton = new Button("Test");
         locCheckButton.setOnAction(event -> {
+            locCheckButton.setDisable(true);
             GuiPropertyManager.getInstance().storeAllProperties();
             ConfigManager.getInstance().writeStandardProperties();
             if (EnumConfigProperty.RECUP_MODE_GOOGLE.boolV()) {
@@ -79,6 +80,7 @@ public class MappingPane extends Scene {
             }
             locAlert.setTitle("Test du parsing d'un fichier de données");
             locAlert.showAndWait();
+            locCheckButton.setDisable(false);
         });
 
         locTitledPane.setContent(new HBox(20, locVBox, locCheckButton));
