@@ -19,10 +19,13 @@ import java.io.UnsupportedEncodingException;
 public class MainGui extends Scene {
 
     private final Stage _stage;
+    private Button _configBtn, _mappingBtn;
 
     public MainGui(Stage parStage) {
         super(new BorderPane(), 700, 800);
         this._stage = parStage;
+        _configBtn = new Button("Configuration");
+        _mappingBtn = new Button("Mapping");
         initComponents();
     }
 
@@ -38,8 +41,7 @@ public class MainGui extends Scene {
     }
 
     private final Button initConfigButton() {
-        final Button locConfigBtn = new Button("Configuration");
-        locConfigBtn.setOnAction(event -> {
+        _configBtn.setOnAction(event -> {
             final ConfigPane locConfigPane = new ConfigPane();
             final Stage locConfigStage = new Stage();
             locConfigStage.setTitle("Configuration");
@@ -47,12 +49,11 @@ public class MainGui extends Scene {
             locConfigStage.show();
         });
 
-        return locConfigBtn;
+        return _configBtn;
     }
 
     private final Button initMappingButton() {
-        final Button locMappingBtn = new Button("Mapping");
-        locMappingBtn.setOnAction(event -> {
+        _mappingBtn.setOnAction(event -> {
             final MappingPane locMappingPane = new MappingPane();
             final Stage locConfigStage = new Stage();
             locConfigStage.setTitle("Mapping");
@@ -60,12 +61,15 @@ public class MainGui extends Scene {
             locConfigStage.show();
         });
 
-        return locMappingBtn;
+        return _mappingBtn;
     }
 
     private final Pane initLaunchAlgo() {
         final Button locLaunchBtn = new Button("Lancer l'algorithme");
         locLaunchBtn.setOnAction(event -> {
+            locLaunchBtn.setDisable(true);
+            _configBtn.setDisable(true);
+            _mappingBtn.setDisable(true);
             GuiPropertyManager.getInstance().storeAllProperties();
             final RunAlgo locRunAlgo = new RunAlgo();
             ConfigManager.getInstance().writeStandardProperties();
@@ -75,11 +79,15 @@ public class MainGui extends Scene {
 
         final TextArea locTextArea = new TextArea();
         locTextArea.setMinHeight(200.0);
-        redirectOutputsToTextArea(locTextArea);
+//        redirectOutputsToTextArea(locTextArea);
 
         return new VBox(15, new BorderPane(locLaunchBtn), locTextArea);
     }
 
+    /**
+     * Attention, cela ralentit énormément le programme
+     * @param parTextArea
+     */
     private final void redirectOutputsToTextArea(final TextArea parTextArea) {
         final Console console = new Console(parTextArea);
         try {

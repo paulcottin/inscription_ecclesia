@@ -1,7 +1,8 @@
 package org.ecclesiacantic.model.repartition;
 
+import javafx.application.Platform;
 import org.ecclesiacantic.config.EnumConfigProperty;
-import org.ecclesiacantic.gui.ResultsPane;
+import org.ecclesiacantic.gui.result.ResultsPane;
 import org.ecclesiacantic.model.data.beans.Evenement;
 import org.ecclesiacantic.model.data.beans.MasterClass;
 import org.ecclesiacantic.model.data.beans.participant.Participant;
@@ -67,14 +68,14 @@ public class RepartitionManager {
             _repartitionResult.append(String.format("Répartition numéro %d : fullFactor = %s et lessUsedNb = %d\n",
                     locIndex, locRepartition.getFullFactor(), locRepartition.getLessUsedMcNumber())
             ).append(String.format("\tSomme des écarts types : %s, nb de personnes ne faisant rien à un créneau : %d\n",
-                    EvenementManager.getInstance().getSommeEcartType(),
+                    0,
                     locNotOccupiedParticipants.size())
             );
             exportBadgesData();
             locRepartition.setResult(new RepartitionResult(
                     EvenementManager.getInstance().exportSallePopulation(false),
                     BadgeManager.getInstance().exportDataToCSV(false),
-                    locNotOccupiedParticipants));
+                    locNotOccupiedParticipants, locRepartition.getFullFactor(), locRepartition.getLessUsedMcNumber(), EvenementManager.getInstance().getSommeEcartType()));
         }
     }
 
@@ -87,7 +88,7 @@ public class RepartitionManager {
 //        _selectedIdx = Integer.valueOf(locIdData);
 //
 //        System.out.println(String.format("Enregistrement des données d'id %s", _selectedIdx));
-        new ResultsPane(_repartitions.values().stream().map(Repartition::getResult).collect(Collectors.toList())).show();
+        Platform.runLater(new ResultsPane(_repartitions.values().stream().map(Repartition::getResult).collect(Collectors.toList()))::show);
     }
 
     public final void saveResults(final RepartitionResult parRepartitionResult) {
