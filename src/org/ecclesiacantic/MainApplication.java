@@ -2,6 +2,7 @@ package org.ecclesiacantic;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import org.ecclesiacantic.config.ConfigManager;
 import org.ecclesiacantic.gui.MainGui;
 import org.ecclesiacantic.model.data_manager.SoloGeographiqueManager;
 import org.ecclesiacantic.model.data_manager.bean.*;
@@ -24,6 +25,8 @@ public class MainApplication extends Application {
         SoloGeographiqueManager.getInstance();
 
         ParticipantManager.getInstance();
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> ConfigManager.getInstance().writeStandardProperties()));
         
         final MainGui locGui = new MainGui(parPrimaryStage);
         locGui.show();
