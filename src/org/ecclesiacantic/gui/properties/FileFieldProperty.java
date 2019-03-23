@@ -27,7 +27,7 @@ public class FileFieldProperty extends TextFieldProperty {
         final TextField locTextField = new TextField(_selectedFile == null ? "" : _selectedFile.getName());
         final Button locButton = new Button("...");
         locButton.setOnAction(parEvent -> {
-            final File locInitFile = _selectedFile == null ? new File(".") : _selectedFile;
+            final File locInitFile = _selectedFile == null || !_selectedFile.exists() ? new File(".") : _selectedFile;
             final FileChooser locFileChooser = new FileChooser();
             if (locInitFile.isDirectory()) {
                 locFileChooser.setInitialDirectory(locInitFile);
