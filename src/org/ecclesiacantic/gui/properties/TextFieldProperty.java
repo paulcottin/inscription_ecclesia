@@ -7,7 +7,7 @@ import org.ecclesiacantic.config.EnumConfigProperty;
 
 public class TextFieldProperty extends AFieldProperty {
 
-    private final TextField _propertyField;
+    protected final TextField _propertyField;
 
     public TextFieldProperty(final String parLabel, final EnumConfigProperty parProperty) {
         super(parLabel, parProperty);

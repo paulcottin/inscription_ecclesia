@@ -4,6 +4,7 @@ import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.util.converter.IntegerStringConverter;
+import org.ecclesiacantic.config.ConfigManager;
 import org.ecclesiacantic.config.EnumConfigProperty;
 
 public class IntFieldProperty extends TextFieldProperty {
@@ -14,10 +15,9 @@ public class IntFieldProperty extends TextFieldProperty {
 
     @Override
     protected Node initPropertyField() {
-        final TextField locTextField = new TextField();
-        locTextField.setTextFormatter(getTextFormatter());
-        locTextField.setText(_property.stringV());
-        return locTextField;
+        _propertyField.setTextFormatter(getTextFormatter());
+        _propertyField.setText(_property.stringV());
+        return _propertyField;
     }
 
     protected TextFormatter getTextFormatter() {
