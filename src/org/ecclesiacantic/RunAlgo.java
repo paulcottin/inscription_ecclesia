@@ -28,8 +28,8 @@ public class RunAlgo {
         //Lecture des différentes données avant celles des utilisateurs.
         SalleManager.getInstance().parseDataFile();
         MasterClassManager.getInstance().parseDataFile();
-        TarifManager.getInstance().parseDataFile();
         ChoraleManager.getInstance().parseDataFile();
+        TarifManager.getInstance().parseDataFile();
         PaysManager.getInstance().parseDataFile();
         SoloGeographiqueManager.getInstance().parseDataFile();
 

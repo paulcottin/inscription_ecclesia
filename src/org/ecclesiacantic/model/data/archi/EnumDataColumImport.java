@@ -85,12 +85,13 @@ public enum EnumDataColumImport {
     ;
 
     private String _headerName;
-    private boolean _active, _changed;
+    private boolean _active, _changed, _maybeEmpty;
 
     EnumDataColumImport(final String parDataHeader) {
         _headerName = parDataHeader;
         _active = true;
         _changed = false;
+        _maybeEmpty = false;
     }
 
     public String getHeaderName() {
@@ -113,6 +114,14 @@ public enum EnumDataColumImport {
 
     public boolean isChanged() {
         return _changed;
+    }
+
+    public boolean isMaybeEmpty() {
+        return _maybeEmpty;
+    }
+
+    public void setMaybeEmpty(final boolean parMaybeEmpty) {
+        _maybeEmpty = parMaybeEmpty;
     }
 
     @Override

@@ -4,14 +4,10 @@ import org.ecclesiacantic.model.data.archi.EnumDataColumImport;
 import org.ecclesiacantic.utils.parser.FileUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONPointer;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Map;
 
 public class OverrideColumnNameManager {
 
@@ -19,6 +15,7 @@ public class OverrideColumnNameManager {
     static private final String REF_NAME = "ref";
     static private final String NEW_NAME = "new";
     static private final String ACTIVE = "active";
+    static private final String MAYBE_EMPTY = "maybe_null";
 
     static private OverrideColumnNameManager _instance;
 
@@ -50,6 +47,7 @@ public class OverrideColumnNameManager {
             final EnumDataColumImport locColumn = EnumDataColumImport.valueOf(locMap.getString(REF_NAME));
             locColumn.setHeaderName(locMap.getString(NEW_NAME));
             locColumn.setActive(locMap.getBoolean(ACTIVE));
+            locColumn.setMaybeEmpty(locMap.has(MAYBE_EMPTY) && locMap.getBoolean(MAYBE_EMPTY));
         }
     }
 
@@ -62,6 +60,7 @@ public class OverrideColumnNameManager {
                 locJSONObject.put(REF_NAME, locColumImport.name());
                 locJSONObject.put(NEW_NAME, locColumImport.getHeaderName());
                 locJSONObject.put(ACTIVE, locColumImport.isActive());
+                locJSONObject.put(MAYBE_EMPTY, locColumImport.isMaybeEmpty());
                 locMappings.put(locJSONObject);
             }
         }

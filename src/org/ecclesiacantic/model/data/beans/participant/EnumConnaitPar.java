@@ -28,7 +28,9 @@ public enum EnumConnaitPar {
         final String locBooleanMarker = EnumConfigProperty.BOOLEAN_MARK.stringV();
         final Map<EnumConnaitPar, Boolean> locReturnMap = new HashMap<>();
         for (final EnumConnaitPar locConnaitPar : EnumConnaitPar.values()) {
-            locReturnMap.put(locConnaitPar, parData.get(locConnaitPar.getDataColumn()).equals(locBooleanMarker));
+            if (locConnaitPar.getDataColumn().isActive()) {
+                locReturnMap.put(locConnaitPar, parData.get(locConnaitPar.getDataColumn()).equals(locBooleanMarker));
+            }
         }
         return locReturnMap;
     }

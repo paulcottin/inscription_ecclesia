@@ -9,26 +9,27 @@ import org.ecclesiacantic.model.data.archi.EnumDataColumImport;
 public class ColumnImportProperty implements IPropertyField {
 
     private final EnumDataColumImport _column;
-    private final RadioButton _radioButton;
+    private final RadioButton _radioButton, _maybeNull;
     private final TextField _textField;
 
     public ColumnImportProperty(final EnumDataColumImport parColumn) {
         _column = parColumn;
         _radioButton = new RadioButton("Actif");
+        _maybeNull = new RadioButton("Peut être vide");
         _textField = new TextField(_column.getHeaderName());
         GuiPropertyManager.getInstance().register(this);
     }
 
     public final HBox toHbox() {
-        if (_column.isActive()) {
-            _radioButton.setSelected(true);
-        }
-        return new HBox(15, _radioButton, new Label(_column.name()), _textField);
+        _radioButton.setSelected(_column.isActive());
+        _maybeNull.setSelected(_column.isMaybeEmpty());
+        return new HBox(15, _radioButton, new Label(_column.name()), _textField, _maybeNull);
     }
 
     @Override
     public void store() {
         _column.setHeaderName(_textField.getText());
         _column.setActive(_radioButton.isSelected());
+        _column.setMaybeEmpty(_maybeNull.isSelected());
     }
 }

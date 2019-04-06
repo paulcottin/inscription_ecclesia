@@ -28,8 +28,16 @@ public class CsvUtils {
             for (final CSVRecord locRecord : locRecords) {
                 final Map<EnumDataColumImport, String> locTempMap = new HashMap<>(parDataHeaders.size());
                 for (final EnumDataColumImport locHeader : parDataHeaders) {
-                    if (locHeader.isActive()) {
-                        locTempMap.put(locHeader, locRecord.get(locHeader.getHeaderName()));
+                    try {
+                        if (locHeader.isActive()) {
+                            locTempMap.put(locHeader, locRecord.get(locHeader.getHeaderName()));
+                        }
+                    } catch (final IllegalArgumentException parE) {
+                        if (locHeader.isMaybeEmpty()) {
+                            locTempMap.put(locHeader, null);
+                        } else {
+                            throw parE;
+                        }
                     }
                 }
                 locReturnList.add(locTempMap);

@@ -39,7 +39,7 @@ public enum EnumConfigProperty {
     IS_USE_SORTED_PARTICIPANTS("input.value.use_sorted_participant_list"),
     NB_VOEUX_CONSIDERED("input.value.nb_voeux_considered"),
     API_EMAIL("input.google.api_email"),
-    RECUP_MODE_GOOGLE("input.mode.download_google"),
+    RECUP_MODE_GOOGLE("input.mode.download_google", true),
     G_PART_ID("participant", EnumConfigProperty.GOOGLE_ID),
     G_PART_DATA_RANGE("participant", EnumConfigProperty.GOOGLE_DATA_RANGE),
     G_PART_DATA_RESULT_F("participant", EnumConfigProperty.GOOGLE_RF_NAME),
@@ -68,20 +68,30 @@ public enum EnumConfigProperty {
     private String _key;
     private String _googleKey;
     private boolean _googleProperty;
+    private boolean _saveOnGuiChange;
 
     EnumConfigProperty(final String parKey) {
         this(parKey, false);
     }
 
+    EnumConfigProperty(final String parKey, final boolean parSaveOnGuiChange) {
+        this(parKey, false, parSaveOnGuiChange);
+    }
+
     EnumConfigProperty(final String parInputGoogleObjType, final String parKey) {
-        this(String.format("%s.%s.%s", GOOGLE_INPUT_PREFIX, parInputGoogleObjType, parKey), true);
+        this(parInputGoogleObjType, parKey, false);
+    }
+
+    EnumConfigProperty(final String parInputGoogleObjType, final String parKey, final boolean parSaveOnGuiChange) {
+        this(String.format("%s.%s.%s", GOOGLE_INPUT_PREFIX, parInputGoogleObjType, parKey), parSaveOnGuiChange);
         _googleKey = parInputGoogleObjType;
     }
 
-    EnumConfigProperty(final String parKey, final boolean parIsGoogleProperty) {
+    EnumConfigProperty(final String parKey, final boolean parIsGoogleProperty, final boolean parSaveOnGuiChange) {
         _key = parKey;
         _googleKey = null;
         _googleProperty = parIsGoogleProperty;
+        _saveOnGuiChange = parSaveOnGuiChange;
     }
 
     static public final EnumConfigProperty property(final String parProperty) {
@@ -144,6 +154,10 @@ public enum EnumConfigProperty {
 
     public final String getGoogleKey() {
         return _googleKey;
+    }
+
+    public boolean isSaveOnGuiChange() {
+        return _saveOnGuiChange;
     }
 
     @Override

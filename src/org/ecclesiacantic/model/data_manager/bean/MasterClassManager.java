@@ -11,6 +11,7 @@ import org.ecclesiacantic.model.data_manager.ADataManager;
 import org.ecclesiacantic.model.data_manager.EvenementManager;
 import org.ecclesiacantic.utils.DispoUtils;
 import org.ecclesiacantic.model.data.archi.EnumDataColumImport;
+import org.ecclesiacantic.utils.StringUtils;
 import org.ecclesiacantic.utils.parser.NumberUtils;
 
 import java.util.*;
@@ -59,7 +60,7 @@ public class MasterClassManager extends ADataManager<MasterClass> {
         final String locImposedSalleName = parStringMapHeaderValue.get(EnumDataColumImport.MC_SALLE_IMPOSE);
 
         final List<Salle> locImposedSalleList;
-        if (!locImposedSalleName.trim().isEmpty()) {
+        if (!StringUtils.isNullOrEmpty(locImposedSalleName)) {
             locImposedSalleList = new ArrayList<>(1);
             if (locImposedSalleName.contains(";")) {
                 for (final String locSalleName : locImposedSalleName.split(";")) {
@@ -71,10 +72,11 @@ public class MasterClassManager extends ADataManager<MasterClass> {
         } else {
             locImposedSalleList = null;
         }
+        final String locDiviserEn = parStringMapHeaderValue.get(EnumDataColumImport.MC_DIVISER_EN);
         return new MasterClass(
                 parStringMapHeaderValue.get(EnumDataColumImport.MC_NAME),
                 locDisponibilite,
-                NumberUtils.convertFieldToInt(parStringMapHeaderValue.get(EnumDataColumImport.MC_DIVISER_EN)),
+                StringUtils.isNullOrEmpty(locDiviserEn) ? 1 :NumberUtils.convertFieldToInt(locDiviserEn),
                 locImposedSalleList
         );
     }

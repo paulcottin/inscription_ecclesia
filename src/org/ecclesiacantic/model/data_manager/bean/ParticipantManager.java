@@ -59,9 +59,6 @@ public class ParticipantManager extends ADataManager<Participant> {
         //Modification du champ Chorale en Chorale_1
         String locFileContent = FileUtils.extractString(parFile);
 
-        //Modification du nom d'une masterclasse
-        locFileContent = locFileContent.replace("9. Chantre/Organiste : Mode d'emploi",
-                "9. Chantre/Organiste : mode d'emploi");
         FileUtils.write(parFile, locFileContent);
 
         CsvUtils.cleanEmptyCsvLines(parFile);
