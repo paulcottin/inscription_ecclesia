@@ -6,6 +6,7 @@ import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
+import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
@@ -16,6 +17,9 @@ import com.google.api.services.sheets.v4.model.ValueRange;
 import org.ecclesiacantic.config.EnumConfigProperty;
 import org.ecclesiacantic.utils.parser.CsvUtils;
 import org.ecclesiacantic.utils.parser.NumberUtils;
+import org.ecclesiacantic.utils.parser.helper.exception.AParseException;
+import org.ecclesiacantic.utils.parser.helper.exception.CsvParseException;
+import org.ecclesiacantic.utils.parser.helper.exception.GoogleException;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -101,22 +105,33 @@ public class SpreadSheetDownloader {
         _sheetService = getSheetsService();
     }
 
-    public final File downloadSheet(final GoogleSpreadsheetConfig parConfig) throws IOException {
+    public final File downloadSheet(final String parTypeName, final GoogleSpreadsheetConfig parConfig) throws AParseException {
         System.out.println(String.format(
                 "Téléchargement d'un fichier depuis Google\n\tFeuille %s pour les %s",
                 parConfig.getGoogleId(),
                 parConfig.getConfigKey()
                 )
         );
-        final ValueRange locResponse = _sheetService.spreadsheets().values()
-                .get(parConfig.getGoogleId(), parConfig.getRange())
-                .execute();
+        final ValueRange locResponse = new ValueRange();
+        try {
+            locResponse.putAll(
+                    _sheetService.spreadsheets().values()
+                    .get(parConfig.getGoogleId(), parConfig.getRange())
+                    .execute()
+            );
+        } catch (final IOException parE) {
+            throw new GoogleException(parTypeName, parConfig.getGoogleId(), parE);
+        }
 
         final List<List<Object>> locGoogleValues = locResponse.getValues();
 
         final File locCsvResultFile = new File(String.format("%s%s%s",
                 _exportGoogleFolder, File.separator, parConfig.getResultCsvFilename()));
-        CsvUtils.export(locCsvResultFile, convertObjectToStringList(locGoogleValues));
+        try {
+            CsvUtils.export(locCsvResultFile, convertObjectToStringList(locGoogleValues));
+        } catch (final IOException parE) {
+            throw new CsvParseException(parTypeName, parE);
+        }
         return locCsvResultFile;
     }
 

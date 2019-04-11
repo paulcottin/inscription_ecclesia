@@ -7,6 +7,7 @@ import org.ecclesiacantic.model.data.archi.EnumDataType;
 import org.ecclesiacantic.model.data.archi.itf.INamedObject;
 import org.ecclesiacantic.utils.parser.CsvUtils;
 import org.ecclesiacantic.model.data.archi.EnumDataColumImport;
+import org.ecclesiacantic.utils.parser.helper.exception.AParseException;
 
 import java.io.File;
 import java.io.IOException;
@@ -44,18 +45,10 @@ public abstract class ADataManager<T extends INamedObject > {
 
     protected abstract T convertStringMapToObject(final Map<EnumDataColumImport, String> parStringMapHeaderValue);
 
-    protected void downloadDataFile() {
-        try {
-            final GoogleSpreadsheetConfig locConfig = _type.getGoogleConfig();
-            if (locConfig != null) {
-                _propertyDataFile = SpreadSheetDownloader.getInstance().downloadSheet(locConfig);
-            }
-        } catch (final IOException parE) {
-            System.err.println(String.format("Erreur lors du téléchargement des données pour les %s depuis Google",
-                    _typeName));
-            parE.printStackTrace();
-            System.err.println("Vous pouvez désactiver le téléchargement des fichier depuis Google");
-            System.err.println(String.format("en modifiant le fichier de configuration (propriété %s)", EnumConfigProperty.RECUP_MODE_GOOGLE));
+    protected void downloadDataFile() throws AParseException {
+        final GoogleSpreadsheetConfig locConfig = _type.getGoogleConfig();
+        if (locConfig != null) {
+            _propertyDataFile = SpreadSheetDownloader.getInstance().downloadSheet(_typeName, locConfig);
         }
     }
 
@@ -67,7 +60,7 @@ public abstract class ADataManager<T extends INamedObject > {
         boolean locTestResult = false;
         try {
             locTestResult = parseDataFile();
-        } catch (final Exception parE) {
+        } catch (final AParseException parE) {
             parE.printStackTrace();
         }
         _dataMap.clear();
@@ -75,7 +68,7 @@ public abstract class ADataManager<T extends INamedObject > {
         return locTestResult;
     }
 
-    public boolean parseDataFile() {
+    public boolean parseDataFile() throws AParseException {
         _dataLoaded = true;
         if (_isDownloadingFiles) {
             downloadDataFile();
@@ -102,7 +95,7 @@ public abstract class ADataManager<T extends INamedObject > {
     }
 
     public void add(final T parObject) {
-        parseFileIfN();
+        parseFileIfNSecure();
         if (parObject != null && !_dataMap.keySet().contains(parObject.getName())) {
             _dataMap.put(parObject.getName(), parObject);
         } else {
@@ -119,14 +112,24 @@ public abstract class ADataManager<T extends INamedObject > {
         }
     }
 
-    private final void parseFileIfN() {
+    private final void parseFileIfN() throws AParseException {
         if (!_dataLoaded) {
             parseDataFile();
         }
     }
 
+    private final void parseFileIfNSecure() {
+        if (!_dataLoaded) {
+            try {
+                parseFileIfN();
+            } catch (final AParseException parE) {
+                parE.printStackTrace();
+            }
+        }
+    }
+
     public final boolean exists(final String parObjectName) {
-        parseFileIfN();
+        parseFileIfNSecure();
         if (parObjectName != null) {
             return _dataMap.keySet().contains(parObjectName);
         } else {
@@ -136,7 +139,7 @@ public abstract class ADataManager<T extends INamedObject > {
     }
 
     public final T get(final String parObjectName) {
-        parseFileIfN();
+        parseFileIfNSecure();
         if (parObjectName != null) {
             if (_dataMap.keySet().contains(parObjectName)) {
                 return _dataMap.get(parObjectName);
@@ -166,7 +169,7 @@ public abstract class ADataManager<T extends INamedObject > {
     }
 
     public final Collection<T> getAllData() {
-        parseFileIfN();
+        parseFileIfNSecure();
         return _dataMap.values();
     }
 

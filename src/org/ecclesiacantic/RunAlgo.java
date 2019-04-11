@@ -10,17 +10,14 @@ import org.ecclesiacantic.model.repartition.Repartition;
 import org.ecclesiacantic.model.repartition.RepartitionManager;
 import org.ecclesiacantic.model.statistic.EnumStatistics;
 import org.ecclesiacantic.model.statistic.StatisticManager;
+import org.ecclesiacantic.utils.parser.helper.exception.AParseException;
 
 public class RunAlgo {
-
-    public static void main(final String[] parArgs) {
-        new RunAlgo().run();
-    }
 
     public RunAlgo() {
     }
 
-    public final void run() {
+    public final void run() throws AParseException {
 
         //initialisation des propriétés
         ConfigManager.getInstance();

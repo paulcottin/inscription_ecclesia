@@ -1,6 +1,9 @@
 package org.ecclesiacantic.gui;
 
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
@@ -10,8 +13,10 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.ecclesiacantic.RunAlgo;
 import org.ecclesiacantic.config.ConfigManager;
+import org.ecclesiacantic.gui.helpers.ParsingAlert;
 import org.ecclesiacantic.gui.properties.GuiPropertyManager;
 import org.ecclesiacantic.gui.types.Console;
+import org.ecclesiacantic.utils.parser.helper.exception.AParseException;
 
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
@@ -66,14 +71,27 @@ public class MainGui extends Scene {
 
     private final Pane initLaunchAlgo() {
         final Button locLaunchBtn = new Button("Lancer l'algorithme");
-        locLaunchBtn.setOnAction(event -> {
+        locLaunchBtn.setOnAction((ActionEvent event) -> {
             locLaunchBtn.setDisable(true);
             _configBtn.setDisable(true);
             _mappingBtn.setDisable(true);
             GuiPropertyManager.getInstance().storeAllProperties();
             final RunAlgo locRunAlgo = new RunAlgo();
             ConfigManager.getInstance().writeStandardProperties();
-            new Thread(locRunAlgo::run).start();
+                new Thread(() -> {
+                    try {
+                        locRunAlgo.run();
+                    } catch (final AParseException parE) {
+                        parE.getCause().printStackTrace();
+                        Platform.runLater(() -> {
+                            final ParsingAlert locAlert = new ParsingAlert(parE);
+                            locAlert.showAndWait();
+                            locLaunchBtn.setDisable(false);
+                            _configBtn.setDisable(false);
+                            _mappingBtn.setDisable(false);
+                        });
+                    }
+                }).start();
         });
 
 

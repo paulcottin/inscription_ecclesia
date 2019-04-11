@@ -14,6 +14,7 @@ import org.ecclesiacantic.model.statistic.EnumStatistics;
 import org.ecclesiacantic.model.statistic.StatisticManager;
 import org.ecclesiacantic.model.statistic.statistics.OccupationCreneauStatistic;
 import org.ecclesiacantic.utils.parser.FileUtils;
+import org.ecclesiacantic.utils.parser.helper.exception.AParseException;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -56,7 +57,7 @@ public class RepartitionManager {
         }
     }
 
-    public final void runRepartitions() {
+    public final void runRepartitions() throws AParseException {
         computeRepartition();
 
         int locIndex = 0;
@@ -114,7 +115,7 @@ public class RepartitionManager {
         return locBuilder.toString();
     }
 
-    public final void exportBadgesData() {
+    public final void exportBadgesData() throws AParseException {
         GroupeEvangelisationManager.getInstance().computeGroupeParticipant();
 
         GroupeConcertManager.getInstance().parseDataFile();
