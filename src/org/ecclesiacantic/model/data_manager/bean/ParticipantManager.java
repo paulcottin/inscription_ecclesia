@@ -7,6 +7,7 @@ import org.ecclesiacantic.model.data.beans.participant.*;
 import org.ecclesiacantic.model.data.groupe_evangelisation.ARegion;
 import org.ecclesiacantic.model.data.groupe_evangelisation.RegionManager;
 import org.ecclesiacantic.model.data_manager.ADataManager;
+import org.ecclesiacantic.utils.CompareUtils;
 import org.ecclesiacantic.utils.EnumUtils;
 import org.ecclesiacantic.utils.parser.CsvUtils;
 import org.ecclesiacantic.model.data.archi.EnumDataColumImport;
@@ -116,7 +117,6 @@ public class ParticipantManager extends ADataManager<Participant> {
 
     @Override
     protected Participant convertStringMapToObject(Map<EnumDataColumImport, String> parStringMapHeaderValue) {
-        final String locBooleanMarker = EnumConfigProperty.BOOLEAN_MARK.stringV();
         //Propriétés objets
         final EnumCivilite locCivilite = EnumCivilite.computeFromName(parStringMapHeaderValue.get(EnumDataColumImport.P_CIVILITE));
         final Tarif locTarif = TarifManager.getInstance().get(parStringMapHeaderValue.get(EnumDataType.TARIF.getHeaderId()));
@@ -185,11 +185,11 @@ public class ParticipantManager extends ADataManager<Participant> {
                 parStringMapHeaderValue.get(EnumDataColumImport.P_AUTRES_INFOS),
                 parStringMapHeaderValue.get(EnumDataColumImport.P_MESSAGE),
                 parStringMapHeaderValue.get(EnumDataColumImport.DIOCESE),
-                parStringMapHeaderValue.get(EnumDataColumImport.P_BESOIN_HEBERGEMENT).equals(locBooleanMarker),
-                parStringMapHeaderValue.get(EnumDataColumImport.P_PEUT_HERBERGER).equals(locBooleanMarker),
-                parStringMapHeaderValue.get(EnumDataColumImport.P_NE_SOUHAITE_PAS_CHANTER).trim().isEmpty(),
-                parStringMapHeaderValue.get(EnumDataColumImport.IS_PARTICIPANT_2016).equals(locBooleanMarker),
-                parStringMapHeaderValue.get(EnumDataColumImport.AIDE_OFFICES).equals(locBooleanMarker),
+                CompareUtils.isMarkTrue(parStringMapHeaderValue.get(EnumDataColumImport.P_BESOIN_HEBERGEMENT)),
+                CompareUtils.isMarkTrue(parStringMapHeaderValue.get(EnumDataColumImport.P_PEUT_HERBERGER)),
+                CompareUtils.isMarkTrue(parStringMapHeaderValue.get(EnumDataColumImport.P_NE_SOUHAITE_PAS_CHANTER)),
+                CompareUtils.isMarkTrue(parStringMapHeaderValue.get(EnumDataColumImport.IS_PARTICIPANT_2016)),
+                CompareUtils.isMarkTrue(parStringMapHeaderValue.get(EnumDataColumImport.AIDE_OFFICES)),
                 locHebergement,
                 locVoeux,
                 locPupitre,
