@@ -51,7 +51,7 @@ public class MappingPane extends Scene {
         locScrollPane.setContent(locVBox);
 
         locRoot.setCenter(locScrollPane);
-        locRoot.setBottom(new BorderPane(initSaveBtn()));
+        locRoot.setBottom(new HBox(50, initSaveBtn(), initCloseButton()));
     }
 
     private final TitledPane initHelper(final EnumDataType parDataType) {
@@ -91,10 +91,20 @@ public class MappingPane extends Scene {
     }
 
     private final Button initSaveBtn() {
-        final Button locButton = new Button("Enregistrer");
+        return initCloseButtonHelper("Enregistrer", false);
+    }
+
+    private final Button initCloseButton() {
+        return initCloseButtonHelper("Fermer", true);
+    }
+
+    private final Button initCloseButtonHelper(final String parButtonText, final boolean parClose) {
+        final Button locButton = new Button(parButtonText);
         locButton.setOnAction(parEvent -> {
             GuiPropertyManager.getInstance().storeAllProperties();
-            ((Stage) (((Button) parEvent.getSource()).getScene().getWindow())).close();
+            if (parClose) {
+                ((Stage) (((Button) parEvent.getSource()).getScene().getWindow())).close();
+            }
         });
         return locButton;
     }
