@@ -83,7 +83,7 @@ public enum EnumConfigProperty {
     }
 
     EnumConfigProperty(final String parInputGoogleObjType, final String parKey, final boolean parSaveOnGuiChange) {
-        this(String.format("%s.%s.%s", GOOGLE_INPUT_PREFIX, parInputGoogleObjType, parKey), parSaveOnGuiChange);
+        this(String.format("%s.%s.%s", GOOGLE_INPUT_PREFIX, parInputGoogleObjType, parKey), true, parSaveOnGuiChange);
         _googleKey = parInputGoogleObjType;
     }
 
