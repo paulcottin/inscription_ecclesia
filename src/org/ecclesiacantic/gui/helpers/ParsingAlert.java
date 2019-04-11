@@ -8,7 +8,7 @@ public class ParsingAlert extends Alert {
     public ParsingAlert(final AParseException parE) {
         super(AlertType.ERROR);
         setTitle("Erreur");
-        setHeaderText(parE.getTitle());
-        setContentText(parE.getUserMessage());
+        setHeaderText(parE.getContent().getTitle());
+        setContentText(parE.getContent().getErrorString());
     }
 }

@@ -5,13 +5,21 @@ import org.ecclesiacantic.google.GoogleSpreadsheetConfig;
 import org.ecclesiacantic.google.SpreadSheetDownloader;
 import org.ecclesiacantic.model.data.archi.EnumDataType;
 import org.ecclesiacantic.model.data.archi.itf.INamedObject;
+import org.ecclesiacantic.utils.StringUtils;
 import org.ecclesiacantic.utils.parser.CsvUtils;
 import org.ecclesiacantic.model.data.archi.EnumDataColumImport;
+import org.ecclesiacantic.utils.parser.FileUtils;
+import org.ecclesiacantic.utils.parser.helper.error_content.DateParseError;
 import org.ecclesiacantic.utils.parser.helper.exception.AParseException;
+import org.ecclesiacantic.utils.parser.helper.exception.ObjectInstanciationException;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,7 +51,34 @@ public abstract class ADataManager<T extends INamedObject > {
 
     public abstract void reset();
 
-    protected abstract T convertStringMapToObject(final Map<EnumDataColumImport, String> parStringMapHeaderValue);
+    protected String stringV(final Map<EnumDataColumImport, String> parDataMap, final EnumDataType parDataType) throws ObjectInstanciationException {
+        return stringV(parDataMap, parDataType.getHeaderId());
+    }
+
+    protected final Date dateV(final Map<EnumDataColumImport, String> parDataMap, final EnumDataColumImport parColumn, final DateFormat parDateFormat) throws ObjectInstanciationException {
+        final String locV = stringV(parDataMap, parColumn);
+        if (StringUtils.isNullOrEmpty(locV) && (parColumn.isMaybeEmpty() || !parColumn.isActive())) {
+            return new Date();
+        }
+        try {
+            return parDateFormat.parse(locV);
+        } catch (final ParseException parE) {
+            throw new ObjectInstanciationException(_typeName, parE, parColumn, parDataMap.get(_type.getHeaderId()));
+        }
+    }
+
+    protected final String stringV(final Map<EnumDataColumImport, String> parDataMap, final EnumDataColumImport parColumn) throws ObjectInstanciationException {
+        final String locValue = parDataMap.get(parColumn);
+        if (locValue == null) {
+            if (!parColumn.isActive() || parColumn.isMaybeEmpty()) {
+                return "";
+            }
+            throw new ObjectInstanciationException(_typeName, parColumn, parDataMap.get(_type.getHeaderId()));
+        }
+        return locValue;
+    }
+
+    protected abstract T convertStringMapToObject(final Map<EnumDataColumImport, String> parStringMapHeaderValue) throws AParseException;
 
     protected void downloadDataFile() throws AParseException {
         final GoogleSpreadsheetConfig locConfig = _type.getGoogleConfig();
@@ -56,16 +91,17 @@ public abstract class ADataManager<T extends INamedObject > {
 
     }
 
-    public final boolean testDataFile() {
-        boolean locTestResult = false;
+    public final boolean testDataFile() throws AParseException {
         try {
-            locTestResult = parseDataFile();
-        } catch (final AParseException parE) {
-            parE.printStackTrace();
+            parseDataFile();
+        } finally {
+            _dataMap.clear();
+            _dataLoaded = false;
+            if (_propertyDataFile != null && FileUtils.isFileExist(_propertyDataFile.getParentFile())) {
+                FileUtils.removeFolder(_propertyDataFile.getParentFile());
+            }
         }
-        _dataMap.clear();
-        _dataLoaded = false;
-        return locTestResult;
+        return true;
     }
 
     public boolean parseDataFile() throws AParseException {

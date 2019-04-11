@@ -1,5 +1,7 @@
 package org.ecclesiacantic.utils.parser.helper.exception;
 
+import org.ecclesiacantic.utils.parser.helper.AParseErrorContent;
+
 public class CsvParseException extends AParseException {
 
     public CsvParseException(final String parTypeName, final Exception parCause) {
@@ -7,12 +9,7 @@ public class CsvParseException extends AParseException {
     }
 
     @Override
-    protected String preStandardMsg() {
-        return null;
-    }
-
-    @Override
-    protected String postStandardMsg() {
+    protected AParseErrorContent computeContent(final Exception parCause) {
         return null;
     }
 }

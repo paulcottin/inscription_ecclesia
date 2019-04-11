@@ -39,4 +39,34 @@ public class FileUtils {
             parE.printStackTrace();
         }
     }
+
+    static public final boolean isFileExist(final File parFile) {
+        return parFile != null && parFile.exists();
+    }
+
+    static public final boolean removeFolder(final File parFile) {
+        if (!isFileExist(parFile)) {
+            return false;
+        }
+        return removeFolderHelper(parFile) && parFile.delete();
+    }
+
+    static private final boolean removeFolderHelper(final File parFile) {
+        final File[] locFiles = parFile.listFiles();
+        if (locFiles == null) {
+            return false;
+        }
+        boolean locIsOk;
+        for (final File locFile : locFiles) {
+            if (locFile.isDirectory()) {
+                locIsOk = removeFolderHelper(locFile);
+            } else {
+                locIsOk = locFile.delete();
+            }
+            if (!locIsOk) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

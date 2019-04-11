@@ -7,6 +7,7 @@ import org.ecclesiacantic.model.data.beans.participant.Participant;
 import org.ecclesiacantic.model.data_manager.ADataManager;
 import org.ecclesiacantic.utils.parser.CsvUtils;
 import org.ecclesiacantic.model.data.archi.EnumDataColumImport;
+import org.ecclesiacantic.utils.parser.helper.exception.ObjectInstanciationException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -108,16 +109,16 @@ public class ChoraleManager extends ADataManager<Chorale> {
     }
 
     @Override
-    protected Chorale convertStringMapToObject(Map<EnumDataColumImport, String> parStringMapHeaderValue) {
+    protected Chorale convertStringMapToObject(Map<EnumDataColumImport, String> parStringMapHeaderValue) throws ObjectInstanciationException {
         final String locGroupeEvangelisationId =
-                parStringMapHeaderValue.get(EnumDataColumImport.C_ID_GROUPE_EVAN).trim().isEmpty() ?
+                stringV(parStringMapHeaderValue,EnumDataColumImport.C_ID_GROUPE_EVAN).trim().isEmpty() ?
                         getNullData().getIdGroupeEvangelisation()
                         :
-                        parStringMapHeaderValue.get(EnumDataColumImport.C_ID_GROUPE_EVAN)
+                        stringV(parStringMapHeaderValue,EnumDataColumImport.C_ID_GROUPE_EVAN)
                 ;
         return new Chorale(
-                parStringMapHeaderValue.get(EnumDataColumImport.C_NOM),
-                parStringMapHeaderValue.get(EnumDataColumImport.C_IS_REFERENCE).equals("X"),
+                stringV(parStringMapHeaderValue,EnumDataColumImport.C_NOM),
+                stringV(parStringMapHeaderValue,EnumDataColumImport.C_IS_REFERENCE).equals("X"),
                 locGroupeEvangelisationId
         );
     }

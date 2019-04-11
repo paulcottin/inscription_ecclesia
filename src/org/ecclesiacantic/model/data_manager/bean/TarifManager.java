@@ -6,6 +6,7 @@ import org.ecclesiacantic.model.data.beans.participant.Tarif;
 import org.ecclesiacantic.model.data_manager.ADataManager;
 import org.ecclesiacantic.model.data.archi.EnumDataColumImport;
 import org.ecclesiacantic.utils.parser.NumberUtils;
+import org.ecclesiacantic.utils.parser.helper.exception.ObjectInstanciationException;
 
 import java.util.Map;
 
@@ -35,10 +36,10 @@ public class TarifManager extends ADataManager<Tarif> {
     }
 
     @Override
-    protected Tarif convertStringMapToObject(Map<EnumDataColumImport, String> parStringMapHeaderValue) {
+    protected Tarif convertStringMapToObject(Map<EnumDataColumImport, String> parStringMapHeaderValue) throws ObjectInstanciationException {
         return new Tarif(
-                parStringMapHeaderValue.get(EnumDataColumImport.P_TARIF),
-                NumberUtils.convertFieldToDouble(parStringMapHeaderValue.get(EnumDataColumImport.P_PRIXPAYE))
+                stringV(parStringMapHeaderValue,EnumDataColumImport.P_TARIF),
+                NumberUtils.convertFieldToDouble(stringV(parStringMapHeaderValue,EnumDataColumImport.P_PRIXPAYE))
         );
     }
 }

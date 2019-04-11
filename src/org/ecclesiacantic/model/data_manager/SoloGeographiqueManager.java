@@ -11,6 +11,7 @@ import org.ecclesiacantic.model.data_manager.bean.ChoraleManager;
 import org.ecclesiacantic.model.data_manager.bean.ParticipantManager;
 import org.ecclesiacantic.model.data_manager.bean.PaysManager;
 import org.ecclesiacantic.model.data.archi.EnumDataColumImport;
+import org.ecclesiacantic.utils.parser.helper.exception.ObjectInstanciationException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,18 +38,18 @@ public class SoloGeographiqueManager extends ADataManager<SoloGeographique> {
     }
 
     @Override
-    protected SoloGeographique convertStringMapToObject(Map<EnumDataColumImport, String> parStringMapHeaderValue) {
+    protected SoloGeographique convertStringMapToObject(Map<EnumDataColumImport, String> parStringMapHeaderValue) throws ObjectInstanciationException {
         final String locGroupeEvangelisationId =
-                parStringMapHeaderValue.get(EnumDataColumImport.GE_ID).trim().isEmpty() ?
+                stringV(parStringMapHeaderValue,EnumDataColumImport.GE_ID).trim().isEmpty() ?
                         ChoraleManager.getInstance().getNullData().getIdGroupeEvangelisation()
                         :
-                        parStringMapHeaderValue.get(EnumDataColumImport.GE_ID)
+                        stringV(parStringMapHeaderValue,EnumDataColumImport.GE_ID)
                 ;
         final Pays locPays = PaysManager.getInstance().get(
-                parStringMapHeaderValue.get(EnumDataColumImport.GE_PAYS)
+                stringV(parStringMapHeaderValue,EnumDataColumImport.GE_PAYS)
         );
         final ARegion locRegion = RegionManager.getInstance().getRegion(
-                parStringMapHeaderValue.get(EnumDataColumImport.GE_DEPARTEMENT_OR_ARRONDISSEMENT),
+                stringV(parStringMapHeaderValue,EnumDataColumImport.GE_DEPARTEMENT_OR_ARRONDISSEMENT),
                 locPays
         );
         return new SoloGeographique(

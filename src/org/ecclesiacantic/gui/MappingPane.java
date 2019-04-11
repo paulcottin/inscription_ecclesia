@@ -1,5 +1,6 @@
 package org.ecclesiacantic.gui;
 
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
@@ -15,6 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.ecclesiacantic.config.ConfigManager;
 import org.ecclesiacantic.config.EnumConfigProperty;
+import org.ecclesiacantic.gui.helpers.ParsingAlert;
 import org.ecclesiacantic.gui.properties.ColumnImportProperty;
 import org.ecclesiacantic.gui.properties.GuiPropertyManager;
 import org.ecclesiacantic.model.data.archi.EnumDataColumImport;
@@ -22,6 +24,7 @@ import org.ecclesiacantic.model.data.archi.EnumDataColumnImportList;
 import org.ecclesiacantic.config.OverrideColumnNameManager;
 import org.ecclesiacantic.model.data.archi.EnumDataType;
 import org.ecclesiacantic.model.data_manager.AllDataManager;
+import org.ecclesiacantic.utils.parser.helper.exception.AParseException;
 
 public class MappingPane extends Scene {
 
@@ -63,24 +66,23 @@ public class MappingPane extends Scene {
 
         final Button locCheckButton = new Button("Test");
         locCheckButton.setOnAction(event -> {
-            locCheckButton.setDisable(true);
+            Platform.runLater(() -> locCheckButton.setDisable(true));
             GuiPropertyManager.getInstance().storeAllProperties();
             ConfigManager.getInstance().writeStandardProperties();
-            if (EnumConfigProperty.RECUP_MODE_GOOGLE.boolV()) {
-                return;
-            }
-            final Alert locAlert;
-            if (AllDataManager.getInstance().get(parDataType).testDataFile()) {
-                locAlert = new Alert(Alert.AlertType.INFORMATION);
-                locAlert.setHeaderText("Parsing du fichier terminé en succès");
-            } else {
-                locAlert = new Alert(Alert.AlertType.ERROR);
-                locAlert.setHeaderText("Erreur lors du parsing du fichier");
-                locAlert.setContentText("Regardez la console pour comprendre la source de l'erreur");
-            }
-            locAlert.setTitle("Test du parsing d'un fichier de données");
-            locAlert.showAndWait();
-            locCheckButton.setDisable(false);
+            new Thread(() -> {
+                try {
+                    AllDataManager.getInstance().get(parDataType).testDataFile();
+                    Platform.runLater(() -> {
+                        final Alert locAlert = new Alert(Alert.AlertType.INFORMATION);
+                        locAlert.setHeaderText("Parsing du fichier terminé en succès");
+                        locAlert.setTitle("Test du parsing d'un fichier de données");
+                        locAlert.showAndWait();
+                        locCheckButton.setDisable(false);
+                    });
+                } catch (AParseException parE) {
+                    Platform.runLater(() -> new ParsingAlert(parE).showAndWait());
+                }
+            }).start();
         });
 
         locTitledPane.setContent(new HBox(20, locVBox, locCheckButton));

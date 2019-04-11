@@ -16,6 +16,7 @@ import com.google.api.services.sheets.v4.SheetsScopes;
 import com.google.api.services.sheets.v4.model.ValueRange;
 import org.ecclesiacantic.config.EnumConfigProperty;
 import org.ecclesiacantic.utils.parser.CsvUtils;
+import org.ecclesiacantic.utils.parser.FileUtils;
 import org.ecclesiacantic.utils.parser.NumberUtils;
 import org.ecclesiacantic.utils.parser.helper.exception.AParseException;
 import org.ecclesiacantic.utils.parser.helper.exception.CsvParseException;
@@ -128,6 +129,9 @@ public class SpreadSheetDownloader {
         final File locCsvResultFile = new File(String.format("%s%s%s",
                 _exportGoogleFolder, File.separator, parConfig.getResultCsvFilename()));
         try {
+            if (!FileUtils.isFileExist(_exportGoogleFolder)) {
+                _exportGoogleFolder.mkdirs();
+            }
             CsvUtils.export(locCsvResultFile, convertObjectToStringList(locGoogleValues));
         } catch (final IOException parE) {
             throw new CsvParseException(parTypeName, parE);

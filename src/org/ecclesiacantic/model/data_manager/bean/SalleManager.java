@@ -12,6 +12,7 @@ import org.ecclesiacantic.model.data_manager.EvenementManager;
 import org.ecclesiacantic.utils.DispoUtils;
 import org.ecclesiacantic.model.data.archi.EnumDataColumImport;
 import org.ecclesiacantic.utils.parser.NumberUtils;
+import org.ecclesiacantic.utils.parser.helper.exception.ObjectInstanciationException;
 
 import java.util.*;
 
@@ -183,17 +184,17 @@ public class SalleManager extends ADataManager<Salle> {
     }
 
     @Override
-    protected Salle convertStringMapToObject(Map<EnumDataColumImport, String> parStringMapHeaderValue) {
+    protected Salle convertStringMapToObject(Map<EnumDataColumImport, String> parStringMapHeaderValue) throws ObjectInstanciationException {
         final Disponibilite locDisponibilite = DispoUtils.getDisponibiliteFromStringMap(parStringMapHeaderValue);
 
         return new Salle(
-                parStringMapHeaderValue.get(EnumDataColumImport.S_LOCALISATION),
-                parStringMapHeaderValue.get(EnumDataColumImport.S_NAME),
-                NumberUtils.convertFieldToInt(parStringMapHeaderValue.get(EnumDataColumImport.S_CAPACITY)),
+                stringV(parStringMapHeaderValue,EnumDataColumImport.S_LOCALISATION),
+                stringV(parStringMapHeaderValue,EnumDataColumImport.S_NAME),
+                NumberUtils.convertFieldToInt(stringV(parStringMapHeaderValue,EnumDataColumImport.S_CAPACITY)),
                 locDisponibilite,
-                parStringMapHeaderValue.get(EnumDataColumImport.S_REPERE)
-//                parStringMapHeaderValue.get(EnumDataColumImport.S_INFOS_SUPP),
-//                parStringMapHeaderValue.get(EnumDataColumImport.S_COMMENTAIRES)
+                stringV(parStringMapHeaderValue,EnumDataColumImport.S_REPERE)
+//                stringV(parStringMapHeaderValue,EnumDataColumImport.S_INFOS_SUPP),
+//                stringV(parStringMapHeaderValue,EnumDataColumImport.S_COMMENTAIRES)
                 );
     }
 }

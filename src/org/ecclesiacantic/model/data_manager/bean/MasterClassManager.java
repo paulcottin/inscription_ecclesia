@@ -13,6 +13,7 @@ import org.ecclesiacantic.utils.DispoUtils;
 import org.ecclesiacantic.model.data.archi.EnumDataColumImport;
 import org.ecclesiacantic.utils.StringUtils;
 import org.ecclesiacantic.utils.parser.NumberUtils;
+import org.ecclesiacantic.utils.parser.helper.exception.ObjectInstanciationException;
 
 import java.util.*;
 
@@ -55,9 +56,9 @@ public class MasterClassManager extends ADataManager<MasterClass> {
     }
 
     @Override
-    protected MasterClass convertStringMapToObject(final Map<EnumDataColumImport, String> parStringMapHeaderValue) {
+    protected MasterClass convertStringMapToObject(final Map<EnumDataColumImport, String> parStringMapHeaderValue) throws ObjectInstanciationException {
         final Disponibilite locDisponibilite = DispoUtils.getDisponibiliteFromStringMap(parStringMapHeaderValue);
-        final String locImposedSalleName = parStringMapHeaderValue.get(EnumDataColumImport.MC_SALLE_IMPOSE);
+        final String locImposedSalleName = stringV(parStringMapHeaderValue,EnumDataColumImport.MC_SALLE_IMPOSE);
 
         final List<Salle> locImposedSalleList;
         if (!StringUtils.isNullOrEmpty(locImposedSalleName)) {
@@ -72,9 +73,9 @@ public class MasterClassManager extends ADataManager<MasterClass> {
         } else {
             locImposedSalleList = null;
         }
-        final String locDiviserEn = parStringMapHeaderValue.get(EnumDataColumImport.MC_DIVISER_EN);
+        final String locDiviserEn = stringV(parStringMapHeaderValue,EnumDataColumImport.MC_DIVISER_EN);
         return new MasterClass(
-                parStringMapHeaderValue.get(EnumDataColumImport.MC_NAME),
+                stringV(parStringMapHeaderValue,EnumDataColumImport.MC_NAME),
                 locDisponibilite,
                 StringUtils.isNullOrEmpty(locDiviserEn) ? 1 :NumberUtils.convertFieldToInt(locDiviserEn),
                 locImposedSalleList

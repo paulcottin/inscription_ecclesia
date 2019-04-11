@@ -5,6 +5,7 @@ import org.ecclesiacantic.model.data.archi.EnumDataType;
 import org.ecclesiacantic.model.data.beans.participant.Pays;
 import org.ecclesiacantic.model.data_manager.ADataManager;
 import org.ecclesiacantic.model.data.archi.EnumDataColumImport;
+import org.ecclesiacantic.utils.parser.helper.exception.ObjectInstanciationException;
 
 import java.util.Map;
 
@@ -29,7 +30,7 @@ public class PaysManager extends ADataManager<Pays> {
     }
 
     @Override
-    protected Pays convertStringMapToObject(Map<EnumDataColumImport, String> parStringMapHeaderValue) {
-        return new Pays(parStringMapHeaderValue.get(EnumDataColumImport.P_PAYS));
+    protected Pays convertStringMapToObject(Map<EnumDataColumImport, String> parStringMapHeaderValue) throws ObjectInstanciationException {
+        return new Pays(stringV(parStringMapHeaderValue,EnumDataColumImport.P_PAYS));
     }
 }

@@ -1,6 +1,8 @@
 package org.ecclesiacantic.utils.parser.helper.exception;
 
-import org.ecclesiacantic.utils.StringUtils;
+import com.google.api.client.googleapis.json.GoogleJsonResponseException;
+import org.ecclesiacantic.utils.parser.helper.AParseErrorContent;
+import org.ecclesiacantic.utils.parser.helper.ParseErrorFactory;
 
 public class GoogleException extends AParseException {
 
@@ -13,16 +15,7 @@ public class GoogleException extends AParseException {
     }
 
     @Override
-    protected String preStandardMsg() {
-        if (StringUtils.isNullOrEmpty(_spreadsheetId)) {
-            return String.format("Veuillez vérifier que vous avez renseigné l'id Google pour les %s", _typeName);
-        } else {
-            return String.format("Erreur lors du traitement de la feuille d'id '%s'", _spreadsheetId);
-        }
-    }
-
-    @Override
-    protected String postStandardMsg() {
-        return null;
+    protected AParseErrorContent computeContent(final Exception parCause) {
+        return ParseErrorFactory.computeGoogle(parCause, _spreadsheetId);
     }
 }
