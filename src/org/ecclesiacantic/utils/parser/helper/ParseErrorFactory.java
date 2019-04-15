@@ -1,13 +1,13 @@
 package org.ecclesiacantic.utils.parser.helper;
 
+import com.google.api.client.googleapis.json.GoogleJsonError;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import org.ecclesiacantic.model.data.archi.EnumDataColumImport;
-import org.ecclesiacantic.utils.parser.helper.error_content.DateParseError;
-import org.ecclesiacantic.utils.parser.helper.error_content.GoogleRetrieveError;
-import org.ecclesiacantic.utils.parser.helper.error_content.ObjectInstanciationError;
+import org.ecclesiacantic.utils.parser.helper.error_content.*;
 
 import java.net.UnknownHostException;
 import java.text.ParseException;
+import java.util.Collection;
 
 public class ParseErrorFactory {
 
@@ -21,6 +21,15 @@ public class ParseErrorFactory {
             final int locHttpCode = locE.getStatusCode();
             if (locHttpCode == 404) {
                 return new GoogleRetrieveError("404", "Veuillez vérifier que la feuille Google existe bien", parSpreadsheetId);
+            }
+            if (locHttpCode == 400) {
+                for (final GoogleJsonError.ErrorInfo locErrorInfo : locE.getDetails().getErrors()) {
+                    if (locErrorInfo.getMessage().contains("Unable to parse range")) {
+                        final String locKey = "range: ";
+                        final String locRange = locErrorInfo.getMessage().substring(locErrorInfo.getMessage().indexOf(locKey) + locKey.length());
+                        return new GoogleParseError("400", parSpreadsheetId, locRange);
+                    }
+                }
             }
 
             throw new IllegalArgumentException(String.format("Unable to find exception mapping for http code %d", locHttpCode), parE);
@@ -45,5 +54,12 @@ public class ParseErrorFactory {
         }
 
         throw new IllegalArgumentException(String.format("Unable to find exception mapping for exception class %s", parCause), parCause);
+    }
+
+    static public final CsvParseError computeCSV(final Exception parE, final int parLineIdx, final EnumDataColumImport parColumImport, final Collection<String> parAvailableValues) {
+        if (parE == null) {
+            return new CsvParseError(parLineIdx, parColumImport, parAvailableValues);
+        }
+        return new CsvColumnEmptyError(parLineIdx, parColumImport);
     }
 }

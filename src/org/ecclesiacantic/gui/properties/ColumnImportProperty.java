@@ -32,4 +32,9 @@ public class ColumnImportProperty implements IPropertyField {
         _column.setActive(_radioButton.isSelected());
         _column.setMaybeEmpty(_maybeNull.isSelected());
     }
+
+    @Override
+    public String getEnumRefName() {
+        return _column.name();
+    }
 }

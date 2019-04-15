@@ -5,6 +5,6 @@ import org.ecclesiacantic.config.EnumConfigProperty;
 public class SoloGeographiquesPropertiesPane extends ASpreadsheetPropertiesPane {
 
     protected SoloGeographiquesPropertiesPane() {
-        super("Master classes", EnumConfigProperty.G_SOLO_G_ID);
+        super("Solos Géographiques", EnumConfigProperty.G_SOLO_G_ID);
     }
 }

@@ -1,21 +1,18 @@
 package org.ecclesiacantic.utils.parser;
 
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVPrinter;
-import org.apache.commons.csv.CSVRecord;
-import org.apache.commons.csv.QuoteMode;
+import org.apache.commons.csv.*;
 import org.ecclesiacantic.model.data.archi.EnumDataColumImport;
+import org.ecclesiacantic.utils.parser.helper.error_content.CsvColumnEmptyError;
+import org.ecclesiacantic.utils.parser.helper.error_content.CsvParseError;
+import org.ecclesiacantic.utils.parser.helper.exception.CsvParseException;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class CsvUtils {
 
-    static public final List<Map<EnumDataColumImport, String>> parseDataFile(final File parDataFile, final List<EnumDataColumImport> parDataHeaders) throws IOException {
+    static public final List<Map<EnumDataColumImport, String>> parseDataFile(final File parDataFile, final List<EnumDataColumImport> parDataHeaders) throws IOException, CsvParseException {
         final List<Map<EnumDataColumImport, String>> locReturnList = new ArrayList<>();
         try (final Reader locReader = new InputStreamReader(new FileInputStream(parDataFile), StandardCharsets.UTF_8)) {
             final CSVFormat locCsvFormat = CSVFormat.DEFAULT.withFirstRecordAsHeader()
@@ -25,22 +22,27 @@ public class CsvUtils {
                     .withDelimiter(';')
                     .withQuoteMode(QuoteMode.MINIMAL);
             final Iterable<CSVRecord> locRecords = locCsvFormat.parse(locReader);
+            int locIdx = 1;
             for (final CSVRecord locRecord : locRecords) {
                 final Map<EnumDataColumImport, String> locTempMap = new HashMap<>(parDataHeaders.size());
                 for (final EnumDataColumImport locHeader : parDataHeaders) {
-                    try {
-                        if (locHeader.isActive()) {
-                            locTempMap.put(locHeader, locRecord.get(locHeader.getHeaderName()));
-                        }
-                    } catch (final IllegalArgumentException parE) {
-                        if (locHeader.isMaybeEmpty()) {
-                            locTempMap.put(locHeader, null);
+                    if (locHeader.isActive()) {
+                        if (locRecord.isMapped(locHeader.getHeaderName())) {
+                            if (locRecord.isSet(locHeader.getHeaderName())) {
+                                locTempMap.put(locHeader, locRecord.get(locHeader.getHeaderName()));
+                            } else if (locHeader.isMaybeEmpty()) {
+                                locTempMap.put(locHeader, null);
+                            } else {
+                                throw new CsvParseException(new IllegalArgumentException(), locIdx, locHeader);
+                            }
                         } else {
-                            throw parE;
+                            final Map<String, Integer> locHeaderMap = ((CSVParser) locRecords).getHeaderMap();
+                            throw new CsvParseException(locIdx, locHeader, locHeaderMap.keySet());
                         }
                     }
                 }
                 locReturnList.add(locTempMap);
+                locIdx++;
             }
         } catch (final FileNotFoundException parE) {
             System.err.println(String.format("Impossible de trouver le fichier %s", parDataFile.getAbsolutePath()));

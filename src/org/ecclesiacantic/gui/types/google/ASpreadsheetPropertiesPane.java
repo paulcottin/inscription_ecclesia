@@ -3,8 +3,11 @@ package org.ecclesiacantic.gui.types.google;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import org.ecclesiacantic.config.ConfigManager;
 import org.ecclesiacantic.config.EnumConfigProperty;
 import org.ecclesiacantic.google.GoogleSpreadsheetConfig;
+import org.ecclesiacantic.gui.properties.GuiPropertyManager;
+import org.ecclesiacantic.gui.properties.IPropertyField;
 import org.ecclesiacantic.gui.properties.TextFieldProperty;
 
 import java.util.ArrayList;

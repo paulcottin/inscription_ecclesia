@@ -3,10 +3,7 @@ package org.ecclesiacantic.gui.properties;
 import org.ecclesiacantic.config.ConfigManager;
 import org.ecclesiacantic.config.OverrideColumnNameManager;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class GuiPropertyManager {
 
@@ -19,18 +16,18 @@ public class GuiPropertyManager {
         return _instance;
     }
 
-    private final Set<IPropertyField> _properties;
+    private final Map<String, IPropertyField> _properties;
 
     private GuiPropertyManager() {
-        _properties = new HashSet<>();
+        _properties = new HashMap<>();
     }
 
     public final void register(final IPropertyField parPropertyField) {
-        _properties.add(parPropertyField);
+        _properties.put(parPropertyField.getEnumRefName(), parPropertyField);
     }
 
     public final void storeAllProperties() {
-        for (final IPropertyField locPropertyField : _properties) {
+        for (final IPropertyField locPropertyField : _properties.values()) {
             locPropertyField.store();
         }
         ConfigManager.getInstance().writeStandardProperties();

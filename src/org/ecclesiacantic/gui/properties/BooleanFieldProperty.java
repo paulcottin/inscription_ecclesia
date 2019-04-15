@@ -32,6 +32,9 @@ public class BooleanFieldProperty extends AFieldProperty {
 
         locToggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             _response = !_response;
+            if (_property.isSaveOnGuiChange()) {
+                store();
+            }
         });
 
         return new HBox(5, locTrueBtn, locFalseBtn);

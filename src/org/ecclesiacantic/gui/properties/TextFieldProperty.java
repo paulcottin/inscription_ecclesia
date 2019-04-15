@@ -16,6 +16,9 @@ public class TextFieldProperty extends AFieldProperty {
 
     @Override
     protected Node initPropertyField() {
+        if (_property.isSaveOnGuiChange()) {
+            _propertyField.textProperty().addListener((observable, oldValue, newValue) -> store());
+        }
         return _propertyField;
     }
 

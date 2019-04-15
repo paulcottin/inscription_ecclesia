@@ -23,4 +23,9 @@ public abstract class AFieldProperty implements IPropertyField{
 
         return new HBox(15, locPropertyLbl, initPropertyField());
     }
+
+    @Override
+    public String getEnumRefName() {
+        return _property.name();
+    }
 }

@@ -77,10 +77,11 @@ public class MappingPane extends Scene {
                         locAlert.setHeaderText("Parsing du fichier terminé en succès");
                         locAlert.setTitle("Test du parsing d'un fichier de données");
                         locAlert.showAndWait();
-                        locCheckButton.setDisable(false);
                     });
                 } catch (final AParseException parE) {
                     Platform.runLater(() -> new ParsingAlert(parE).showAndWait());
+                } finally {
+                    locCheckButton.setDisable(false);
                 }
             }).start();
         });

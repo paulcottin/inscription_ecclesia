@@ -11,7 +11,7 @@ public abstract class AParseErrorContent {
     public abstract String getErrorString();
 
     public final String getTitle() {
-        return String.format("Erreur sur les %s", _typeName);
+        return _typeName == null ? "Erreur" : String.format("Erreur sur les %s", _typeName);
     }
 
     public final void setTypeName(final String parTypeName) {

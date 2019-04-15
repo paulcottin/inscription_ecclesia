@@ -5,7 +5,7 @@ import org.ecclesiacantic.utils.parser.helper.AParseErrorContent;
 
 public class GoogleRetrieveError extends AParseErrorContent {
 
-    private final String _httpCode, _checkMessage, _spreadsheetId;
+    protected final String _httpCode, _checkMessage, _spreadsheetId;
 
     public GoogleRetrieveError(final String parHttpCode, final String parCheckMessage, final String parSpreadsheetId) {
         _httpCode = parHttpCode;
