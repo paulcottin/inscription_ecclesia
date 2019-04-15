@@ -122,6 +122,10 @@ public class ParticipantManager extends ADataManager<Participant> {
         final String locEmail = stringV(parStringMapHeaderValue,EnumDataColumImport.P_EMAIL);
         //Propriétés objets
         final EnumCivilite locCivilite = EnumCivilite.computeFromName(stringV(parStringMapHeaderValue, EnumDataColumImport.P_CIVILITE));
+        if (locCivilite == null) {
+            throw new ObjectInstanciationException(_typeName, EnumDataColumImport.P_CIVILITE, locEmail,
+                    Arrays.stream(EnumCivilite.values()).map(EnumCivilite::getValue).collect(Collectors.toList()));
+        }
         final Tarif locTarif = TarifManager.getInstance().get(stringV(parStringMapHeaderValue, EnumDataType.TARIF));
         final Hebergement locHebergement = new Hebergement(
                 stringV(parStringMapHeaderValue, EnumDataColumImport.P_STATION_METRO),
