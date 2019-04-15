@@ -73,11 +73,11 @@ public class MasterClassManager extends ADataManager<MasterClass> {
         } else {
             locImposedSalleList = null;
         }
-        final String locDiviserEn = stringV(parStringMapHeaderValue,EnumDataColumImport.MC_DIVISER_EN);
+
         return new MasterClass(
                 stringV(parStringMapHeaderValue,EnumDataColumImport.MC_NAME),
                 locDisponibilite,
-                StringUtils.isNullOrEmpty(locDiviserEn) ? 1 :NumberUtils.convertFieldToInt(locDiviserEn),
+                intV(parStringMapHeaderValue, EnumDataColumImport.MC_DIVISER_EN, 1),
                 locImposedSalleList
         );
     }

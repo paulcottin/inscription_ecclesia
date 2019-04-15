@@ -9,6 +9,7 @@ import org.ecclesiacantic.utils.StringUtils;
 import org.ecclesiacantic.utils.parser.CsvUtils;
 import org.ecclesiacantic.model.data.archi.EnumDataColumImport;
 import org.ecclesiacantic.utils.parser.FileUtils;
+import org.ecclesiacantic.utils.parser.NumberUtils;
 import org.ecclesiacantic.utils.parser.helper.error_content.DateParseError;
 import org.ecclesiacantic.utils.parser.helper.exception.AParseException;
 import org.ecclesiacantic.utils.parser.helper.exception.ObjectInstanciationException;
@@ -76,6 +77,26 @@ public abstract class ADataManager<T extends INamedObject > {
             throw new ObjectInstanciationException(_typeName, parColumn, parDataMap.get(_type.getHeaderId()));
         }
         return locValue;
+    }
+
+    protected final int intV(final Map<EnumDataColumImport, String> parDataMap, final EnumDataColumImport parColumn, final int parDefaultValue) {
+        try {
+            return intV(parDataMap, parColumn);
+        } catch (final ObjectInstanciationException parE) {
+            return parDefaultValue;
+        }
+    }
+
+    protected final int intV(final Map<EnumDataColumImport, String> parDataMap, final EnumDataColumImport parColumn) throws ObjectInstanciationException {
+        final String locV = stringV(parDataMap, parColumn);
+        if (StringUtils.isNullOrEmpty(locV) && (parColumn.isMaybeEmpty() || !parColumn.isActive())) {
+            return 0;
+        }
+        try {
+            return Integer.parseInt(locV);
+        } catch (final NumberFormatException parE) {
+            throw new ObjectInstanciationException(_typeName, parE, parColumn, parDataMap.get(_type.getHeaderId()));
+        }
     }
 
     protected abstract T convertStringMapToObject(final Map<EnumDataColumImport, String> parStringMapHeaderValue) throws AParseException;

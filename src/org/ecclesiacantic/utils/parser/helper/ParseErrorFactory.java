@@ -8,6 +8,7 @@ import org.ecclesiacantic.utils.parser.helper.error_content.*;
 import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.util.Collection;
+import java.util.Collections;
 
 public class ParseErrorFactory {
 
@@ -38,9 +39,12 @@ public class ParseErrorFactory {
         throw new IllegalArgumentException(String.format("Unable to retrieve Google exception for %s", parE));
     }
 
-    static public final ObjectInstanciationError computeObjectInstanciation(final Exception parCause, final EnumDataColumImport parColumImport, final String parIdValue) {
+    static public final ObjectInstanciationError computeObjectInstanciation(final Exception parCause,
+                                                                            final EnumDataColumImport parColumImport,
+                                                                            final String parIdValue,
+                                                                            final Collection<String> parAvailableValues) {
         if (parCause == null) {
-            return new ObjectInstanciationError(parColumImport, parIdValue);
+            return new ObjectInstanciationError(parColumImport, parIdValue, parAvailableValues);
         }
 
         if (parCause instanceof ParseException && parCause.getMessage().contains("Unparseable date:")) {
@@ -51,6 +55,16 @@ public class ParseErrorFactory {
             }
 
             return new DateParseError(parColumImport, parIdValue, locDateToParse);
+        }
+
+        if (parCause instanceof NumberFormatException && parCause.getMessage().contains("Unparseable date:")) {
+            String locIntToParse = parCause.getMessage().replaceFirst("Unparseable date: \"", "");
+            final int locLastIdx = locIntToParse.lastIndexOf("\"");
+            if (locLastIdx >= 0) {
+                locIntToParse = locIntToParse.substring(0, locLastIdx);
+            }
+
+            return new DateParseError(parColumImport, parIdValue, locIntToParse);
         }
 
         throw new IllegalArgumentException(String.format("Unable to find exception mapping for exception class %s", parCause), parCause);

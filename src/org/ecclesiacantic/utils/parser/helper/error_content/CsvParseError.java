@@ -20,6 +20,18 @@ public class CsvParseError extends AParseErrorContent {
 
     @Override
     public String getErrorString() {
-        return String.format("Erreur lors du parsing du fichier à la ligne %d pour la colonne %s. \nColonnes disponibles : %s", _lineIdx, _column.getHeaderName(), _availableValues);
+        int locNbCol = 0;
+        final StringBuilder locStringBuilder = new StringBuilder();
+        for (final String locCol : _availableValues) {
+            if (locNbCol % 5 == 0) {
+                locStringBuilder.append("\n");
+            }
+            if (locNbCol != _availableValues.size()) {
+                locStringBuilder.append(locCol).append(", ");
+            }
+            locNbCol++;
+        }
+        final String locAvailablesValues = locStringBuilder.toString();
+        return String.format("Erreur lors du parsing du fichier à la ligne %d pour la colonne %s. \nColonnes disponibles : %s", _lineIdx, _column.getHeaderName(), locAvailablesValues);
     }
 }

@@ -19,6 +19,7 @@ import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ParticipantManager extends ADataManager<Participant> {
 
@@ -118,6 +119,7 @@ public class ParticipantManager extends ADataManager<Participant> {
 
     @Override
     protected Participant convertStringMapToObject(Map<EnumDataColumImport, String> parStringMapHeaderValue) throws ObjectInstanciationException {
+        final String locEmail = stringV(parStringMapHeaderValue,EnumDataColumImport.P_EMAIL);
         //Propriétés objets
         final EnumCivilite locCivilite = EnumCivilite.computeFromName(stringV(parStringMapHeaderValue, EnumDataColumImport.P_CIVILITE));
         final Tarif locTarif = TarifManager.getInstance().get(stringV(parStringMapHeaderValue, EnumDataType.TARIF));
@@ -142,6 +144,10 @@ public class ParticipantManager extends ADataManager<Participant> {
         locVoeux.add(4, locMcMan.get(stringV(parStringMapHeaderValue,EnumDataColumImport.P_VOEU5)));
 
         final EnumPupitre locPupitre = (EnumPupitre) EnumUtils.getEnumFromString(EnumPupitre.class, stringV(parStringMapHeaderValue,EnumDataColumImport.P_PUPITRE));
+        if (locPupitre == null) {
+            throw new ObjectInstanciationException(_typeName, EnumDataColumImport.P_PUPITRE, locEmail,
+                    Arrays.stream(EnumPupitre.values()).map(EnumPupitre::getValue).collect(Collectors.toList()));
+        }
         final Chorale locChorale = ChoraleManager.getInstance().get(stringV(parStringMapHeaderValue,EnumDataColumImport.P_CHORALE));
         final Map<EnumConnaitPar, Boolean> locConnaitPar = EnumConnaitPar.initFromData(parStringMapHeaderValue);
 
@@ -161,13 +167,13 @@ public class ParticipantManager extends ADataManager<Participant> {
                 locTarif,
                 stringV(parStringMapHeaderValue,EnumDataColumImport.P_CODEBARRE),
                 stringV(parStringMapHeaderValue,EnumDataColumImport.P_NUMERO_BILLET),
-                stringV(parStringMapHeaderValue,EnumDataColumImport.P_EMAIL),
+                locEmail,
                 stringV(parStringMapHeaderValue,EnumDataColumImport.P_TELEPHONE),
                 locRegion,
                 stringV(parStringMapHeaderValue,EnumDataColumImport.P_CODE_POSTAL),
                 locCommandeDate,
                 locNaissanceDate,
-                NumberUtils.convertFieldToInt(stringV(parStringMapHeaderValue,EnumDataColumImport.P_AGE)),
+                intV(parStringMapHeaderValue,EnumDataColumImport.P_AGE),
                 stringV(parStringMapHeaderValue,EnumDataColumImport.P_AUTRES_INFOS),
                 stringV(parStringMapHeaderValue,EnumDataColumImport.P_MESSAGE),
                 stringV(parStringMapHeaderValue,EnumDataColumImport.DIOCESE),

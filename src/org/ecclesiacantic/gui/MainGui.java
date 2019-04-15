@@ -82,7 +82,11 @@ public class MainGui extends Scene {
                     try {
                         locRunAlgo.run();
                     } catch (final AParseException parE) {
-                        parE.getCause().printStackTrace();
+                        if (parE.getCause() != null) {
+                            parE.getCause().printStackTrace();
+                        } else {
+                            parE.printStackTrace();
+                        }
                         Platform.runLater(() -> {
                             final ParsingAlert locAlert = new ParsingAlert(parE);
                             locAlert.showAndWait();

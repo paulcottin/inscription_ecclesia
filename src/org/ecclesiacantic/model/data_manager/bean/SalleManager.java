@@ -190,7 +190,7 @@ public class SalleManager extends ADataManager<Salle> {
         return new Salle(
                 stringV(parStringMapHeaderValue,EnumDataColumImport.S_LOCALISATION),
                 stringV(parStringMapHeaderValue,EnumDataColumImport.S_NAME),
-                NumberUtils.convertFieldToInt(stringV(parStringMapHeaderValue,EnumDataColumImport.S_CAPACITY)),
+                intV(parStringMapHeaderValue,EnumDataColumImport.S_CAPACITY),
                 locDisponibilite,
                 stringV(parStringMapHeaderValue,EnumDataColumImport.S_REPERE)
 //                stringV(parStringMapHeaderValue,EnumDataColumImport.S_INFOS_SUPP),
