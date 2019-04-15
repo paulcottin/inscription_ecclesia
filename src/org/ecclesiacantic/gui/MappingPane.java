@@ -79,7 +79,7 @@ public class MappingPane extends Scene {
                         locAlert.showAndWait();
                         locCheckButton.setDisable(false);
                     });
-                } catch (AParseException parE) {
+                } catch (final AParseException parE) {
                     Platform.runLater(() -> new ParsingAlert(parE).showAndWait());
                 }
             }).start();

@@ -189,7 +189,6 @@ public class MasterClassManager extends ADataManager<MasterClass> {
             }
             _lessPopularMcList.add(locMinMc);
         }
-        _lessPopularMcList.add(MasterClassManager.getInstance().get("24. Chanter pour et avec les prisonniers"));
         return _lessPopularMcList;
     }
 
