@@ -18,13 +18,17 @@ import org.ecclesiacantic.config.ConfigManager;
 import org.ecclesiacantic.config.EnumConfigProperty;
 import org.ecclesiacantic.gui.helpers.ParsingAlert;
 import org.ecclesiacantic.gui.properties.ColumnImportProperty;
+import org.ecclesiacantic.gui.properties.EnumProperty;
 import org.ecclesiacantic.gui.properties.GuiPropertyManager;
 import org.ecclesiacantic.model.data.archi.EnumDataColumImport;
 import org.ecclesiacantic.model.data.archi.EnumDataColumnImportList;
 import org.ecclesiacantic.config.OverrideColumnNameManager;
 import org.ecclesiacantic.model.data.archi.EnumDataType;
+import org.ecclesiacantic.model.data.archi.itf.ISimpleValueEnum;
 import org.ecclesiacantic.model.data_manager.AllDataManager;
 import org.ecclesiacantic.utils.parser.helper.exception.AParseException;
+
+import java.util.EnumSet;
 
 public class MappingPane extends Scene {
 
@@ -46,6 +50,9 @@ public class MappingPane extends Scene {
                 continue;
             }
             locVBox.getChildren().add(initHelper(locDataType));
+        }
+        for (final Class locEnum : OverrideColumnNameManager.getInstance().getToSaveEnums()) {
+            locVBox.getChildren().add(initEnumHelper(locEnum));
         }
 
         locScrollPane.setContent(locVBox);
@@ -88,6 +95,19 @@ public class MappingPane extends Scene {
 
         locTitledPane.setContent(new HBox(20, locVBox, locCheckButton));
 
+        return locTitledPane;
+    }
+
+    private final TitledPane initEnumHelper(final Class parEnumClass) {
+        final TitledPane locTitledPane = new TitledPane();
+        locTitledPane.setExpanded(false);
+
+        locTitledPane.setText(parEnumClass.getName());
+        final VBox locVBox = new VBox(15);
+        for (final Enum locEnum : (Iterable<? extends Enum>) EnumSet.allOf(parEnumClass)) {
+            locVBox.getChildren().add(new EnumProperty(locEnum).toHbox());
+        }
+        locTitledPane.setContent(locVBox);
         return locTitledPane;
     }
 

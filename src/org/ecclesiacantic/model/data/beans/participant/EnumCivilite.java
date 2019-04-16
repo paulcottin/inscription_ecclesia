@@ -48,7 +48,7 @@ public enum EnumCivilite implements ISimpleValueEnum {
         }
     };
 
-    final Pattern _pattern;
+    private Pattern _pattern;
 
     EnumCivilite(final String parStringValue) {
         _pattern = Pattern.compile(parStringValue);
@@ -83,4 +83,11 @@ public enum EnumCivilite implements ISimpleValueEnum {
     public String getValue() {
         return _pattern.pattern();
     }
+
+    @Override
+    public void setValue(final String parValue) {
+        _pattern = Pattern.compile(parValue);
+    }
+
+
 }

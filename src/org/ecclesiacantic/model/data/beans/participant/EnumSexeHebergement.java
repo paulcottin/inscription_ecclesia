@@ -11,7 +11,7 @@ public enum EnumSexeHebergement implements ISimpleValueEnum {
 
     AUCUN("");
 
-    final private String _value;
+    private String _value;
 
     EnumSexeHebergement(final String parValue) {
         _value = parValue;
@@ -21,4 +21,11 @@ public enum EnumSexeHebergement implements ISimpleValueEnum {
     public String getValue() {
         return _value;
     }
+
+    @Override
+    public void setValue(final String parValue) {
+        _value = parValue;
+    }
+
+
 }

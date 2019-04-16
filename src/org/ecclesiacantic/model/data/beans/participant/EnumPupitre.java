@@ -6,7 +6,7 @@ public enum EnumPupitre implements ISimpleValueEnum {
 
     SOPRANO("Soprano"), TENOR("Ténor"), ALTO("Alto"), BASSE("Basse"), NE_SAIS_PAS("Je ne sais pas");
 
-    final private String _value;
+    private String _value;
 
     EnumPupitre(final String parValue) {
         _value = parValue;
@@ -16,4 +16,11 @@ public enum EnumPupitre implements ISimpleValueEnum {
     public String getValue() {
         return _value;
     }
+
+    @Override
+    public void setValue(final String parValue) {
+        _value = parValue;
+    }
+
+
 }
