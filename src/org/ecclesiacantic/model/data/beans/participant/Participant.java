@@ -46,7 +46,7 @@ public class Participant implements INamedObject, Comparable<Participant> {
                        final String parCodePostal,
                        final Date parInscriptionDate, final Date parDateNaissance,
                        final int parAge, final String parAutreInfos, final String parMessage, final String parDiocese,
-                       final boolean parNeedHerbegement, final boolean parCanHebergeOther, final boolean parChante,
+                       final boolean parNeedHerbegement, final boolean parCanHebergeOther, final boolean parNeChantePas,
                        final boolean parIs2016Participant, final boolean parAideOffices, final Hebergement parHebergement,
                        final LinkedList<MasterClass> parVoeux, final EnumPupitre parPupitre, final Chorale parChorale,
                        final Map<EnumConnaitPar, Boolean> parConnaitParList,
@@ -69,7 +69,7 @@ public class Participant implements INamedObject, Comparable<Participant> {
         this._diocese = parDiocese;
         this._needHerbegement = parNeedHerbegement;
         this.canHebergeOther = parCanHebergeOther;
-        this._chante = parChante;
+        this._chante = !parNeChantePas;
         this._is2016Participant = parIs2016Participant;
         this.aideOffices = parAideOffices;
         this._hebergement = parHebergement;

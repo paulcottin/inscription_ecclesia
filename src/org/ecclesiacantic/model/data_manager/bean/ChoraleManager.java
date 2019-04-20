@@ -66,7 +66,7 @@ public class ChoraleManager extends ADataManager<Chorale> {
             if (locParticipant.isChoraleAffilie()) {
                 final Chorale locChorale = locParticipant.getChorale();
                 if (locChorale != null) {
-                    _dataMap.get(locChorale.getName()).addParticipant(locParticipant);
+                    locChorale.addParticipant(locParticipant);
                 } else {
                     System.err.println(String.format("Impossible de trouver la chorale du participant %s",
                             locParticipant.toString()));

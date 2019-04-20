@@ -3,6 +3,7 @@ package org.ecclesiacantic;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import org.ecclesiacantic.config.ConfigManager;
+import org.ecclesiacantic.config.EnumConfigProperty;
 import org.ecclesiacantic.gui.MainGui;
 import org.ecclesiacantic.model.data_manager.GroupeConcertManager;
 import org.ecclesiacantic.model.data_manager.SoloGeographiqueManager;
@@ -24,9 +25,13 @@ public class MainApplication extends Application {
         ChoraleManager.getInstance();
         PaysManager.getInstance();
         SoloGeographiqueManager.getInstance();
-        GroupeConcertManager.getInstance();
+
+        if (!EnumConfigProperty.IS_COMPUTE_GE_REPART.boolV()) {
+            GroupeConcertManager.getInstance();
+        }
 
         ParticipantManager.getInstance();
+        GroupeConcertManager.getInstance();
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> ConfigManager.getInstance().writeStandardProperties()));
         
