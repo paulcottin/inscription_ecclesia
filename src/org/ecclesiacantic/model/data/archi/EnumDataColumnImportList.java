@@ -123,6 +123,18 @@ public enum EnumDataColumnImportList {
                     GC_GROUPE_CONCERT_ID
             );
         }
+    },
+
+    SOLOS_GEOGRAPHIQUES {
+        @Override
+        public Collection<EnumDataColumImport> getColumns() {
+            return Arrays.asList(
+                    GE_ID,
+                    GE_DEPARTEMENT_OR_ARRONDISSEMENT,
+                    GE_LIMITE,
+                    GE_PAYS
+            );
+        }
     }
     ;
 

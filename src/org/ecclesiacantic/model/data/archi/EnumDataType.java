@@ -202,7 +202,7 @@ public enum EnumDataType {
 
         @Override
         public EnumDataColumnImportList getColumnImportList() {
-            return null;
+            return EnumDataColumnImportList.SOLOS_GEOGRAPHIQUES;
         }
 
         @Override
