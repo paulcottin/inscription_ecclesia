@@ -94,6 +94,10 @@ public class MainGui extends Scene {
                             _configBtn.setDisable(false);
                             _mappingBtn.setDisable(false);
                         });
+                    } finally {
+                        locLaunchBtn.setDisable(false);
+                        _configBtn.setDisable(false);
+                        _mappingBtn.setDisable(false);
                     }
                 }).start();
         });
