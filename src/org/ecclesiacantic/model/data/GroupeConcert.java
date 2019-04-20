@@ -53,7 +53,7 @@ public class GroupeConcert implements INamedObject {
     }
 
     public final void addGroupeEvangelisation(final GroupeEvangelisation parGroupe) {
-        if (!_groupesEvangelisation.contains(parGroupe)) {
+        if (parGroupe != null && !_groupesEvangelisation.contains(parGroupe)) {
             _groupesEvangelisation.add(parGroupe);
         }
     }

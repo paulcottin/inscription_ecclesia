@@ -121,7 +121,14 @@ public class GroupeConcertManager extends ADataManager<GroupeConcert> {
             locGroupeConcert = GroupeConcertManager.getInstance().get(locGroupeConcertId);
         }
 
-        locGroupeConcert.addGroupeEvangelisation(GroupeEvangelisationManager.getInstance().get(locGroupeEvangelisationId));
+        if (locGroupeConcert == null) {
+            throw new IllegalArgumentException(String.format("Le groupe de concert d'id %s semble être enregistré mais sa valeur est null. Vérifiez le parsing des groupes de concert", locGroupeConcertId));
+        }
+
+        final GroupeEvangelisation locGroupeEvangelisation = GroupeEvangelisationManager.getInstance().get(locGroupeEvangelisationId);
+        if (locGroupeEvangelisation != null) {
+            locGroupeConcert.addGroupeEvangelisation(locGroupeEvangelisation);
+        }
         return locGroupeConcert;
     }
 }
