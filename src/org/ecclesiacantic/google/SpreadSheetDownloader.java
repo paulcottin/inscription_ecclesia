@@ -108,9 +108,10 @@ public class SpreadSheetDownloader {
 
     public final File downloadSheet(final String parTypeName, final GoogleSpreadsheetConfig parConfig) throws AParseException {
         System.out.println(String.format(
-                "Téléchargement d'un fichier depuis Google\n\tFeuille %s pour les %s",
+                "Téléchargement d'un fichier depuis Google\n\tFeuille %s pour les %s [range : %s]",
                 parConfig.getGoogleId(),
-                parConfig.getConfigKey()
+                parConfig.getConfigKey(),
+                parConfig.getRange()
                 )
         );
         final ValueRange locResponse = new ValueRange();

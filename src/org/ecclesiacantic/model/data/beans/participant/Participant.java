@@ -7,8 +7,10 @@ import org.ecclesiacantic.model.data.archi.itf.INamedObject;
 import org.ecclesiacantic.model.data.beans.MasterClass;
 import org.ecclesiacantic.model.data.beans.creneaux.EnumCreneau;
 import org.ecclesiacantic.model.data.groupe_evangelisation.ARegion;
+import org.ecclesiacantic.model.data.groupe_evangelisation.GroupeEvangelisation;
 import org.ecclesiacantic.model.data_manager.EvenementManager;
 import org.ecclesiacantic.model.data_manager.GroupeConcertManager;
+import org.ecclesiacantic.model.data_manager.GroupeEvangelisationManager;
 import org.ecclesiacantic.model.data_manager.bean.ChoraleManager;
 
 import java.util.*;
@@ -262,21 +264,21 @@ public class Participant implements INamedObject, Comparable<Participant> {
     }
 
     public final int getGroupeConcertId() {
+        final GroupeEvangelisation locNotFoundGroup = GroupeEvangelisationManager.getInstance().getNullData();
         if (EnumConfigProperty.IS_COMPUTE_GE_REPART.boolV()) {
-            //FIXME -1
-            if (_groupeEvangelisationId != null && !"-1".equals(_groupeEvangelisationId)) {
+            if (_groupeEvangelisationId != null && !locNotFoundGroup.getId().equals(_groupeEvangelisationId)) {
                 return GroupeConcertManager.getInstance().getGroupeConcertOf(_groupeEvangelisationId).getId();
             } else {
                 if (_chante) {
                     System.err.println(String.format("Le groupe d'évangélisation du participant %s est null", this));
                 }
-                return -1;
+                return Integer.parseInt(locNotFoundGroup.getId());
             }
         } else {
             if (_chante) {
                 return Integer.parseInt(_groupeConcertId);
             } else {
-                return -1;
+                return Integer.parseInt(locNotFoundGroup.getId());
             }
         }
     }

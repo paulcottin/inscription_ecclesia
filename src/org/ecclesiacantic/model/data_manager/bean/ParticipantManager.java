@@ -58,8 +58,6 @@ public class ParticipantManager extends ADataManager<Participant> {
     }
 
     public final void tempProcessingDataFile(final File parFile) {
-        //#TODO : A enlever après que les modifs aient été appliquées sur le drive
-        //Modification du champ Chorale en Chorale_1
         String locFileContent = FileUtils.extractString(parFile);
 
         FileUtils.write(parFile, locFileContent);
