@@ -77,38 +77,45 @@ public class MainGui extends Scene {
             locLaunchBtn.setDisable(true);
             _configBtn.setDisable(true);
             _mappingBtn.setDisable(true);
+
             GuiPropertyManager.getInstance().storeAllProperties();
+            ConfigManager.getInstance().writeStandardProperties();
+
             final Service<Void> locRunService = new Service<Void>() {
                 @Override
                 protected Task<Void> createTask() {
-                    final RunAlgo locRunAlgo = new RunAlgo();
-                    try {
-                        locRunAlgo.run();
-                    } catch (final AParseException parE) {
-                        if (parE.getCause() != null) {
-                            parE.getCause().printStackTrace();
-                        } else {
-                            parE.printStackTrace();
+                    return new Task<Void>() {
+                        @Override
+                        protected Void call() throws Exception {
+                            final RunAlgo locRunAlgo = new RunAlgo();
+                            try {
+                                locRunAlgo.run();
+                            } catch (final AParseException parE) {
+                                if (parE.getCause() != null) {
+                                    parE.getCause().printStackTrace();
+                                } else {
+                                    parE.printStackTrace();
+                                }
+                                Platform.runLater(() -> {
+                                    final ParsingAlert locAlert = new ParsingAlert(parE);
+                                    locAlert.showAndWait();
+                                    locLaunchBtn.setDisable(false);
+                                    _configBtn.setDisable(false);
+                                    _mappingBtn.setDisable(false);
+                                });
+                            } finally {
+                                Platform.runLater(() -> {
+                                    locLaunchBtn.setDisable(false);
+                                    _configBtn.setDisable(false);
+                                    _mappingBtn.setDisable(false);
+                                });
+                            }
+                            return null;
                         }
-                        Platform.runLater(() -> {
-                            final ParsingAlert locAlert = new ParsingAlert(parE);
-                            locAlert.showAndWait();
-                            locLaunchBtn.setDisable(false);
-                            _configBtn.setDisable(false);
-                            _mappingBtn.setDisable(false);
-                        });
-                    } finally {
-                        Platform.runLater(() -> {
-                            locLaunchBtn.setDisable(false);
-                            _configBtn.setDisable(false);
-                            _mappingBtn.setDisable(false);
-                        });
-                    }
-                    return null;
+                    };
                 }
             };
 
-            ConfigManager.getInstance().writeStandardProperties();
             locRunService.start();
         });
 
