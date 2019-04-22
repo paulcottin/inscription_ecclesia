@@ -48,7 +48,7 @@ public class NombrePersonneParVoixStatistic extends AStatistic {
     }
 
     @Override
-    public void printResult() {
+    public String printResult() {
         final StringBuilder locStringBuilder = new StringBuilder(128);
         locStringBuilder.append("\tGroupes d'évangélisation : \n");
         for (final Map.Entry<GroupeEvangelisation, Map<EnumPupitre, Integer>> locEntry : _groupeEvangelisationMap.entrySet()) {
@@ -78,7 +78,7 @@ public class NombrePersonneParVoixStatistic extends AStatistic {
             ));
         }
 
-        System.out.println(locStringBuilder.toString());
+        return locStringBuilder.toString();
 
     }
 

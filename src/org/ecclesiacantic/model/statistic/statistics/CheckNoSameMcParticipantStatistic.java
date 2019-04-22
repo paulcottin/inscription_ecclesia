@@ -45,9 +45,9 @@ public class CheckNoSameMcParticipantStatistic extends AStatistic {
     }
 
     @Override
-    public void printResult() {
+    public String printResult() {
         if (_cptMc.size() == 0) {
-            System.out.println("\tAucun participant ne fera deux fois la même MasterClasse");
+            return "\tAucun participant ne fera deux fois la même MasterClasse";
         } else {
             final StringBuilder locStringBuilder = new StringBuilder(128);
             for (final Map.Entry<Participant, Map<MasterClass, Integer>> locEntry : _cptMc.entrySet()) {
@@ -58,7 +58,7 @@ public class CheckNoSameMcParticipantStatistic extends AStatistic {
                             locInscription.getValue(), locInscription.getKey()));
                 }
             }
-            System.out.println(locStringBuilder.toString());
+            return locStringBuilder.toString();
         }
     }
 }

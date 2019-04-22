@@ -67,12 +67,11 @@ public class OccupationCreneauStatistic extends AStatistic {
     }
 
     @Override
-    public void printResult() {
+    public String printResult() {
         if (_errorStrB.length() == 0) {
-            System.out.println("OK");
+            return "OK";
         } else {
-            System.out.println(String.format("Nombre d'erreurs : %d", _errorCpt));
-            System.out.println(_errorStrB.toString());
+            return String.format("Nombre d'erreurs : %d\n%s", _errorCpt, _errorStrB.toString());
         }
     }
 

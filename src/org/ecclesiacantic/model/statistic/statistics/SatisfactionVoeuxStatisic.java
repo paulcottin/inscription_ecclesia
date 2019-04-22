@@ -56,7 +56,7 @@ public class SatisfactionVoeuxStatisic extends AStatistic {
     }
 
     @Override
-    public void printResult() {
+    public String printResult() {
         final StringBuilder locResultBuilder = new StringBuilder(128);
         for (final Map.Entry<Integer, Integer> locVoeuSati : _voeuSatisfaction.entrySet()) {
             locResultBuilder.append(String.format("Nombre de participants ayant eu leur choix n°%d : %d (%s %%)\n",
@@ -64,6 +64,6 @@ public class SatisfactionVoeuxStatisic extends AStatistic {
                     _voeuSatisfactionPct.get(locVoeuSati.getKey()))
             );
         }
-        System.out.println(locResultBuilder.toString());
+        return locResultBuilder.toString();
     }
 }

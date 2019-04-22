@@ -36,7 +36,7 @@ public class NbSalleByMasterclassStatistic extends AStatistic {
     }
 
     @Override
-    public void printResult() {
+    public String printResult() {
         int locSalleOk = 0, locSalleKo = 0;
         final StringBuilder locResultBuilder = new StringBuilder(256);
         for (final Map.Entry<MasterClass, List<String>> locEntry : _sallesMc.entrySet()) {
@@ -57,6 +57,6 @@ public class NbSalleByMasterclassStatistic extends AStatistic {
         }
         // #TODO : Supprimer le code précédent
 //        System.out.println(locResultBuilder.toString());
-        System.out.println(String.format("MCs OK : %d\nMCs KO : %d", locSalleOk, locSalleKo));
+        return String.format("MCs OK : %d\nMCs KO : %d", locSalleOk, locSalleKo);
     }
 }

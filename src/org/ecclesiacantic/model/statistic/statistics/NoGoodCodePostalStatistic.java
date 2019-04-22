@@ -21,7 +21,7 @@ public class NoGoodCodePostalStatistic extends AStatistic {
     }
 
     @Override
-    public void printResult() {
+    public String printResult() {
         final StringBuilder locStringBuilder = new StringBuilder();
         for (final Participant locParticipant : ParticipantManager.getInstance().getAllData()) {
             if (locParticipant.getRegion().getPays().isFrance() &&
@@ -33,9 +33,9 @@ public class NoGoodCodePostalStatistic extends AStatistic {
             }
         }
         if (locStringBuilder.length() == 0 ) {
-            System.out.println("\tAucun problème");
+            return "\tAucun problème";
         } else {
-            System.out.println(locStringBuilder.toString());
+            return locStringBuilder.toString();
         }
     }
 }

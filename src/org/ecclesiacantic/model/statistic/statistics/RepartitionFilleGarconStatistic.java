@@ -32,10 +32,10 @@ public class RepartitionFilleGarconStatistic extends AStatistic {
     }
 
     @Override
-    public void printResult() {
+    public String printResult() {
         final StringBuilder locResultBuilder = new StringBuilder(128);
         locResultBuilder.append(String.format("Nombre de filles : %d (%s %%)\n", _filleCpt, _fillePct))
                 .append(String.format("Nombre de garçons : %d(%s %%)\n", _garconCpt, _garconPct));
-        System.out.println(locResultBuilder.toString());
+        return locResultBuilder.toString();
     }
 }

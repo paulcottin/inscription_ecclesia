@@ -45,9 +45,9 @@ public class CheckVoeuxDifferentsParParticipantStatistic extends AStatistic {
     }
 
     @Override
-    public void printResult() {
+    public String printResult() {
         if (_cptVoeux.size() == 0) {
-            System.out.println("Aucun participant n'a choisi plusieurs fois le même voeu");
+            return "Aucun participant n'a choisi plusieurs fois le même voeu";
         } else {
             final StringBuilder locStringBuilder = new StringBuilder(128);
             for (final Map.Entry<Participant, Map<MasterClass, Integer>> locEntry : _cptVoeux.entrySet()) {
@@ -57,7 +57,7 @@ public class CheckVoeuxDifferentsParParticipantStatistic extends AStatistic {
                             locVoeux.getValue(), locVoeux.getKey()));
                 }
             }
-            System.out.println(locStringBuilder.toString());
+            return locStringBuilder.toString();
         }
     }
 

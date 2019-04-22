@@ -39,7 +39,7 @@ public class SalleSurpopulationStatistic extends AStatistic{
     }
 
     @Override
-    public void printResult() {
+    public String printResult() {
 //        if (_surpop.size() == 0) {
 //            System.out.println("\tAucun problème de surpopulation de salle");
 //        } else {
@@ -63,7 +63,7 @@ public class SalleSurpopulationStatistic extends AStatistic{
                     _totalSurpop, _totalLowpop));
             locStringBuilder.append(String.format("Total de surpopulation : %d, de sous population %d\n",
                     _surpopCpt, _lowpopCpt));
-            System.out.println(locStringBuilder.toString());
+            return locStringBuilder.toString();
 //        }
     }
 }

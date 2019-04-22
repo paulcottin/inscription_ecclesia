@@ -22,7 +22,7 @@ public class RepartitionGroupeEvangelisationStatistic extends AStatistic{
     }
 
     @Override
-    public void printResult() {
+    public String printResult() {
         final StringBuilder locStringBuilder = new StringBuilder(128);
         for (final GroupeEvangelisation locGroupe : GroupeEvangelisationManager.getInstance().getAllData().values()) {
             locStringBuilder.append(String.format("Groupe %s '%s' : %d participants (%d solos géo) - Régions : %s\n",
@@ -32,6 +32,6 @@ public class RepartitionGroupeEvangelisationStatistic extends AStatistic{
                     )
             );
         }
-        System.out.println(locStringBuilder.toString());
+        return locStringBuilder.toString();
     }
 }

@@ -17,7 +17,7 @@ public class PaysNonGereStatistic extends AStatistic {
     }
 
     @Override
-    public void printResult() {
+    public String printResult() {
         final StringBuilder locStringBuilder = new StringBuilder();
         for (final SoloGeographique locSoloGeographique : SoloGeographiqueManager.getInstance().getAllData()) {
             if (!locSoloGeographique.getRegion().getPays().isFrance() &&
@@ -26,9 +26,9 @@ public class PaysNonGereStatistic extends AStatistic {
             }
         }
         if (locStringBuilder.length() == 0 ) {
-            System.out.println("\tAucun problème");
+            return "\tAucun problème";
         } else {
-            System.out.println(locStringBuilder.toString());
+            return locStringBuilder.toString();
         }
     }
 }

@@ -23,8 +23,8 @@ public class NoChantStatistic extends AStatistic {
     }
 
     @Override
-    public void printResult() {
-        System.out.println(String.format("%d participants sur %d ne chantent pas",
-                _cpt, ParticipantManager.getInstance().getAllData().size()));
+    public String printResult() {
+        return String.format("%d participants sur %d ne chantent pas",
+                _cpt, ParticipantManager.getInstance().getAllData().size());
     }
 }

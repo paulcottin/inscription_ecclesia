@@ -1,5 +1,7 @@
 package org.ecclesiacantic.model.statistic;
 
+import org.ecclesiacantic.gui.MessageProvider;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -34,8 +36,12 @@ public class StatisticManager {
     public final void printResults() {
         for (final AStatistic locStatistic : _statistics.values()) {
             if (!locStatistic.isStandaloneStatistic()) {
-                System.out.println(String.format("\n%s", locStatistic.getDescription()));
-                locStatistic.printResult();
+                final String locDesc = String.format("\n%s", locStatistic.getDescription());
+                System.out.println(locDesc);
+                if (locStatistic.isToConsole()) {
+                    MessageProvider.append(locDesc);
+                }
+                print(locStatistic);
             }
         }
     }
@@ -48,13 +54,14 @@ public class StatisticManager {
         }
         final AStatistic locStandaloneStatistic = _statistics.get(parStandaloneStatistic);
         locStandaloneStatistic.computeStatistic();
-        locStandaloneStatistic.printResult();
+        print(locStandaloneStatistic);
     }
 
     private final void initAllStatistics() {
         for (final EnumStatistics locStaticType : EnumStatistics.values()) {
             final AStatistic locStat = constructClass(locStaticType);
             if (locStat != null) {
+                locStat.setToConsole(locStaticType.isToConsole());
                 _statistics.put(locStaticType, locStat);
             }
         }
@@ -75,5 +82,13 @@ public class StatisticManager {
 
     public final Map<EnumStatistics, AStatistic> getStatistics() {
         return _statistics;
+    }
+
+    private final void print(final AStatistic parStatistic) {
+        final String locResult = parStatistic.printResult();
+        System.out.println(locResult);
+        if (parStatistic.isToConsole()) {
+            MessageProvider.append(locResult);
+        }
     }
 }

@@ -73,6 +73,12 @@ public class MainGui extends Scene {
 
     private final Pane initLaunchAlgo() {
         final Button locLaunchBtn = new Button("Lancer l'algorithme");
+
+        final TextArea locTextArea = new TextArea();
+        locTextArea.setMinHeight(200.0);
+        MessageProvider.getInstance().setStringProperty(locTextArea.textProperty());
+//        redirectOutputsToTextArea(locTextArea);
+
         locLaunchBtn.setOnAction((ActionEvent event) -> {
             locLaunchBtn.setDisable(true);
             _configBtn.setDisable(true);
@@ -87,6 +93,7 @@ public class MainGui extends Scene {
                     return new Task<Void>() {
                         @Override
                         protected Void call() throws Exception {
+                            locTextArea.setText("");
                             final RunAlgo locRunAlgo = new RunAlgo();
                             try {
                                 locRunAlgo.run();
@@ -118,11 +125,6 @@ public class MainGui extends Scene {
 
             locRunService.start();
         });
-
-
-        final TextArea locTextArea = new TextArea();
-        locTextArea.setMinHeight(200.0);
-//        redirectOutputsToTextArea(locTextArea);
 
         return new VBox(15, new BorderPane(locLaunchBtn), locTextArea);
     }

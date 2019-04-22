@@ -16,7 +16,7 @@ public class GroupeConcertParticipationStatistic extends AStatistic {
     }
 
     @Override
-    public void printResult() {
+    public String printResult() {
         int locTotalConcert = 0;
         final StringBuilder locStringBuilder = new StringBuilder(128);
         for (final GroupeConcert locGroupe : GroupeConcertManager.getInstance().getAllData()) {
@@ -27,6 +27,6 @@ public class GroupeConcertParticipationStatistic extends AStatistic {
             locTotalConcert += locGroupeNumber;
         }
         locStringBuilder.append(String.format("Total de participants au concert : %d", locTotalConcert));
-        System.out.println(locStringBuilder.toString());
+        return locStringBuilder.toString();
     }
 }

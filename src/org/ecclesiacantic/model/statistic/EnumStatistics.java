@@ -8,13 +8,13 @@ public enum EnumStatistics {
 
     OCCUPATION_CRENEAUX("OccupationCreneauStatistic"),
 
-    SALLES_BY_MC("NbSalleByMasterclassStatistic"),
+    SALLES_BY_MC("NbSalleByMasterclassStatistic", false, true),
 
     SALLE_SURPOPULTION("SalleSurpopulationStatistic"),
 
-    SUMMARY_GROUPE_EVANGELISATION("RepartitionGroupeEvangelisationStatistic"),
+    SUMMARY_GROUPE_EVANGELISATION("RepartitionGroupeEvangelisationStatistic", false, true),
 
-    REPARTITIONS_GROUPE_CONCERT("GroupeConcertParticipationStatistic"),
+    REPARTITIONS_GROUPE_CONCERT("GroupeConcertParticipationStatistic", false, true),
 
     NO_CHANTS("NoChantStatistic"),
 
@@ -24,7 +24,7 @@ public enum EnumStatistics {
 
     HIDDEN_PARTICIPANTS("NotFoundParticipantStatistic"),
 
-    SAME_VOEUX_FOR_PARTICIPANT("CheckVoeuxDifferentsParParticipantStatistic", true),
+    SAME_VOEUX_FOR_PARTICIPANT("CheckVoeuxDifferentsParParticipantStatistic", true, true),
 
     SALLE_OR_MC_NO_DISPO("CheckIncompatibiliteDispoSalleInscritsStatistic"),
 
@@ -36,10 +36,10 @@ public enum EnumStatistics {
     static private final String STAT_CLASS_PACKAGE_NAME = "statistics";
 
     private final String _classPath;
-    private final boolean _isStandaloneStatistic;
+    private final boolean _isStandaloneStatistic, _toConsole;
 
     EnumStatistics(final String parClassName) {
-        this(parClassName, false);
+        this(parClassName, false, false);
     }
 
     /**
@@ -49,12 +49,13 @@ public enum EnumStatistics {
      * @param parIsStandaloneStatistic : si vrai alors cette stat n'est pas appelé avec toutes les autres
      *                                 à la fin de la répartition mais prévue pour être appelée à part.
      */
-    EnumStatistics(final String parClassName, final boolean parIsStandaloneStatistic) {
+    EnumStatistics(final String parClassName, final boolean parIsStandaloneStatistic, final boolean parToConsole) {
         _classPath = String.format("%s.%s.%s",
                 getClass().getPackage().getName(),
                 STAT_CLASS_PACKAGE_NAME,
                 parClassName);
         _isStandaloneStatistic = parIsStandaloneStatistic;
+        _toConsole = parToConsole;
     }
 
     public final String getClasspath() {
@@ -63,5 +64,9 @@ public enum EnumStatistics {
 
     public final boolean isStandaloneStatistic() {
         return _isStandaloneStatistic;
+    }
+
+    public final boolean isToConsole() {
+        return _toConsole;
     }
 }

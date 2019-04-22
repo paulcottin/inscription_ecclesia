@@ -35,7 +35,7 @@ public class NotFoundParticipantStatistic extends AStatistic {
     }
 
     @Override
-    public void printResult() {
+    public String printResult() {
         final StringBuilder locStringBuilder = new StringBuilder();
         for (final Participant locParticipant : _notFound) {
             locStringBuilder.append(String.format("%s, CP %s\n",
@@ -43,9 +43,9 @@ public class NotFoundParticipantStatistic extends AStatistic {
                     locParticipant.getCodePostal()));
         }
         if (locStringBuilder.length() == 0 ) {
-            System.out.println("\tTous les participants voulant chanter sont dans des groupes d'évangélisation");
+            return "\tTous les participants voulant chanter sont dans des groupes d'évangélisation";
         } else {
-            System.out.println(locStringBuilder.toString());
+            return locStringBuilder.toString();
         }
     }
 }

@@ -55,9 +55,10 @@ public class CheckIncompatibiliteDispoSalleInscritsStatistic extends AStatistic 
     }
 
     @Override
-    public void printResult() {
+    public String printResult() {
+        final StringBuilder locAllBuilder = new StringBuilder(256);
         if (_cptDispoMc.size() == 0) {
-            System.out.println("\tAucune affectation de MC alors qu'elle n'était pas dispo");
+            locAllBuilder.append("\tAucune affectation de MC alors qu'elle n'était pas dispo");
         } else {
             final StringBuilder locMcBuilder = new StringBuilder(128);
             for (final Map.Entry<MasterClass, List<EnumCreneau>> locEntry : _cptDispoMc.entrySet()) {
@@ -67,11 +68,11 @@ public class CheckIncompatibiliteDispoSalleInscritsStatistic extends AStatistic 
                 );
             }
             locMcBuilder.append("\n");
-            System.out.println(locMcBuilder.toString());
+            locAllBuilder.append(locMcBuilder.toString());
         }
 
         if (_cptDispoSalle.size() == 0) {
-            System.out.println("\tAucune affectation de salle alors qu'elle n'était pas dispo");
+            locAllBuilder.append("\tAucune affectation de salle alors qu'elle n'était pas dispo");
         } else {
             final StringBuilder locSalleBuilder = new StringBuilder(128);
             for (final Map.Entry<Salle, List<EnumCreneau>> locEntry : _cptDispoSalle.entrySet()) {
@@ -80,7 +81,8 @@ public class CheckIncompatibiliteDispoSalleInscritsStatistic extends AStatistic 
                         locEntry.getKey().toString(), locEntry.getValue().toString())
                 );
             }
-            System.out.println(locSalleBuilder.toString());
+            locAllBuilder.append(locSalleBuilder.toString());
         }
+        return locAllBuilder.toString();
     }
 }
