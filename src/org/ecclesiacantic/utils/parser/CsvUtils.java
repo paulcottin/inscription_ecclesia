@@ -12,7 +12,7 @@ public class CsvUtils {
 
     static public final List<Map<EnumDataColumImport, String>> parseDataFile(final File parDataFile, final List<EnumDataColumImport> parDataHeaders) throws IOException, CsvParseException {
         final List<Map<EnumDataColumImport, String>> locReturnList = new ArrayList<>();
-        try (final Reader locReader = new InputStreamReader(new FileInputStream(parDataFile), StandardCharsets.UTF_8)) {
+        try (final Reader locReader = new InputStreamReader(new FileInputStream(parDataFile), StandardCharsets.ISO_8859_1)) {
             final CSVFormat locCsvFormat = CSVFormat.DEFAULT.withFirstRecordAsHeader()
                     .withAllowMissingColumnNames()
                     .withQuote('"')
@@ -56,7 +56,7 @@ public class CsvUtils {
      * @throws IOException
      */
     static public final void export(final File parFile, final List<List<String>> parLines) throws IOException {
-        final BufferedWriter locBfWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(parFile), StandardCharsets.UTF_8));
+        final BufferedWriter locBfWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(parFile), StandardCharsets.ISO_8859_1));
         final CSVFormat locCsvFormat = CSVFormat.EXCEL.withFirstRecordAsHeader()
                 .withAllowMissingColumnNames()
                 .withIgnoreEmptyLines()
@@ -102,7 +102,7 @@ public class CsvUtils {
      * @param parFile le fichier CSV
      */
     static public final void cleanEmptyCsvLines(final File parFile) {
-        final String locFileContent = FileUtils.extractString(parFile);
+        final String locFileContent = FileUtils.extractStringFromExcel(parFile);
 
         if (locFileContent.split("\n\"*(;|0)+\n").length < 2) {
             // La chaine n'est pas trouvé, on ne retraite pas le fichier

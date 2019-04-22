@@ -58,10 +58,6 @@ public class ParticipantManager extends ADataManager<Participant> {
     }
 
     public final void tempProcessingDataFile(final File parFile) {
-        String locFileContent = FileUtils.extractString(parFile);
-
-        FileUtils.write(parFile, locFileContent);
-
         CsvUtils.cleanEmptyCsvLines(parFile);
     }
 

@@ -9,9 +9,8 @@ import org.ecclesiacantic.utils.parser.FileUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.EnumSet;
@@ -50,7 +49,7 @@ public class OverrideColumnNameManager {
         if (!_mappingFile.exists()) {
             return;
         }
-        final String locJsonString = FileUtils.extractString(_mappingFile);
+        final String locJsonString = FileUtils.extractStringUtf8(_mappingFile);
         if (locJsonString == null) {
             throw new IllegalArgumentException("Le fichier de mapping des colonnes est mal formé");
         }
@@ -125,7 +124,7 @@ public class OverrideColumnNameManager {
             locLists.put(locEnumObj);
         }
         locRoot.put(LISTS, locLists);
-        try (final FileWriter locFileWriter = new FileWriter(_mappingFile)) {
+        try (final OutputStreamWriter locFileWriter = new OutputStreamWriter(new FileOutputStream(_mappingFile), StandardCharsets.UTF_8)) {
             locRoot.write(locFileWriter);
         } catch (IOException parE) {
             parE.printStackTrace();
