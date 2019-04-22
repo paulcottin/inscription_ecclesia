@@ -1,6 +1,7 @@
 package org.ecclesiacantic.model.data.beans.participant;
 
 import org.ecclesiacantic.model.data.archi.itf.INamedObject;
+import org.ecclesiacantic.model.data_manager.bean.ChoraleManager;
 import org.ecclesiacantic.model.data_manager.bean.ParticipantManager;
 
 import java.util.ArrayList;
@@ -51,10 +52,13 @@ public class Chorale implements INamedObject {
     }
 
     public final List<Participant> getParticipants() {
+        final Chorale locNullChorale = ChoraleManager.getInstance().getNullData();
         final List<Participant> locParticipants = new ArrayList<>();
         for (final Participant locParticipant : ParticipantManager.getInstance().getAllData()) {
             final Chorale locChorale = locParticipant.getChorale();
-            if (locChorale != null && Objects.equals(locChorale.getName(), _name)) {
+            if (locChorale != null &&
+                    !locChorale.getName().equals(locNullChorale.getName()) &&
+                    Objects.equals(locChorale.getName(), _name)) {
                 locParticipants.add(locParticipant);
             }
         }
