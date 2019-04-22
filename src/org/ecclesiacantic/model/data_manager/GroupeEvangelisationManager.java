@@ -22,6 +22,7 @@ import java.util.regex.Pattern;
 
 public class GroupeEvangelisationManager implements IExportableManager{
 
+    // FIXME => passer en propriété
     static private final Pattern GROUPE_INFOS_FROM_STRING_PATTERN = Pattern.compile("(^[0-9]+)\\s+(.*)");
 
     static private GroupeEvangelisationManager _instance;

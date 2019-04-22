@@ -1,39 +1,25 @@
 package org.ecclesiacantic.model.data.beans.participant;
 
 import org.ecclesiacantic.model.data.archi.itf.INamedObject;
-import org.ecclesiacantic.model.data_manager.bean.ChoraleManager;
+import org.ecclesiacantic.model.data_manager.bean.ParticipantManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Chorale implements INamedObject {
 
     final private String _name;
     final private boolean _referente;
     final private String _idGroupeEvangelisation;
-    final List<Chorale> _choralesFilles;
-    final List<Participant> _participants;
+    private final List<Chorale> _choralesFilles;
 
     public Chorale(final String parName, final boolean parIsReferente,
                    final String parGroupeEvangelisationId) {
         _name = parName;
         _referente = parIsReferente;
         _choralesFilles = new ArrayList<>();
-        _participants = new ArrayList<>();
         _idGroupeEvangelisation = parGroupeEvangelisationId;
-    }
-
-    public final void addParticipant(final Participant parParticipant) {
-        if (!parParticipant.isChante() || !parParticipant.isChoraleAffilie()) {
-            return;
-        }
-        if (_participants.contains(parParticipant)) {
-            System.err.println(String.format("Le participant %s est déjà inscrit dans la chorale %s",
-                    parParticipant.toString(),
-                    this.toString()));
-        } else {
-            _participants.add(parParticipant);
-        }
     }
 
     @Override
@@ -65,10 +51,14 @@ public class Chorale implements INamedObject {
     }
 
     public final List<Participant> getParticipants() {
-        if (_participants.isEmpty()) {
-            ChoraleManager.getInstance().computeParticipantsInChorales();
+        final List<Participant> locParticipants = new ArrayList<>();
+        for (final Participant locParticipant : ParticipantManager.getInstance().getAllData()) {
+            final Chorale locChorale = locParticipant.getChorale();
+            if (locChorale != null && Objects.equals(locChorale.getName(), _name)) {
+                locParticipants.add(locParticipant);
+            }
         }
-        return _participants;
+        return locParticipants;
     }
 
     public final String getIdGroupeEvangelisation() {

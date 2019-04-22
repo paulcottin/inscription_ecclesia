@@ -26,13 +26,11 @@ public class ChoraleManager extends ADataManager<Chorale> {
     }
 
     private final Chorale _nullChorale;
-    private boolean _isChoraleParticipantComputed;
 
     private ChoraleManager() {
         super(EnumConfigProperty.INPUT_F_CHORALE, EnumDataType.CHORALE);
         // Pour les gens qui ne sont pas affiliés à une chorale
         _nullChorale = new Chorale("NO CHORALE REF", true, "-1");;
-        _isChoraleParticipantComputed = false;
     }
 
     private final Chorale getChoraleReferenteForGoupeEvangelisation(final String parGroupeId) {
@@ -57,24 +55,6 @@ public class ChoraleManager extends ADataManager<Chorale> {
             locReturnList.add(_nullChorale);
         }
         return locReturnList;
-    }
-
-    public final void computeParticipantsInChorales() {
-        if (_isChoraleParticipantComputed) {
-            return;
-        }
-        for (final Participant locParticipant : ParticipantManager.getInstance().getAllData()) {
-            if (locParticipant.isChoraleAffilie()) {
-                final Chorale locChorale = _dataMap.get(locParticipant.getChorale().getName());
-                if (locChorale != null) {
-                    locChorale.addParticipant(locParticipant);
-                } else {
-                    System.err.println(String.format("Impossible de trouver la chorale du participant %s",
-                            locParticipant.toString()));
-                }
-            }
-        }
-        _isChoraleParticipantComputed = true;
     }
 
     private final void processChoralesLinkage() {
