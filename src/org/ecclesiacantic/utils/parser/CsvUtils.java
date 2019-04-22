@@ -2,8 +2,6 @@ package org.ecclesiacantic.utils.parser;
 
 import org.apache.commons.csv.*;
 import org.ecclesiacantic.model.data.archi.EnumDataColumImport;
-import org.ecclesiacantic.utils.parser.helper.error_content.CsvColumnEmptyError;
-import org.ecclesiacantic.utils.parser.helper.error_content.CsvParseError;
 import org.ecclesiacantic.utils.parser.helper.exception.CsvParseException;
 
 import java.io.*;
@@ -71,6 +69,32 @@ public class CsvUtils {
         }
         locPrinter.close();
         locBfWriter.close();
+    }
+
+    static public final void exportFromData(final File parFile, final List<Map<EnumDataColumImport, String>> parValues) throws IOException {
+        if (parValues.isEmpty()) {
+            return;
+        }
+        if (parValues.get(0).isEmpty()) {
+            export(parFile, Collections.emptyList());
+        }
+        final List<List<String>> locResult = new ArrayList<>(parValues.get(0).size());
+        final ArrayList<String> locHeaders = new ArrayList<>(parValues.get(0).size());
+        for (final EnumDataColumImport locColIdx : parValues.get(0).keySet()) {
+            locHeaders.add(locColIdx.getHeaderName());
+        }
+        locResult.add(locHeaders);
+
+        int locDataIdx = 0;
+        for (final Map<EnumDataColumImport, String> locData : parValues) {
+            final ArrayList<String> locLine = new ArrayList<>(parValues.get(0).size());
+            for (final EnumDataColumImport locColIdx : parValues.get(locDataIdx).keySet()) {
+                locLine.add(locData.get(locColIdx));
+            }
+            locResult.add(locLine);
+            locDataIdx++;
+        }
+        export(parFile, locResult);
     }
 
     /**

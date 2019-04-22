@@ -5,13 +5,14 @@ import org.ecclesiacantic.model.data.archi.EnumDataType;
 import org.ecclesiacantic.model.data.beans.participant.Chorale;
 import org.ecclesiacantic.model.data.beans.participant.Participant;
 import org.ecclesiacantic.model.data_manager.ADataManager;
+import org.ecclesiacantic.utils.StringUtils;
 import org.ecclesiacantic.utils.parser.CsvUtils;
 import org.ecclesiacantic.model.data.archi.EnumDataColumImport;
+import org.ecclesiacantic.utils.parser.helper.exception.CsvParseException;
 import org.ecclesiacantic.utils.parser.helper.exception.ObjectInstanciationException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.util.*;
 
 public class ChoraleManager extends ADataManager<Chorale> {
 
@@ -64,7 +65,7 @@ public class ChoraleManager extends ADataManager<Chorale> {
         }
         for (final Participant locParticipant : ParticipantManager.getInstance().getAllData()) {
             if (locParticipant.isChoraleAffilie()) {
-                final Chorale locChorale = locParticipant.getChorale();
+                final Chorale locChorale = _dataMap.get(locParticipant.getChorale().getName());
                 if (locChorale != null) {
                     locChorale.addParticipant(locParticipant);
                 } else {
@@ -91,6 +92,26 @@ public class ChoraleManager extends ADataManager<Chorale> {
     @Override
     public void preProcessingDataFile() {
         CsvUtils.cleanEmptyCsvLines(_propertyDataFile);
+        try {
+            final Map<String, String> locUniqueColName = new HashMap<>();
+            final List<Map<EnumDataColumImport, String>> locData = CsvUtils.parseDataFile(_propertyDataFile, _type.getDataFileHeader());
+            for (final Map<EnumDataColumImport, String> locRawData : locData) {
+                final String locFirstColName = locRawData.get(EnumDataColumImport.C_NOM);
+                if (StringUtils.isNullOrEmpty(locFirstColName)) {
+                    continue;
+                }
+                final String locTransformedName = locFirstColName.replace(" ", "");
+                final String locAlreadyComputedName = locUniqueColName.get(locTransformedName);
+                if (locAlreadyComputedName == null) {
+                    locUniqueColName.put(locTransformedName, locFirstColName);
+                } else {
+                    locRawData.put(EnumDataColumImport.C_NOM, locAlreadyComputedName);
+                }
+            }
+            CsvUtils.exportFromData(_propertyDataFile, locData);
+        } catch (IOException | CsvParseException parE) {
+            parE.printStackTrace();
+        }
     }
 
     @Override

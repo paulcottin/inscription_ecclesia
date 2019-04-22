@@ -1,6 +1,8 @@
 package org.ecclesiacantic.gui;
 
 import javafx.application.Platform;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -76,9 +78,10 @@ public class MainGui extends Scene {
             _configBtn.setDisable(true);
             _mappingBtn.setDisable(true);
             GuiPropertyManager.getInstance().storeAllProperties();
-            final RunAlgo locRunAlgo = new RunAlgo();
-            ConfigManager.getInstance().writeStandardProperties();
-                new Thread(() -> {
+            final Service<Void> locRunService = new Service<Void>() {
+                @Override
+                protected Task<Void> createTask() {
+                    final RunAlgo locRunAlgo = new RunAlgo();
                     try {
                         locRunAlgo.run();
                     } catch (final AParseException parE) {
@@ -95,11 +98,18 @@ public class MainGui extends Scene {
                             _mappingBtn.setDisable(false);
                         });
                     } finally {
-                        locLaunchBtn.setDisable(false);
-                        _configBtn.setDisable(false);
-                        _mappingBtn.setDisable(false);
+                        Platform.runLater(() -> {
+                            locLaunchBtn.setDisable(false);
+                            _configBtn.setDisable(false);
+                            _mappingBtn.setDisable(false);
+                        });
                     }
-                }).start();
+                    return null;
+                }
+            };
+
+            ConfigManager.getInstance().writeStandardProperties();
+            locRunService.start();
         });
 
 
