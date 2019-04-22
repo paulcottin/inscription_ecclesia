@@ -86,12 +86,17 @@ public class GroupeEvangelisationManager implements IExportableManager{
             if (!locChorale.isReferente()) {
                 continue;
             }
-            _dataMap.put(locChorale.getIdGroupeEvangelisation(),
-                    new GroupeEvangelisation(
-                            locChorale.getIdGroupeEvangelisation(),
-                            locChorale
-                    )
-            );
+            final GroupeEvangelisation locGroupeEvangelisation;
+            if (_dataMap.containsKey(locChorale.getIdGroupeEvangelisation())) {
+                locGroupeEvangelisation = get(locChorale.getIdGroupeEvangelisation());
+            } else {
+                locGroupeEvangelisation = new GroupeEvangelisation(
+                        locChorale.getIdGroupeEvangelisation(),
+                        locChorale
+                );
+            }
+
+            _dataMap.put(locChorale.getIdGroupeEvangelisation(), locGroupeEvangelisation);
         }
 
         //Sinon on effectue le calcul pour savoir dans quel groupe va se retrouver le participant

@@ -82,7 +82,8 @@ public class GroupeEvangelisation implements IExportableObject {
         final List<List<String>> locResultList = new ArrayList<>();
         for (final Participant locPart : getListParticipants()) {
             final List<String> locPartList = new ArrayList<>(3);
-            locPartList.add(String.format("%s %s", _id, _choraleReferente.getName()));
+//            locPartList.add(String.format("%s %s", _id, _choraleReferente.getName()));
+            locPartList.add(_id);
             locPartList.add(locPart.getPrenom());
             locPartList.add(locPart.getNom());
             locPartList.add(locPart.getNumBillet());
