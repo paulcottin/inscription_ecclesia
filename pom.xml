@@ -44,7 +44,7 @@
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
                             <mainClass>
-                                org.ecclesiacantic.RunAlgo
+                                org.ecclesiacantic.MainApplication
                             </mainClass>
                         </manifest>
                     </archive>
