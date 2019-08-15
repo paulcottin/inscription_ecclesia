@@ -100,9 +100,9 @@ Tout le paramétrage peut être fait depuis l'interface de l'outil, il est norma
 Les propriétés à renseignées sont de plusieurs ordres : 
 - Mode de fonctionnement de l'outil
 - Localisation des données
-- Propriétés propres à l'algorithme
-- Propriétés propres à l'édition d'Ecclesia Cantic
 - Mapping des colonnes
+- Propriétés propres à l'édition d'Ecclesia Cantique
+- Propriétés de l'algorithme
 
 ## Configuration du mode de fonctionnement ##
 
@@ -150,7 +150,47 @@ Les constantes sont les énumérations finies habituelle :
 - Le pupitre 
 - Le sexe
 
-Il est possible de renseigner plusieurs valeurs 
+Il est possible de renseigner plusieurs valeurs avec le séparateur `|`. Exemple : `Monsieur|M.|Mr.`
+
+## Configuration propre à l'édition d'Ecclesia Cantique ##
+
+Cette configuration se fait dans l'écran ouvert à partir du bouton `Configuration`.
+Le paragraphe à renseigner est le suivant : "Propriétés propres à l'édition d'Ecclesia Cantique"
+
+- Nombre de places réservées pour les volontaires par salle : modifier ce paramètre permet d'influer sur les résultats de l'algorithme
+- Nombre de voeux total par participants
+- Nombre de voeux à prendre en compte : Doit correspondre au nombre de créneaux.
+- Marqueur de vrai dans Excel : Permet de dire comment on répond "Oui" dans les feuilles de données
+- Faut-il avantager les personnes par date d'inscription ?
+
+## Configuration de l'algorithme ##
+
+Tous les paramètres sont présents sur l'interface qui apparaît au lancement de l'algorithme. 
+Ils vont directement influer sur la répartition. Le but est de les fixer au fur et à mesure des essais pour avoir le moins d'erreurs possibles.
+
+- Nombre de salle beaucoup plus grande que les autres : Permet d'influer sur la répartition des MCs les plus demandées dans les salles les plus grandes.
+- Nombre de MC très peu populaires : Permet de donner aux gens qui ont choisi ces MC leur choix directement pour libérer des possibilités pour les MC très demandées
+- Nombre min de participant pour considérer qu'une MC est remplie : 
+  - Permet d'aider à attribuer la salle la plus adaptée à une MC en fonction de sa popularité.
+  - N'est plus utilisé car on fixe les salles pour les masterclass maintenant
+- Prendre en compte les participants qui ont des voeux mal remplis
+  - Permet de ne pas les prendre en compte.
+  - Cela sert car il est arrivé que pour certaines inscriptions des participants aient mis plusieurs fois le même voeu et donc entraîne des soucis ensuite dans la répartition des voeu au autres personnes
+- Calculer la répartition des groupes d'évangélisation
+  - Si c'est coché le calcul sera fait
+  - Si ce n'est pas coché l'outil s'attendra au fait qu'une colonne remplie avec l'identifiant du groupe d'évangélisation soit présente pour chaque participant.
+  - En effet en fonction des contraintes la calcul doit être quelque fois terminé à la main. Une fois fixé, le groupe d'évangélisation sert de données de base pour la génération des autres sorties
+- Nombre min / max de participants à une MC pour considérer qu'elle soit peu populaire :
+  - Permet de jouer sur l'algotithme, les MCs les moins populaires étant distribuées les premières
+- Taux min / max de remplissage d'une MC au premier passage avant de considérer qu'elle est pleine
+ - C'est ces paramètres qui devront être fait modifier pour jouer avec l'algorithme
+ - Ce sont des nombres à virgule compris entre 0 et 1
+ - L'algorithme va effectuer une proposition de répartition pour chaque pas de 0.05 entre la borne min et max.
+ - Ex : Si `min = 0.1` et `max = 0.2`, 3 propositions de répartition seront faîtes (0.1, 0.15, 0.2), il suffira de choisir la meilleure à la fin du calcul
 
 
+# Résultats #
 
+Une petite console est disponible dans l'interface pour afficher les résultats de l'algorithme.
+Elle n'est pas complètement fonctionnelle, aussi, si l'on veut avoir toutes les informations il est préférable de regarder dans l'invite de commande qui a servi à lancer l'outil. On y retrouve toutes les informations nécessaire.
+A la fin de l'algorithme un pop up demande laquelle des répartitions on veut sauvegarder.

@@ -12,7 +12,7 @@ public class EcPropertiesPane extends TitledPane {
 
     public EcPropertiesPane() {
         super();
-        setText("Properiété propres à l'édition d'Ecclesia cantique");
+        setText("Propriétés propres à l'édition d'Ecclesia Cantique");
         setExpanded(false);
         setContent(new VBox(10,
                 new IntFieldProperty("Nombre de places réservées pour les volontaires par salle", EnumConfigProperty.NB_MARGE_PLACE_SALLE).toHbox(),
