@@ -118,7 +118,7 @@ public abstract class ADataManager<T extends INamedObject > {
         } finally {
             _dataMap.clear();
             _dataLoaded = false;
-            if (_propertyDataFile != null && FileUtils.isFileExist(_propertyDataFile.getParentFile())) {
+            if (_propertyDataFile != null && FileUtils.isFileExist(_propertyDataFile.getParentFile()) && EnumConfigProperty.RECUP_MODE_GOOGLE.boolV()) {
                 FileUtils.removeFolder(_propertyDataFile.getParentFile());
             }
         }
