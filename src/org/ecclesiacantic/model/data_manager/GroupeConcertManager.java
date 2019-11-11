@@ -39,6 +39,7 @@ public class GroupeConcertManager extends ADataManager<GroupeConcert> {
                 }
             }
         }
+        System.err.println(String.format("Impossible de trouver un groupe de concert pour le groupe d'évangélisation d'id %s", parGroupeEvangelisationId));
         return null;
     }
 

@@ -2,8 +2,9 @@ package org.ecclesiacantic.model.data.beans.participant;
 
 import org.ecclesiacantic.config.EnumConfigProperty;
 import org.ecclesiacantic.model.data.Badge;
-import org.ecclesiacantic.model.data.beans.Evenement;
+import org.ecclesiacantic.model.data.GroupeConcert;
 import org.ecclesiacantic.model.data.archi.itf.INamedObject;
+import org.ecclesiacantic.model.data.beans.Evenement;
 import org.ecclesiacantic.model.data.beans.MasterClass;
 import org.ecclesiacantic.model.data.beans.creneaux.EnumCreneau;
 import org.ecclesiacantic.model.data.groupe_evangelisation.ARegion;
@@ -265,20 +266,26 @@ public class Participant implements INamedObject, Comparable<Participant> {
 
     public final int getGroupeConcertId() {
         final GroupeEvangelisation locNotFoundGroup = GroupeEvangelisationManager.getInstance().getNullData();
+        final int locNotFoundGroupId = Integer.parseInt(locNotFoundGroup.getId());
         if (EnumConfigProperty.IS_COMPUTE_GE_REPART.boolV()) {
             if (_groupeEvangelisationId != null && !locNotFoundGroup.getId().equals(_groupeEvangelisationId)) {
-                return GroupeConcertManager.getInstance().getGroupeConcertOf(_groupeEvangelisationId).getId();
+                final GroupeConcert locGoupeConcert =  GroupeConcertManager.getInstance().getGroupeConcertOf(_groupeEvangelisationId);
+                if (locGoupeConcert != null)  {
+                    return locGoupeConcert.getId();
+                } else {
+                    return locNotFoundGroupId;
+                }
             } else {
                 if (_chante) {
                     System.err.println(String.format("Le groupe d'évangélisation du participant %s est null", this));
                 }
-                return Integer.parseInt(locNotFoundGroup.getId());
+                return locNotFoundGroupId;
             }
         } else {
             if (_chante) {
                 return Integer.parseInt(_groupeConcertId);
             } else {
-                return Integer.parseInt(locNotFoundGroup.getId());
+                return locNotFoundGroupId;
             }
         }
     }

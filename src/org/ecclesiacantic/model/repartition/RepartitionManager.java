@@ -73,10 +73,12 @@ public class RepartitionManager {
                     locNotOccupiedParticipants.size())
             );
             exportBadgesData();
-            locRepartition.setResult(new RepartitionResult(
+            final RepartitionResult locRepartitionResult = new RepartitionResult(
                     EvenementManager.getInstance().exportSallePopulation(false),
                     BadgeManager.getInstance().exportDataToCSV(false),
-                    locNotOccupiedParticipants, locRepartition.getFullFactor(), locRepartition.getLessUsedMcNumber(), EvenementManager.getInstance().getSommeEcartType()));
+                    locNotOccupiedParticipants, locRepartition.getFullFactor(), locRepartition.getLessUsedMcNumber(),
+                    EvenementManager.getInstance().getSommeEcartType());
+            locRepartition.setResult(locRepartitionResult);
         }
     }
 
