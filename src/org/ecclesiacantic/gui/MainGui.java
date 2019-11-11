@@ -5,7 +5,6 @@ import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
@@ -110,6 +109,8 @@ public class MainGui extends Scene {
                                     _configBtn.setDisable(false);
                                     _mappingBtn.setDisable(false);
                                 });
+                            } catch (final Throwable parThrowable) {
+                                parThrowable.printStackTrace();
                             } finally {
                                 Platform.runLater(() -> {
                                     locLaunchBtn.setDisable(false);

@@ -1,6 +1,7 @@
 package org.ecclesiacantic.model.data_manager;
 
 import org.ecclesiacantic.config.EnumConfigProperty;
+import org.ecclesiacantic.model.data.archi.EnumDataColumImport;
 import org.ecclesiacantic.model.data.beans.participant.Chorale;
 import org.ecclesiacantic.model.data.beans.participant.Participant;
 import org.ecclesiacantic.model.data.groupe_evangelisation.GroupeEvangelisation;
@@ -59,16 +60,16 @@ public class GroupeEvangelisationManager implements IExportableManager{
                 locGroupeId = locMatcher.group(1);
             } else {
                 throw new IllegalArgumentException(String.format(
-                        "Impossible de trouver le groupe et la chorale référente depuis les données '%s' du participant %s",
-                        locPart.getGroupeEvangelisationString(), locPart
+                        "Impossible de trouver le groupe et la chorale référente depuis les données '%s' pour la colonne '%s' du participant %s",
+                        locPart.getGroupeEvangelisationString(), EnumDataColumImport.P_GROUPE_EVANGELISATION.getHeaderName(), locPart
                 ));
             }
 
             final Chorale locChorale = ChoraleManager.getInstance().get(locMatcher.group(2));
             if (locChorale == null) {
                 throw new IllegalArgumentException(String.format(
-                        "Impossible de trouver le groupe et la chorale référente depuis les données '%s' du participant %s",
-                        locPart.getGroupeEvangelisationString(), locPart
+                        "Impossible de trouver le groupe et la chorale référente depuis les données '%s' pour la colonne '%s' du participant %s",
+                        locPart.getGroupeEvangelisationString(), EnumDataColumImport.P_CHORALE.getHeaderName(), locPart
                 ));
             }
 
