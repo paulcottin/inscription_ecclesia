@@ -123,7 +123,7 @@ public abstract class ADataManager<T extends INamedObject > {
         } finally {
             _dataMap.clear();
             _dataLoaded = false;
-            if (propertyDataFile() != null && FileUtils.isFileExist(_propertyDataFile.getParentFile()) && EnumConfigProperty.RECUP_MODE_GOOGLE.boolV()) {
+            if (propertyDataFile() != null && FileUtils.isFileExist(propertyDataFile().getParentFile()) && EnumConfigProperty.RECUP_MODE_GOOGLE.boolV()) {
                 FileUtils.removeFolder(propertyDataFile().getParentFile());
             }
         }
@@ -156,21 +156,12 @@ public abstract class ADataManager<T extends INamedObject > {
     }
 
     public void add(final T parObject) {
-        parseFileIfNSecure();
-        if (parObject != null && !_dataMap.keySet().contains(parObject.getName())) {
-            _dataMap.put(parObject.getName(), parObject);
-        } else {
-            if (_isStandaloneDataFile) {
-                System.err.println(String.format(
-                        "L'objet %s inséré est null ou est déjà présent : %s",
-                        _typeName,
-                        parObject != null ? parObject.getName() : "null"
-                ));
-            } else {
-                //Ne rien n'afficher, on se base sur un autre fichier pour calculer ces données,
-                // C'est normal qu'il y ait des doublons
-            }
+        if (parObject == null) {
+            System.err.println(String.format("Attention, on essaye d'insérer un objet null pour le type %s", _typeName));
+            return;
         }
+        parseFileIfNSecure();
+        _dataMap.put(parObject.getName(), parObject);
     }
 
     private final void parseFileIfN() throws AParseException {
