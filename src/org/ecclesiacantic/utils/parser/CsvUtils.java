@@ -42,9 +42,6 @@ public class CsvUtils {
                 locReturnList.add(locTempMap);
                 locIdx++;
             }
-        } catch (final FileNotFoundException parE) {
-            System.err.println(String.format("Impossible de trouver le fichier %s", parDataFile.getAbsolutePath()));
-            parE.printStackTrace();
         }
         return locReturnList;
     }

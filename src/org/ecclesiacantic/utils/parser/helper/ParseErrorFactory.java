@@ -5,10 +5,11 @@ import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import org.ecclesiacantic.model.data.archi.EnumDataColumImport;
 import org.ecclesiacantic.utils.parser.helper.error_content.*;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.util.Collection;
-import java.util.Collections;
 
 public class ParseErrorFactory {
 
@@ -70,9 +71,12 @@ public class ParseErrorFactory {
         throw new IllegalArgumentException(String.format("Unable to find exception mapping for exception class %s", parCause), parCause);
     }
 
-    static public final CsvParseError computeCSV(final Exception parE, final int parLineIdx, final EnumDataColumImport parColumImport, final Collection<String> parAvailableValues) {
+    static public final AParseErrorContent computeCSV(final Exception parE, final int parLineIdx, final EnumDataColumImport parColumImport, final Collection<String> parAvailableValues) {
         if (parE == null) {
             return new CsvParseError(parLineIdx, parColumImport, parAvailableValues);
+        } else if (parE instanceof FileNotFoundException) {
+            final String locFilePath = parE.getMessage().substring(0, parE.getMessage().lastIndexOf(" (")).trim();
+            return new FileNotFoundError(new File(locFilePath));
         }
         return new CsvColumnEmptyError(parLineIdx, parColumImport);
     }

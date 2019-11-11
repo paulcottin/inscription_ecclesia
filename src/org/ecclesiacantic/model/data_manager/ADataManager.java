@@ -3,22 +3,20 @@ package org.ecclesiacantic.model.data_manager;
 import org.ecclesiacantic.config.EnumConfigProperty;
 import org.ecclesiacantic.google.GoogleSpreadsheetConfig;
 import org.ecclesiacantic.google.SpreadSheetDownloader;
+import org.ecclesiacantic.model.data.archi.EnumDataColumImport;
 import org.ecclesiacantic.model.data.archi.EnumDataType;
 import org.ecclesiacantic.model.data.archi.itf.INamedObject;
 import org.ecclesiacantic.utils.StringUtils;
 import org.ecclesiacantic.utils.parser.CsvUtils;
-import org.ecclesiacantic.model.data.archi.EnumDataColumImport;
 import org.ecclesiacantic.utils.parser.FileUtils;
-import org.ecclesiacantic.utils.parser.NumberUtils;
-import org.ecclesiacantic.utils.parser.helper.error_content.DateParseError;
 import org.ecclesiacantic.utils.parser.helper.exception.AParseException;
+import org.ecclesiacantic.utils.parser.helper.exception.CsvParseException;
 import org.ecclesiacantic.utils.parser.helper.exception.ObjectInstanciationException;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -136,8 +134,7 @@ public abstract class ADataManager<T extends INamedObject > {
                 add(convertStringMapToObject(locDataMap));
             }
         } catch (final IOException parE) {
-            parE.printStackTrace();
-            return false;
+            throw new CsvParseException(_typeName, parE);
         }
         postDataIntegration();
         return true;

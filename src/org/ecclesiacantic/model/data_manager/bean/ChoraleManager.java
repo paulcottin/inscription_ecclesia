@@ -1,18 +1,20 @@
 package org.ecclesiacantic.model.data_manager.bean;
 
 import org.ecclesiacantic.config.EnumConfigProperty;
+import org.ecclesiacantic.model.data.archi.EnumDataColumImport;
 import org.ecclesiacantic.model.data.archi.EnumDataType;
 import org.ecclesiacantic.model.data.beans.participant.Chorale;
-import org.ecclesiacantic.model.data.beans.participant.Participant;
 import org.ecclesiacantic.model.data_manager.ADataManager;
 import org.ecclesiacantic.utils.StringUtils;
 import org.ecclesiacantic.utils.parser.CsvUtils;
-import org.ecclesiacantic.model.data.archi.EnumDataColumImport;
 import org.ecclesiacantic.utils.parser.helper.exception.CsvParseException;
 import org.ecclesiacantic.utils.parser.helper.exception.ObjectInstanciationException;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ChoraleManager extends ADataManager<Chorale> {
 
@@ -89,7 +91,7 @@ public class ChoraleManager extends ADataManager<Chorale> {
                 }
             }
             CsvUtils.exportFromData(_propertyDataFile, locData);
-        } catch (IOException | CsvParseException parE) {
+        } catch (final IOException | CsvParseException parE) {
             parE.printStackTrace();
         }
     }
