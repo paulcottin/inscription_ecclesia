@@ -27,7 +27,7 @@ public class TarifManager extends ADataManager<Tarif> {
 
     @Override
     public void preProcessingDataFile() {
-        ParticipantManager.getInstance().tempProcessingDataFile(_propertyDataFile);
+        ParticipantManager.getInstance().tempProcessingDataFile(propertyDataFile());
     }
 
     @Override

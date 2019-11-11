@@ -73,10 +73,10 @@ public class ChoraleManager extends ADataManager<Chorale> {
 
     @Override
     public void preProcessingDataFile() {
-        CsvUtils.cleanEmptyCsvLines(_propertyDataFile);
+        CsvUtils.cleanEmptyCsvLines(propertyDataFile());
         try {
             final Map<String, String> locUniqueColName = new HashMap<>();
-            final List<Map<EnumDataColumImport, String>> locData = CsvUtils.parseDataFile(_propertyDataFile, _type.getDataFileHeader());
+            final List<Map<EnumDataColumImport, String>> locData = CsvUtils.parseDataFile(propertyDataFile(), _type.getDataFileHeader());
             for (final Map<EnumDataColumImport, String> locRawData : locData) {
                 final String locFirstColName = locRawData.get(EnumDataColumImport.C_NOM);
                 if (StringUtils.isNullOrEmpty(locFirstColName)) {
@@ -90,7 +90,7 @@ public class ChoraleManager extends ADataManager<Chorale> {
                     locRawData.put(EnumDataColumImport.C_NOM, locAlreadyComputedName);
                 }
             }
-            CsvUtils.exportFromData(_propertyDataFile, locData);
+            CsvUtils.exportFromData(propertyDataFile(), locData);
         } catch (final IOException | CsvParseException parE) {
             parE.printStackTrace();
         }

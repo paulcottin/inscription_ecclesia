@@ -25,12 +25,13 @@ import java.util.Map;
 public abstract class ADataManager<T extends INamedObject > {
 
     protected final boolean _isDownloadingFiles;
-    protected File _propertyDataFile;
+    private final EnumConfigProperty _fileConfigProperty;
+    private File _propertyDataFile;
     protected EnumDataType _type;
     protected final Map<String, T> _dataMap;
     protected final String _typeName;
     protected final boolean _isStandaloneDataFile;
-    private boolean _dataLoaded;
+    private boolean _dataLoaded, _download;
 
     public ADataManager(final EnumConfigProperty parPropertyDataFile, final EnumDataType parEnumDataType) {
         this(parPropertyDataFile, parEnumDataType, true);
@@ -39,12 +40,13 @@ public abstract class ADataManager<T extends INamedObject > {
     public ADataManager(final EnumConfigProperty parPropertyDataFile, final EnumDataType parEnumDataType,
                         final boolean parIsStandaloneDataFile) {
         this._isDownloadingFiles = EnumConfigProperty.RECUP_MODE_GOOGLE.boolV();
-        this._propertyDataFile = parPropertyDataFile.fileV();
+        this._fileConfigProperty = parPropertyDataFile;
         this._type = parEnumDataType;
         this._typeName = parEnumDataType.getTypeName();
         _dataMap = new HashMap<>();
         _isStandaloneDataFile = parIsStandaloneDataFile;
         _dataLoaded = false;
+        _download = false;
         AllDataManager.getInstance().register(this);
     }
 
@@ -103,11 +105,16 @@ public abstract class ADataManager<T extends INamedObject > {
         final GoogleSpreadsheetConfig locConfig = _type.getGoogleConfig();
         if (locConfig != null) {
             _propertyDataFile = SpreadSheetDownloader.getInstance().downloadSheet(_typeName, locConfig);
+            _download = true;
         }
     }
 
     public void preProcessingDataFile() {
 
+    }
+
+    protected final File propertyDataFile() {
+        return _download ? _propertyDataFile : _fileConfigProperty.fileV();
     }
 
     public final boolean testDataFile() throws AParseException {
@@ -116,8 +123,8 @@ public abstract class ADataManager<T extends INamedObject > {
         } finally {
             _dataMap.clear();
             _dataLoaded = false;
-            if (_propertyDataFile != null && FileUtils.isFileExist(_propertyDataFile.getParentFile()) && EnumConfigProperty.RECUP_MODE_GOOGLE.boolV()) {
-                FileUtils.removeFolder(_propertyDataFile.getParentFile());
+            if (propertyDataFile() != null && FileUtils.isFileExist(_propertyDataFile.getParentFile()) && EnumConfigProperty.RECUP_MODE_GOOGLE.boolV()) {
+                FileUtils.removeFolder(propertyDataFile().getParentFile());
             }
         }
         return true;
@@ -130,7 +137,7 @@ public abstract class ADataManager<T extends INamedObject > {
         }
         preProcessingDataFile();
         try {
-            for (final Map<EnumDataColumImport, String> locDataMap : CsvUtils.parseDataFile(_propertyDataFile, _type.getDataFileHeader())) {
+            for (final Map<EnumDataColumImport, String> locDataMap : CsvUtils.parseDataFile(propertyDataFile(), _type.getDataFileHeader())) {
                 add(convertStringMapToObject(locDataMap));
             }
         } catch (final IOException parE) {
@@ -225,10 +232,6 @@ public abstract class ADataManager<T extends INamedObject > {
     public final Collection<T> getAllData() {
         parseFileIfNSecure();
         return _dataMap.values();
-    }
-
-    public final File getPropertyDataFile() {
-        return _propertyDataFile;
     }
 
     public final EnumDataType getType() {

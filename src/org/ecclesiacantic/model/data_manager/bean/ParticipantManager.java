@@ -1,6 +1,7 @@
 package org.ecclesiacantic.model.data_manager.bean;
 
 import org.ecclesiacantic.config.EnumConfigProperty;
+import org.ecclesiacantic.model.data.archi.EnumDataColumImport;
 import org.ecclesiacantic.model.data.archi.EnumDataType;
 import org.ecclesiacantic.model.data.beans.MasterClass;
 import org.ecclesiacantic.model.data.beans.participant.*;
@@ -10,13 +11,9 @@ import org.ecclesiacantic.model.data_manager.ADataManager;
 import org.ecclesiacantic.utils.CompareUtils;
 import org.ecclesiacantic.utils.EnumUtils;
 import org.ecclesiacantic.utils.parser.CsvUtils;
-import org.ecclesiacantic.model.data.archi.EnumDataColumImport;
-import org.ecclesiacantic.utils.parser.FileUtils;
-import org.ecclesiacantic.utils.parser.NumberUtils;
 import org.ecclesiacantic.utils.parser.helper.exception.ObjectInstanciationException;
 
 import java.io.File;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -54,7 +51,7 @@ public class ParticipantManager extends ADataManager<Participant> {
 
     @Override
     public void preProcessingDataFile() {
-        tempProcessingDataFile(_propertyDataFile);
+        tempProcessingDataFile(propertyDataFile());
     }
 
     public final void tempProcessingDataFile(final File parFile) {
