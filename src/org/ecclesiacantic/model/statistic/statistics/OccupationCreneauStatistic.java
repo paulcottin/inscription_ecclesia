@@ -19,6 +19,8 @@ import java.util.Set;
 
 public class OccupationCreneauStatistic extends AStatistic {
 
+    static private final String ERROR_FILE_NAME = "err_participant_rien_prevu.Csv";
+
     private final StringBuilder _errorStrB;
     private int _errorCpt;
     private final Set<Participant> _errorPartSet;
@@ -63,7 +65,8 @@ public class OccupationCreneauStatistic extends AStatistic {
             }
         }
 
-        FileUtils.writeCsv(new File("data_export/nf_Parts_MC.csv"), locData);
+        final File locOutputDir = EnumConfigProperty.OUTPUT_F_BADGE.fileV().getAbsoluteFile().getParentFile();
+        FileUtils.writeCsv(new File(locOutputDir, ERROR_FILE_NAME), locData);
     }
 
     @Override
