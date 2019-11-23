@@ -85,20 +85,18 @@ public class GroupeConcertManager extends ADataManager<GroupeConcert> {
     private final GroupeConcert convertStringMapToObjectInReadingMode(final Map<EnumDataColumImport, String> parStringMapHeaderValue) throws ObjectInstanciationException {
         final GroupeConcert locGroupe;
         if (stringV(parStringMapHeaderValue,EnumDataColumImport.P_GROUPE_CONCERT).isEmpty()) {
-            locGroupe = new GroupeConcert(-1);
+            locGroupe = GroupeConcertManager.getInstance().getNullData();
         } else {
             locGroupe = new GroupeConcert(NumberUtils.convertFieldToInt(stringV(parStringMapHeaderValue,EnumDataColumImport.P_GROUPE_CONCERT)));
         }
 
-        if (!EnumConfigProperty.IS_COMPUTE_GE_REPART.boolV()) {
-            for (final Participant locPart : ParticipantManager.getInstance().getAllData()) {
-                if (!locPart.isChante()) {
-                    continue;
-                }
+        for (final Participant locPart : ParticipantManager.getInstance().getAllData()) {
+            if (!locPart.isChante()) {
+                continue;
+            }
 
-                if (locPart.getGroupeConcertId() == locGroupe.getId()) {
-                    locGroupe.addGroupeEvangelisation(GroupeEvangelisationManager.getInstance().get(locPart.getGroupeEvangelisationId()));
-                }
+            if (locPart.getGroupeConcertId() == locGroupe.getId()) {
+                locGroupe.addGroupeEvangelisation(GroupeEvangelisationManager.getInstance().get(locPart.getGroupeEvangelisationId()));
             }
         }
         return locGroupe;
