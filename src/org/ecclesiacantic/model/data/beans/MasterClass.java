@@ -7,6 +7,7 @@ import org.ecclesiacantic.model.data.beans.creneaux.EnumCreneau;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -126,5 +127,14 @@ public class MasterClass implements INamedObject, Comparable<MasterClass>{
     @Override
     public int compareTo(final MasterClass parOtherMasterClass) {
         return Integer.compare(getScore(), parOtherMasterClass.getScore());
+    }
+
+    @Override
+    public boolean equals(final Object parObj) {
+        if (parObj == null || !(parObj instanceof MasterClass)) {
+            return false;
+        }
+        final MasterClass locOther = (MasterClass) parObj;
+        return Objects.equals(locOther.getId(), getId());
     }
 }

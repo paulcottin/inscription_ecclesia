@@ -38,6 +38,7 @@ public class EvenementManager implements IExportableManager{
         _creneauUsage = new HashMap<>(3);
         _creneauMCUsage = new HashMap<>();
         _mcTotalSallesCapacity = new HashMap<>();
+        _sommeEcartType = 0.0;
         reset();
     }
 
@@ -58,6 +59,7 @@ public class EvenementManager implements IExportableManager{
 
     public final void reset() {
         _cptRepartition = 0;
+        _sommeEcartType = 0;
         _creneauUsage.clear();
         _creneauMCUsage.clear();
         _cptRepartition=0;
