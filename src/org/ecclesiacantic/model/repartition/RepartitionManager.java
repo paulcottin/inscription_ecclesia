@@ -30,8 +30,6 @@ public class RepartitionManager {
         return _instance;
     }
 
-    private final double _minFullFactor, _maxFullFactor;
-    private final int _minLessUsedPartNb, _maxLessUsedPartNb;
     private final List<Repartition> _repartitionList;
     private final StringBuilder _repartitionResult;
     private final Map<Integer, Repartition> _repartitions;
@@ -41,16 +39,18 @@ public class RepartitionManager {
     private RepartitionManager() {
         _repartitionList = new ArrayList<>();
         _repartitionResult = new StringBuilder();
-        _minFullFactor = EnumConfigProperty.MIN_FULL_FACTOR.doubleV();
-        _maxFullFactor = EnumConfigProperty.MAX_FULL_FACTOR.doubleV();
-        _minLessUsedPartNb = EnumConfigProperty.LESS_USED_PART.intV();
-        _maxLessUsedPartNb = EnumConfigProperty.MAX_USED_PART.intV();
         _repartitions = new HashMap<>();
         _selectedIdx = -1;
     }
 
     private final void computeRepartition() {
         _repartitionList.clear();
+
+        final double _minFullFactor = EnumConfigProperty.MIN_FULL_FACTOR.doubleV();
+        final double _maxFullFactor = EnumConfigProperty.MAX_FULL_FACTOR.doubleV();
+        final int _minLessUsedPartNb = EnumConfigProperty.LESS_USED_PART.intV();
+        final int _maxLessUsedPartNb = EnumConfigProperty.MAX_USED_PART.intV();
+
         for (int locMcNb = _minLessUsedPartNb; locMcNb <= _maxLessUsedPartNb; locMcNb++) {
             for (double locI = _minFullFactor; locI <= _maxFullFactor; locI += 0.05) {
                 _repartitionList.add(new Repartition(locI, locMcNb));
@@ -59,6 +59,7 @@ public class RepartitionManager {
     }
 
     public final void runRepartitions() throws AParseException {
+        _repartitions.clear();
         computeRepartition();
 
         int locIndex = 0;
