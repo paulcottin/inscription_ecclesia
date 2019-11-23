@@ -50,6 +50,7 @@ public class RepartitionManager {
     }
 
     private final void computeRepartition() {
+        _repartitionList.clear();
         for (int locMcNb = _minLessUsedPartNb; locMcNb <= _maxLessUsedPartNb; locMcNb++) {
             for (double locI = _minFullFactor; locI <= _maxFullFactor; locI += 0.05) {
                 _repartitionList.add(new Repartition(locI, locMcNb));
