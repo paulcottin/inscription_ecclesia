@@ -1,6 +1,7 @@
 package org.ecclesiacantic.gui;
 
 import javafx.beans.property.StringProperty;
+import org.ecclesiacantic.utils.StringUtils;
 
 public class MessageProvider {
 
@@ -20,7 +21,7 @@ public class MessageProvider {
     }
 
     static public final void append(final String parS) {
-        if (parS == null) {
+        if (StringUtils.isNullOrEmpty(parS)) {
             return;
         }
 

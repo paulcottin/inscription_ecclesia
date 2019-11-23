@@ -12,7 +12,7 @@ import java.util.List;
 public class Console extends OutputStream {
 
     private TextArea _output;
-    private static List<Byte> _bytes;
+    private List<Byte> _bytes;
 
     public Console(final TextArea parTextArea) {
         this._output = parTextArea;
@@ -21,22 +21,24 @@ public class Console extends OutputStream {
 
     @Override
     public void write(final int i) throws IOException {
-        Platform.runLater(() ->  {
-            _bytes.add((byte)i);
-            System.out.write(i);
-            update();
-        });
+        _bytes.add((byte)i);
+        System.out.write(i);
+        Platform.runLater(this::update);
     }
 
     @Override
     public void write(final byte[] i) {
-        Platform.runLater(() -> {
-            for (byte b : i) {
-                _bytes.add(b);
-                System.out.write(b);
-            }
-            update();
-        });
+        for (byte b : i) {
+            _bytes.add(b);
+            System.out.write(b);
+        }
+        Platform.runLater(this::update);
+    }
+
+    @Override
+    public void flush() throws IOException {
+        super.flush();
+        Platform.runLater(this::update);
     }
 
     private final void update() {
