@@ -35,7 +35,7 @@ public enum EnumConfigProperty {
     LESS_USED_PART("input.value.min_lessUsedPart"),
     MAX_USED_PART("input.value.max_lessUsedPart"),
     IS_SKIP_MALFORMED_VOEUX("input.value.skip_malformed_voeu_repartition"),
-    IS_COMPUTE_GE_REPART("input.value.compute_groupe_evangelisation_repartition"),
+    IS_COMPUTE_GE_REPART("input.value.compute_groupe_evangelisation_repartition", true),
     IS_USE_SORTED_PARTICIPANTS("input.value.use_sorted_participant_list"),
     NB_VOEUX_CONSIDERED("input.value.nb_voeux_considered"),
     API_EMAIL("input.google.api_email"),

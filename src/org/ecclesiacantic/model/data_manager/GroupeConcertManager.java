@@ -20,9 +20,13 @@ public class GroupeConcertManager extends ADataManager<GroupeConcert> {
 
     static public final GroupeConcertManager getInstance() {
         if (_instance == null) {
-            _instance = new GroupeConcertManager();
+            resetManager();
         }
         return _instance;
+    }
+
+    static public final void resetManager() {
+        _instance = new GroupeConcertManager();
     }
 
     public GroupeConcertManager() {

@@ -30,9 +30,13 @@ public class GroupeEvangelisationManager implements IExportableManager{
 
     static public final GroupeEvangelisationManager getInstance() {
         if (_instance == null) {
-            _instance = new GroupeEvangelisationManager();
+            resetManager();
          }
          return _instance;
+    }
+
+    static public final void resetManager() {
+        _instance = new GroupeEvangelisationManager();
     }
 
     private final Map<String, GroupeEvangelisation> _dataMap;

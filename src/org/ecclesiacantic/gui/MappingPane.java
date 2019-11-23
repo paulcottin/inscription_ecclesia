@@ -1,10 +1,6 @@
 package org.ecclesiacantic.gui;
 
 import javafx.application.Platform;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -15,16 +11,14 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.ecclesiacantic.config.ConfigManager;
-import org.ecclesiacantic.config.EnumConfigProperty;
+import org.ecclesiacantic.config.OverrideColumnNameManager;
 import org.ecclesiacantic.gui.helpers.ParsingAlert;
 import org.ecclesiacantic.gui.properties.ColumnImportProperty;
 import org.ecclesiacantic.gui.properties.EnumProperty;
 import org.ecclesiacantic.gui.properties.GuiPropertyManager;
 import org.ecclesiacantic.model.data.archi.EnumDataColumImport;
 import org.ecclesiacantic.model.data.archi.EnumDataColumnImportList;
-import org.ecclesiacantic.config.OverrideColumnNameManager;
 import org.ecclesiacantic.model.data.archi.EnumDataType;
-import org.ecclesiacantic.model.data.archi.itf.ISimpleValueEnum;
 import org.ecclesiacantic.model.data_manager.AllDataManager;
 import org.ecclesiacantic.utils.parser.helper.exception.AParseException;
 
