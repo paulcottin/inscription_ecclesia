@@ -25,15 +25,12 @@ public enum EnumDataColumnImportList {
         @Override
         public Collection<EnumDataColumImport> getColumns() {
             return Arrays.asList(
-                    S_LOCALISATION,
                     S_NAME,
                     S_CAPACITY,
                     S_CRENEAU_1,
                     S_CRENEAU_2,
                     S_CRENEAU_3,
-                    S_REPERE,
-                    S_INFOS_SUPP,
-                    S_COMMENTAIRES
+                    S_REPERE
             );
         }
     }, 

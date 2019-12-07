@@ -10,15 +10,12 @@ public enum EnumDataColumImport {
     MC_SALLE_IMPOSE("Salle imposée"),
 
     //Salles
-    S_LOCALISATION("Lieux"),
     S_NAME("Salle"),
     S_CAPACITY("Capacité (pl.ass)"),
     S_CRENEAU_1("Créneau 1\n(25/11 14h-15h15)"),
     S_CRENEAU_2("Créneau 2\n(26/11 9h-10h15)"),
     S_CRENEAU_3("Créneau 3\n(26/11 10h30-11h45)"),
     S_REPERE("Escalier/repère lieux badge"),
-    S_INFOS_SUPP("Infos complémentaires"),
-    S_COMMENTAIRES("Commentaires"),
 
     //Participant
     P_PRENOM("Prénom"),

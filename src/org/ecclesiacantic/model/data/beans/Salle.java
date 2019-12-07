@@ -7,24 +7,20 @@ import org.ecclesiacantic.model.data.beans.creneaux.EnumCreneau;
 
 public class Salle implements INamedObject, Comparable<Salle> {
 
+    // FIXME : si la valeur change, elle ne sera pas pris en compte tant que l'algo n'est pas redémarré
     static private final int MARGE_NB_PERSONNE = EnumConfigProperty.NB_MARGE_PLACE_SALLE.intV();
 
-    private final String _localisation, _nomSalle;
-    private final int _capacite, _fullCapacite;
+    private final String _nomSalle;
+    private final int _capacite;
     private final Disponibilite _disponibilite;
-    private final String _infosComplementaire, _commentaires, _repere;
+    private final String _repere;
     private int _capaciteTotale;
 
-    public Salle(final String parLocalisation, final String parNomSalle,
-                 final int parCapacite, final Disponibilite parDisponibilite, final String parRepere) {
-        this._localisation = parLocalisation;
+    public Salle(final String parNomSalle, final int parCapacite, final Disponibilite parDisponibilite, final String parRepere) {
         this._nomSalle = parNomSalle;
-        this._fullCapacite = parCapacite;
-        this._capacite = _fullCapacite - MARGE_NB_PERSONNE;
+        this._capacite = parCapacite - MARGE_NB_PERSONNE;
         this._disponibilite = parDisponibilite;
         this._repere = parRepere;
-        this._infosComplementaire = "";
-        this._commentaires = "";
         this._capaciteTotale = -1;
     }
 
@@ -49,28 +45,12 @@ public class Salle implements INamedObject, Comparable<Salle> {
         return getName();
     }
 
-    public final String getLocalisation() {
-        return _localisation;
-    }
-
     public final String getNomSalle() {
         return _nomSalle;
     }
 
     public final int getCapacite() {
         return _capacite;
-    }
-
-    public final Disponibilite getDisponibilite() {
-        return _disponibilite;
-    }
-
-    public final String getInfosComplementaire() {
-        return _infosComplementaire;
-    }
-
-    public final String getCommentaires() {
-        return _commentaires;
     }
 
     public final String getRepere() {

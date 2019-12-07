@@ -1,6 +1,7 @@
 package org.ecclesiacantic.model.data_manager.bean;
 
 import org.ecclesiacantic.config.EnumConfigProperty;
+import org.ecclesiacantic.model.data.archi.EnumDataColumImport;
 import org.ecclesiacantic.model.data.archi.EnumDataType;
 import org.ecclesiacantic.model.data.beans.Evenement;
 import org.ecclesiacantic.model.data.beans.MasterClass;
@@ -10,8 +11,6 @@ import org.ecclesiacantic.model.data.beans.creneaux.EnumCreneau;
 import org.ecclesiacantic.model.data_manager.ADataManager;
 import org.ecclesiacantic.model.data_manager.EvenementManager;
 import org.ecclesiacantic.utils.DispoUtils;
-import org.ecclesiacantic.model.data.archi.EnumDataColumImport;
-import org.ecclesiacantic.utils.parser.NumberUtils;
 import org.ecclesiacantic.utils.parser.helper.exception.ObjectInstanciationException;
 
 import java.util.*;
@@ -188,13 +187,10 @@ public class SalleManager extends ADataManager<Salle> {
         final Disponibilite locDisponibilite = DispoUtils.getDisponibiliteFromStringMap(parStringMapHeaderValue);
 
         return new Salle(
-                stringV(parStringMapHeaderValue,EnumDataColumImport.S_LOCALISATION),
                 stringV(parStringMapHeaderValue,EnumDataColumImport.S_NAME),
                 intV(parStringMapHeaderValue,EnumDataColumImport.S_CAPACITY),
                 locDisponibilite,
                 stringV(parStringMapHeaderValue,EnumDataColumImport.S_REPERE)
-//                stringV(parStringMapHeaderValue,EnumDataColumImport.S_INFOS_SUPP),
-//                stringV(parStringMapHeaderValue,EnumDataColumImport.S_COMMENTAIRES)
                 );
     }
 }
