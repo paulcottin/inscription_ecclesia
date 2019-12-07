@@ -24,24 +24,10 @@ public enum EnumDataColumImport {
     P_PRENOM("Prénom"),
     P_NOM("Nom"),
     P_CIVILITE("Civilité - #4"),
-    P_TARIF("Tarif"),
-    P_PRIXPAYE("Prix"),
-    P_CODEBARRE("Codes-barres"),
-    P_DATECOMMANDE("Date"),
-    P_HEURECOMMANDE("Heure commande"),
     P_NUMERO_BILLET("Billet"),
     P_EMAIL("E-mail"),
-    P_DATE_NAISSANCE("Date de naissance. - #19687"),
-    P_AGE("Age"),
-    P_TELEPHONE("Portable - #6"),
     P_CODE_POSTAL("Code postal - #8"),
     P_PAYS("Pays - #16"),
-    P_AUTRES_INFOS("Problème médicaux/ Habitudes alimentaires :  - #14790"),
-    P_BESOIN_HEBERGEMENT("Besoin hébergement"),
-    P_HEBERGE_AVEC("Hébergé avec"),
-    P_PEUT_HERBERGER("Peut héberger"),
-    P_STATION_METRO("Station la plus proche"),
-    P_PEUT_ACCUEILLIR("Si oui, je peux accueillir - #14787"),
     P_VOEU1("Vœu n°1 - #14802"),
     P_VOEU2("Vœu n°2 - #14805"),
     P_VOEU3("Vœu n°3 - #14808"),
@@ -49,20 +35,7 @@ public enum EnumDataColumImport {
     P_VOEU5("Vœu n°5 - #14814"),
     P_PUPITRE("Pupitre - #14820"),
     P_CHORALE("Chorale - #14823"),
-    P_CHORALE_REF("is_reference"),
-    P_CHORALE_NN_REF("Chorale non référencée"),
     P_NE_SOUHAITE_PAS_CHANTER("Je ne souhaite pas chanter durant le week-end - #14831"),
-    P_MESSAGE("COMMENTAIRE(S) LIBRE(S) - #14834"),
-    IS_PARTICIPANT_2016("J'ai participé à une édition précédente - #14846"),
-    PAR_PARTICIPANT_2016("Par un participant d'une édition précédente - #14849"),
-    TYPE_SERVICE("Paroisse, communauté religieuse, mouvement d'Eglise, pastorale des jeunes"),
-    DIOCESE("Diocèse"),
-    CHORALE_1("Par ma chorale"),
-    MEDIA("Médias"),
-    RESEAUX_SOCIAUX("Réseaux sociaux"),
-    BOUCHE_OREILLE("Bouche à oreille"),
-    AIDE_OFFICES("Aide aux offices (pour les religieux)"),
-    DIOCESE_SNPLS("Diocèse (pour les invités type SNPLS)"),
     P_GROUPE_EVANGELISATION("Groupe chant missionnaire"),
     P_GROUPE_CONCERT("Groupe concert"),
 
@@ -92,6 +65,14 @@ public enum EnumDataColumImport {
         _active = true;
         _changed = false;
         _maybeEmpty = false;
+    }
+
+    static public final EnumDataColumImport valueFromJson(final String parName) {
+        try {
+            return valueOf(parName);
+        } catch (final IllegalArgumentException parE) {
+            return null;
+        }
     }
 
     public String getHeaderName() {

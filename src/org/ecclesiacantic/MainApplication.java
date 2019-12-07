@@ -21,7 +21,6 @@ public class MainApplication extends Application {
         // inscription des managers de données
         SalleManager.getInstance();
         MasterClassManager.getInstance();
-        TarifManager.getInstance();
         ChoraleManager.getInstance();
         PaysManager.getInstance();
         SoloGeographiqueManager.getInstance();

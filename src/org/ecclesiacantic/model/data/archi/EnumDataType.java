@@ -77,36 +77,6 @@ public enum EnumDataType {
         }
     },
 
-    TARIF {
-        @Override
-        public final List<EnumDataColumImport> getFilteredColumns() {
-            return Arrays.asList(
-                    EnumDataColumImport.P_TARIF,
-                    EnumDataColumImport.P_PRIXPAYE
-            );
-        }
-
-        @Override
-        public EnumDataColumnImportList getColumnImportList() {
-            return null;
-        }
-
-        @Override
-        public final EnumDataColumImport getHeaderId() {
-            return EnumDataColumImport.P_TARIF;
-        }
-
-        @Override
-        public final String getTypeName() {
-            return "Tarif";
-        }
-
-        @Override
-        public GoogleSpreadsheetConfig getGoogleConfig() {
-            return PARTICIPANT.getGoogleConfig();
-        }
-    },
-
     CHORALE {
 
         @Override

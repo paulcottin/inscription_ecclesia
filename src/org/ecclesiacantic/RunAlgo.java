@@ -1,12 +1,11 @@
 package org.ecclesiacantic;
 
 import org.ecclesiacantic.config.ConfigManager;
-import org.ecclesiacantic.model.data.GroupeConcert;
-import org.ecclesiacantic.model.data.beans.Evenement;
-import org.ecclesiacantic.model.data.groupe_evangelisation.GroupeEvangelisation;
-import org.ecclesiacantic.model.data_manager.*;
+import org.ecclesiacantic.model.data_manager.BadgeManager;
+import org.ecclesiacantic.model.data_manager.EvenementManager;
+import org.ecclesiacantic.model.data_manager.GroupeEvangelisationManager;
+import org.ecclesiacantic.model.data_manager.SoloGeographiqueManager;
 import org.ecclesiacantic.model.data_manager.bean.*;
-import org.ecclesiacantic.model.repartition.Repartition;
 import org.ecclesiacantic.model.repartition.RepartitionManager;
 import org.ecclesiacantic.model.statistic.EnumStatistics;
 import org.ecclesiacantic.model.statistic.StatisticManager;
@@ -26,7 +25,6 @@ public class RunAlgo {
         SalleManager.getInstance().parseDataFile();
         MasterClassManager.getInstance().parseDataFile();
         ChoraleManager.getInstance().parseDataFile();
-        TarifManager.getInstance().parseDataFile();
         PaysManager.getInstance().parseDataFile();
         SoloGeographiqueManager.getInstance().parseDataFile();
 

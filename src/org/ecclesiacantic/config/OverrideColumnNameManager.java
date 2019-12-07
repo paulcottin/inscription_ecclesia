@@ -4,12 +4,14 @@ import org.ecclesiacantic.model.data.archi.EnumDataColumImport;
 import org.ecclesiacantic.model.data.archi.itf.ISimpleValueEnum;
 import org.ecclesiacantic.model.data.beans.participant.EnumCivilite;
 import org.ecclesiacantic.model.data.beans.participant.EnumPupitre;
-import org.ecclesiacantic.model.data.beans.participant.EnumSexeHebergement;
 import org.ecclesiacantic.utils.parser.FileUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
@@ -42,7 +44,7 @@ public class OverrideColumnNameManager {
 
     private OverrideColumnNameManager() {
         _mappingFile = new File(ConfigManager.MAPPING_FILE);
-        _toSaveEnums = Arrays.asList(EnumPupitre.class, EnumCivilite.class, EnumSexeHebergement.class);
+        _toSaveEnums = Arrays.asList(EnumPupitre.class, EnumCivilite.class);
     }
 
     public final void loadMapping() {
@@ -57,7 +59,10 @@ public class OverrideColumnNameManager {
         final JSONArray locMappings = locRoot.getJSONArray(MAPPING);
         for (int locIdx = 0; locIdx < locMappings.length(); locIdx++) {
             final JSONObject locMap = locMappings.getJSONObject(locIdx);
-            final EnumDataColumImport locColumn = EnumDataColumImport.valueOf(locMap.getString(REF_NAME));
+            final EnumDataColumImport locColumn = EnumDataColumImport.valueFromJson(locMap.getString(REF_NAME));
+            if (locColumn == null) {
+                continue;
+            }
             locColumn.setHeaderName(locMap.getString(NEW_NAME));
             locColumn.setActive(locMap.getBoolean(ACTIVE));
             locColumn.setMaybeEmpty(locMap.has(MAYBE_EMPTY) && locMap.getBoolean(MAYBE_EMPTY));

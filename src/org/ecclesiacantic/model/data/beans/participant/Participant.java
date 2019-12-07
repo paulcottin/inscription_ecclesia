@@ -24,60 +24,35 @@ public class Participant implements INamedObject, Comparable<Participant> {
 
     final private String _prenom, _nom;
     final private EnumCivilite _civilite;
-    final private Tarif _tarif;
     final private ARegion _region;
-    final private String _codeBarre, _numBillet, _email, _telephone;
-    final private Date _inscriptionDate, _dateNaissance;
-    final private int _age;
-    final private String _autreInfos, _message, _diocese, _codePostal;
-    final private boolean _needHerbegement, canHebergeOther, _chante, _is2016Participant, aideOffices;
-    final private Hebergement _hebergement;
+    final private String _numBillet, _email;
+    final private String _codePostal;
+    final private boolean _chante;
     final private LinkedList<MasterClass> _voeux;
     final private EnumPupitre _pupitre;
     final private Chorale _chorale;
-    final private Map<EnumConnaitPar, Boolean> _connaitParList;
     final private List<Evenement> _evenements;
     private String _groupeEvangelisationId, _groupeEvangelisationString, _groupeConcertId;
     private int _numBagagerie;
     private Badge _badge;
 
     public Participant(final String parPrenom, final String parNom, final EnumCivilite parCivilite,
-                       final Tarif parTarif, final String parCodeBarre, final String parNumBillet,
-                       final String parEmail, final String parTelephone, final ARegion parRegion,
-                       final String parCodePostal,
-                       final Date parInscriptionDate, final Date parDateNaissance,
-                       final int parAge, final String parAutreInfos, final String parMessage, final String parDiocese,
-                       final boolean parNeedHerbegement, final boolean parCanHebergeOther, final boolean parNeChantePas,
-                       final boolean parIs2016Participant, final boolean parAideOffices, final Hebergement parHebergement,
+                       final String parNumBillet,
+                       final String parEmail, final ARegion parRegion,
+                       final String parCodePostal, final boolean parNeChantePas,
                        final LinkedList<MasterClass> parVoeux, final EnumPupitre parPupitre, final Chorale parChorale,
-                       final Map<EnumConnaitPar, Boolean> parConnaitParList,
                        final String parGroupeEvangelisationId, final String parGroupeConcertId) {
         this._prenom = parPrenom;
         this._nom = parNom;
         this._civilite = parCivilite;
-        this._tarif = parTarif;
-        this._codeBarre = parCodeBarre;
         this._numBillet = parNumBillet;
         this._email = parEmail;
-        this._telephone = parTelephone;
         this._region = parRegion;
         this._codePostal = parCodePostal;
-        this._inscriptionDate = parInscriptionDate;
-        this._dateNaissance = parDateNaissance;
-        this._age = parAge;
-        this._autreInfos = parAutreInfos;
-        this._message = parMessage;
-        this._diocese = parDiocese;
-        this._needHerbegement = parNeedHerbegement;
-        this.canHebergeOther = parCanHebergeOther;
-        this._chante = !parNeChantePas;
-        this._is2016Participant = parIs2016Participant;
-        this.aideOffices = parAideOffices;
-        this._hebergement = parHebergement;
         this._voeux = parVoeux;
         this._pupitre = parPupitre;
         this._chorale = parChorale;
-        this._connaitParList = parConnaitParList;
+        this._chante = !parNeChantePas;
         this._groupeEvangelisationString = parGroupeEvangelisationId;
         final Matcher locMatcher = GROUPE_ID_PATTERN.matcher(parGroupeEvangelisationId);
         if (locMatcher.matches()) {
@@ -310,24 +285,12 @@ public class Participant implements INamedObject, Comparable<Participant> {
         return _civilite;
     }
 
-    public final Tarif getTarif() {
-        return _tarif;
-    }
-
-    public final String getCodeBarre() {
-        return _codeBarre;
-    }
-
     public final String getNumBillet() {
         return _numBillet;
     }
 
     public final String getEmail() {
         return _email;
-    }
-
-    public final String getTelephone() {
-        return _telephone;
     }
 
     public final ARegion getRegion() {
@@ -338,52 +301,8 @@ public class Participant implements INamedObject, Comparable<Participant> {
         return _codePostal;
     }
 
-    public final Date getInscriptionDate() {
-        return _inscriptionDate;
-    }
-
-    public final Date getDateNaissance() {
-        return _dateNaissance;
-    }
-
-    public final int getAge() {
-        return _age;
-    }
-
-    public final String getAutreInfos() {
-        return _autreInfos;
-    }
-
-    public final String getMessage() {
-        return _message;
-    }
-
-    public final String getDiocese() {
-        return _diocese;
-    }
-
-    public final boolean isNeedHerbegement() {
-        return _needHerbegement;
-    }
-
-    public final boolean isCanHebergeOther() {
-        return canHebergeOther;
-    }
-
     public final boolean isChante() {
         return _chante;
-    }
-
-    public final boolean is2016Participant() {
-        return _is2016Participant;
-    }
-
-    public final boolean isAideOffices() {
-        return aideOffices;
-    }
-
-    public final Hebergement getHebergement() {
-        return _hebergement;
     }
 
     public final LinkedList<MasterClass> getVoeux() {
@@ -396,10 +315,6 @@ public class Participant implements INamedObject, Comparable<Participant> {
 
     public final Chorale getChorale() {
         return _chorale;
-    }
-
-    public final Map<EnumConnaitPar, Boolean> getConnaitParList() {
-        return _connaitParList;
     }
 
     public final List<Evenement> getEvenements() {

@@ -14,7 +14,6 @@ import org.ecclesiacantic.utils.parser.CsvUtils;
 import org.ecclesiacantic.utils.parser.helper.exception.ObjectInstanciationException;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -117,12 +116,6 @@ public class ParticipantManager extends ADataManager<Participant> {
             throw new ObjectInstanciationException(_typeName, EnumDataColumImport.P_CIVILITE, locEmail,
                     Arrays.stream(EnumCivilite.values()).map(EnumCivilite::getValue).collect(Collectors.toList()));
         }
-        final Tarif locTarif = TarifManager.getInstance().get(stringV(parStringMapHeaderValue, EnumDataType.TARIF));
-        final Hebergement locHebergement = new Hebergement(
-                stringV(parStringMapHeaderValue, EnumDataColumImport.P_STATION_METRO),
-                (EnumSexeHebergement) EnumUtils.getEnumFromString(EnumSexeHebergement.class, stringV(parStringMapHeaderValue,EnumDataColumImport.P_PEUT_ACCUEILLIR)),
-                stringV(parStringMapHeaderValue,EnumDataColumImport.P_PEUT_HERBERGER)
-        );
         final Pays locPays = PaysManager.getInstance().get(
                 stringV(parStringMapHeaderValue,EnumDataColumImport.P_PAYS)
         );
@@ -144,44 +137,19 @@ public class ParticipantManager extends ADataManager<Participant> {
                     Arrays.stream(EnumPupitre.values()).map(EnumPupitre::getValue).collect(Collectors.toList()));
         }
         final Chorale locChorale = ChoraleManager.getInstance().get(stringV(parStringMapHeaderValue,EnumDataColumImport.P_CHORALE));
-        final Map<EnumConnaitPar, Boolean> locConnaitPar = EnumConnaitPar.initFromData(parStringMapHeaderValue);
-
-        //Propriete calculées
-        Date locNaissanceDate = null, locCommandeDate = null;
-
-        final SimpleDateFormat locDateNaissanceFormat = new SimpleDateFormat("dd/mm/YYYY");
-        final SimpleDateFormat locDateCommandeFormat = new SimpleDateFormat("YYYY-MM-dd HH:mm");
-
-        locNaissanceDate = dateV(parStringMapHeaderValue, EnumDataColumImport.P_DATE_NAISSANCE, locDateNaissanceFormat);
-        locCommandeDate = dateV(parStringMapHeaderValue, EnumDataColumImport.P_DATECOMMANDE, locDateCommandeFormat);
 
         return new Participant(
                 stringV(parStringMapHeaderValue,EnumDataColumImport.P_PRENOM),
                 stringV(parStringMapHeaderValue,EnumDataColumImport.P_NOM),
                 locCivilite,
-                locTarif,
-                stringV(parStringMapHeaderValue,EnumDataColumImport.P_CODEBARRE),
                 stringV(parStringMapHeaderValue,EnumDataColumImport.P_NUMERO_BILLET),
                 locEmail,
-                stringV(parStringMapHeaderValue,EnumDataColumImport.P_TELEPHONE),
                 locRegion,
                 stringV(parStringMapHeaderValue,EnumDataColumImport.P_CODE_POSTAL),
-                locCommandeDate,
-                locNaissanceDate,
-                intV(parStringMapHeaderValue,EnumDataColumImport.P_AGE),
-                stringV(parStringMapHeaderValue,EnumDataColumImport.P_AUTRES_INFOS),
-                stringV(parStringMapHeaderValue,EnumDataColumImport.P_MESSAGE),
-                stringV(parStringMapHeaderValue,EnumDataColumImport.DIOCESE),
-                CompareUtils.isMarkTrue(stringV(parStringMapHeaderValue,EnumDataColumImport.P_BESOIN_HEBERGEMENT)),
-                CompareUtils.isMarkTrue(stringV(parStringMapHeaderValue,EnumDataColumImport.P_PEUT_HERBERGER)),
                 CompareUtils.isMarkTrue(stringV(parStringMapHeaderValue,EnumDataColumImport.P_NE_SOUHAITE_PAS_CHANTER)),
-                CompareUtils.isMarkTrue(stringV(parStringMapHeaderValue,EnumDataColumImport.IS_PARTICIPANT_2016)),
-                CompareUtils.isMarkTrue(stringV(parStringMapHeaderValue,EnumDataColumImport.AIDE_OFFICES)),
-                locHebergement,
                 locVoeux,
                 locPupitre,
                 locChorale,
-                locConnaitPar,
                 stringV(parStringMapHeaderValue,EnumDataColumImport.P_GROUPE_EVANGELISATION),
                 stringV(parStringMapHeaderValue,EnumDataColumImport.P_GROUPE_CONCERT)
         );
