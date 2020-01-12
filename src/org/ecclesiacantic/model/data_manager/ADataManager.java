@@ -132,10 +132,10 @@ public abstract class ADataManager<T extends INamedObject > {
 
     public boolean parseDataFile() throws AParseException {
         _dataLoaded = true;
-        if (_isDownloadingFiles) {
+        if (EnumConfigProperty.RECUP_MODE_GOOGLE.boolV()) {
             downloadDataFile();
+            preProcessingDataFile();
         }
-        preProcessingDataFile();
         try {
             for (final Map<EnumDataColumImport, String> locDataMap : CsvUtils.parseDataFile(propertyDataFile(), _type.getDataFileHeader())) {
                 add(convertStringMapToObject(locDataMap));
